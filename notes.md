@@ -6,9 +6,9 @@
 link: https://angular.io/cli/generate
 
 ### komendy:
-ng g c -> wygeneruj folder z komponentem + styl + module
-ng g s -> wygeneruj folder + service (do łączności z API)
-ng g m-> wygeneruj moduł do zepnięcia komponentów
+- ng g c -> wygeneruj folder z komponentem + styl + module
+- ng g s -> wygeneruj folder + service (do łączności z API)
+- ng g m-> wygeneruj moduł do zepnięcia komponentów
 
 
 ## Dokumentacja
