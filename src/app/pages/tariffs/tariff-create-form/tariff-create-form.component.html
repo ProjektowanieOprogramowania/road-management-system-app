@@ -1,5 +1,5 @@
-<div class="flex-container">
+
   <p class="header">Create new tariff</p>
   <th>Tariff name</th>
-  <input type="text" InputText />
-</div>
+  <input type="text" pInputText [(ngModel)]="tariffName">
+  <p-checkbox label="Starts enabled" [(ngModel)]="active" [binary]="true"></p-checkbox>

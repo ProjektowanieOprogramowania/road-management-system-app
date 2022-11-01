@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NgModule } from '@angular/core';
 
 @Component({
   selector: 'app-tariff-create-form',
@@ -7,6 +6,10 @@ import { NgModule } from '@angular/core';
   styleUrls: ['./tariff-create-form.component.scss']
 })
 export class TariffCreateFormComponent implements OnInit {
+
+  tariffName : string = "";
+
+  active : boolean = true;
 
   constructor() { }
 
