@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-tariff',
+  selector: 'app-tariff.ts',
   templateUrl: './tariffs-list.component.html',
   styleUrls: ['./tariffs-list.component.scss']
 })
