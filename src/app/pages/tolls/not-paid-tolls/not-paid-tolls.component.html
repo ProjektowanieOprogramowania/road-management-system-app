@@ -2,13 +2,14 @@
   <p class="header">Przejazdy do opłacenia</p>
   <ng-container *ngIf="tolls; else loading">
     <div *ngIf="tolls.length > 0; else noTools" class="card table">
-      <p-table [value]="tolls" selectionMode="single" [(selection)]="selectedToll" dataKey="id" responsiveLayout="scroll"
+      <p-table [value]="tolls" selectionMode="single" [(selection)]="selectedToll" dataKey="id"
+               responsiveLayout="scroll"
                (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
         <ng-template pTemplate="header">
           <tr>
             <th>Lp.</th>
             <th>Kwota [PLN]</th>
-            <th>Data przejazdu</th>
+            <th>Data wystawienia</th>
             <th>Lokalizacja</th>
           </tr>
         </ng-template>
@@ -30,3 +31,18 @@
     <p-progressSpinner [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
   </ng-template>
 </div>
+
+<p-dialog *ngIf="selectedToll" header="Nieopłacony przejazd" [(visible)]="displayTollDetails" [modal]="true"
+          [dismissableMask]="true" [draggable]="false"
+          [style]="{width: '500px'}"
+          (onHide)="onDetailsHide()">
+  <p class="font-semibold text-lg mt-0">Do zapłaty: {{selectedToll!.amount}} PLN</p>
+  <p>Data wystawienia: {{selectedToll!.ride.date.toLocaleString()}}</p>
+  <p>Lokalizacja: {{selectedToll!.ride.location.name}}</p>
+  <p class="text-md font-semibold mt-5 mb-4">Wybierz formę płatności</p>
+  <p-selectButton [options]="paymentMethods" [(ngModel)]="selectedPaymentMethod" optionLabel="name"></p-selectButton>
+  <p *ngIf="displayUnselectedPaymentMethodError" class="text-sm text-red-500 mb-0 mt-2 ml-1">Nie wybrano metody płatności!</p>
+  <ng-template pTemplate="footer">
+    <p-button label="Zapłać" styleClass="p-button-sm" (onClick)="onPay($event)"></p-button>
+  </ng-template>
+</p-dialog>

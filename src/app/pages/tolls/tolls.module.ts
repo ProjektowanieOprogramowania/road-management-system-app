@@ -5,6 +5,10 @@ import { TollsHistoryComponent } from './tolls-history/tolls-history.component';
 import {RouterModule, Routes} from "@angular/router";
 import {TableModule} from "primeng/table";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {DialogModule} from "primeng/dialog";
+import {SelectButtonModule} from "primeng/selectbutton";
+import {FormsModule} from "@angular/forms";
+import {ButtonModule} from "primeng/button";
 
 export const routes: Routes = [
   {
@@ -26,7 +30,11 @@ export const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     TableModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    DialogModule,
+    SelectButtonModule,
+    FormsModule,
+    ButtonModule
   ]
 })
 export class TollsModule { }

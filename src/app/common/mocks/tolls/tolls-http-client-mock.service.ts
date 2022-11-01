@@ -17,7 +17,7 @@ export class TollsHttpClientMockService {
       setTimeout(() => {
         sub.next(res);
         sub.complete();
-      }, 500)
+      }, 100)
     })
   }
 
@@ -27,7 +27,7 @@ export class TollsHttpClientMockService {
       setTimeout(() => {
         sub.next(res);
         sub.complete();
-      }, 1000)
+      }, 100)
     })
   }
 }
