@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Tariff} from "../../../common/models/tariff";
+import { Router } from '@angular/router';
 import {TariffService} from "../../../services/tariff.service";
 
 @Component({
@@ -21,7 +21,7 @@ export class TariffCreateFormComponent implements OnInit {
 
   tariffNameValid: boolean = true;
 
-  constructor(private tariffService: TariffService) { }
+  constructor(private tariffService: TariffService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -62,5 +62,6 @@ export class TariffCreateFormComponent implements OnInit {
     }
 
     this.tariffService.addTariff(tariff)
+    this.router.navigate(['/tariffs']);
   }
 }

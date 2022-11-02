@@ -11,7 +11,7 @@
                placeholder="Nazwa">
         <p-inputNumber [(ngModel)]="addPriceValue" [class]="priceFieldValid ? '' : 'ng-invalid ng-dirty'"
                        placeholder="Cena" mode="currency" currency="PLN" locale="pl-PL"></p-inputNumber>
-        <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Add'"
+        <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Dodaj'"
                 (click)="newRow()"></button>
       </div>
     </div>
@@ -60,7 +60,7 @@
       </p-table>
     </ng-template>
   </div>
-  <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Create'"
+  <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Stwórz'"
           [style]="{marginTop: '20px', marginLeft: 'auto', marginRight: '0', display: 'flex', width: '10em' }"
           (click)="createSubmit()"></button>
 </div>
