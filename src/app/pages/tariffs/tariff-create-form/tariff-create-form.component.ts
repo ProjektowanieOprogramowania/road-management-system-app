@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Tariff} from "../../../common/models/tariff";
+import {TariffService} from "../../../services/tariff.service";
 
 @Component({
   selector: 'app-tariff-create-form',
@@ -17,7 +19,7 @@ export class TariffCreateFormComponent implements OnInit {
   nameFieldValid: boolean = true;
   priceFieldValid: boolean = true;
 
-  constructor() { }
+  constructor(private tariffService: TariffService) { }
 
   ngOnInit(): void {
   }
@@ -57,4 +59,14 @@ export class TariffCreateFormComponent implements OnInit {
     this.prices.delete(any)
   }
 
+  createSubmit(){
+    const tariff = {
+      id: 0,
+      active: this.active,
+      name: this.name,
+      prices: this.prices,
+    }
+
+    this.tariffService.addTariff(tariff)
+  }
 }
