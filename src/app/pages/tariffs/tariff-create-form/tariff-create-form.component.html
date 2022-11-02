@@ -1,0 +1,36 @@
+<div class="flex-container test" [style]="{width: '800px', marginLeft: 'auto', marginRight: 'auto'}">
+  <p class="header">Stwórz nowy taryfikator</p>
+  <div>
+  <th>Nazwa taryfikatora</th>
+  <input type="text" pInputText [(ngModel)]="name">
+ </div>
+  <p-checkbox label="Aktywny po stworzeniu" [(ngModel)]="active" [binary]="true"></p-checkbox>
+  <p class="header">Warianty cenowe</p>
+  <p-table #dt [value]="getArray(prices)">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">
+          Nazwa <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="customer">
+          Cena
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-price>
+      <tr>
+
+        
+
+        <td>{{price.name}}</td>
+        <td>{{price.value + " zł"}}</td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+  <input type="text" pInputTex [(ngModel)]="addPriceName"><input type="text" pInputTex [(ngModel)]="addPriceValue">
+  <button pButton type="button" icon="pi pi-plus" class = "ui-button-info" [label] = "'Add'"
+  (click) = "newRow()"></button>
+  <button pButton type="button" icon="pi pi-plus" class = "ui-button-success" [label] = "'Create'"
+  ></button>
+</div>

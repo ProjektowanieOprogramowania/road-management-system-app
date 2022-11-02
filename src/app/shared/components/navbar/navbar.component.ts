@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
         items: [
           {
             label: 'Dodaj',
+            routerLink: ['/tariffs/create'],
             icon: 'pi pi-fw pi-plus',
           },
           {

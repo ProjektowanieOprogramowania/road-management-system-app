@@ -2,6 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {TariffsListComponent} from "./TariffList/tariffs-list.component";
+import { TariffCreateFormComponent } from './tariff-create-form/tariff-create-form.component';
+import {InputNumberModule} from 'primeng/inputnumber';
+import {InputTextModule} from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import {CheckboxModule} from 'primeng/checkbox';
 import {TableModule} from "primeng/table";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ButtonModule} from "primeng/button";
@@ -16,6 +21,10 @@ export const routes: Routes = [
   {
     path: 'edit/:id',
     component: EditTariffComponent
+  },
+  {
+    path: 'create',
+    component: TariffCreateFormComponent
   }
 ];
 
@@ -23,7 +32,8 @@ export const routes: Routes = [
 @NgModule({
   declarations: [
     TariffsListComponent,
-    EditTariffComponent
+    EditTariffComponent,
+    TariffCreateFormComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -31,7 +41,11 @@ export const routes: Routes = [
     TableModule,
     ProgressSpinnerModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    InputNumberModule,
+    InputTextModule,
+    FormsModule,
+    CheckboxModule
   ]
 })
 export class TariffsModule { }
