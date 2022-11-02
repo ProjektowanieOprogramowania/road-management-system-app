@@ -1,29 +1,37 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
-import {TariffsListComponent} from "./tariffs-list.component";
+import {TariffsListComponent} from "./TariffList/tariffs-list.component";
 import {TableModule} from "primeng/table";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ButtonModule} from "primeng/button";
+import {DialogModule} from "primeng/dialog";
+import { EditTariffComponent } from './edit-tariff/edit-tariff.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: TariffsListComponent
+  },
+  {
+    path: 'edit/:id',
+    component: EditTariffComponent
   }
 ];
 
 
 @NgModule({
   declarations: [
-    TariffsListComponent
+    TariffsListComponent,
+    EditTariffComponent
   ],
-    imports: [
-        RouterModule.forChild(routes),
-        CommonModule,
-        TableModule,
-        ProgressSpinnerModule,
-        ButtonModule
-    ]
+  imports: [
+    RouterModule.forChild(routes),
+    CommonModule,
+    TableModule,
+    ProgressSpinnerModule,
+    ButtonModule,
+    DialogModule
+  ]
 })
 export class TariffsModule { }

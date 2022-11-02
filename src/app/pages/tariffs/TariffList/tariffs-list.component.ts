@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Tariff} from "../../common/models/tariff";
+import {Tariff} from "../../../common/models/tariff";
 import {Subscription} from "rxjs";
-import {TariffService} from "../../services/tariff.service";
-import * as Console from "console";
+import {TariffService} from "../../../services/tariff.service";
 
 @Component({
   selector: 'app-tariff.ts',
@@ -11,11 +10,9 @@ import * as Console from "console";
 })
 export class TariffsListComponent implements OnInit, OnDestroy {
   tariffs: Tariff[] | undefined;
-
   selectedTariff: Tariff | undefined;
-
   subscriptions: Subscription = new Subscription();
-
+  displayTariffDetails: boolean = false;
   constructor(private tariffService: TariffService) { }
 
   ngOnInit() {
@@ -31,11 +28,18 @@ export class TariffsListComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  log(val: string) { console.log(val); }
-
-  getArray(map: any[]) {
-    console.log(Array.from(map, ([name, value]) => ({ name, value })))
+  getArray(map: Map<string, number>) {
     return Array.from(map, ([name, value]) => ({ name, value }));
   }
 
+  onRowSelect(event: any) {
+    this.displayTariffDetails = true;
+  }
+
+  onRowUnselect(event: any) {
+  }
+
+  onDetailsHide() {
+    this.selectedTariff = undefined;
+  }
 }
