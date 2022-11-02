@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Toll} from "../../../common/models/toll";
 import {TollsService} from "../../../services/tolls.service";
 import {Subscription} from "rxjs";
-import {PaymentMethod, PaymentMethods} from "../../../common/models/paymentMethod";
 
 @Component({
   selector: 'app-not-paid-tolls',
@@ -12,14 +11,9 @@ import {PaymentMethod, PaymentMethods} from "../../../common/models/paymentMetho
 export class NotPaidTollsComponent implements OnInit, OnDestroy {
   tolls: Toll[] | undefined;
   selectedToll: Toll | undefined;
-  orderNumber = 1;
+  tollOrderNumber = 1;
 
-  displayTollDetails: boolean = false;
-
-  paymentMethods = PaymentMethods;
-  selectedPaymentMethod: PaymentMethod | undefined;
-
-  displayUnselectedPaymentMethodError = false;
+  displayPayTollModal = false;
 
   subscriptions: Subscription = new Subscription();
 
@@ -29,7 +23,7 @@ export class NotPaidTollsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const sub = this.tollsService.getNotPaidTolls()
       .subscribe(data => {
-          data.forEach(x => x.orderNumber = this.orderNumber++);
+          data.forEach(x => x.orderNumber = this.tollOrderNumber++);
           this.tolls = data;
         }
       );
@@ -41,25 +35,15 @@ export class NotPaidTollsComponent implements OnInit, OnDestroy {
   }
 
   onRowSelect(event: any) {
-    this.showDetails();
+    this.showPayTollModal();
   }
 
-  onRowUnselect(event: any) {
+  showPayTollModal() {
+    this.displayPayTollModal = true;
   }
 
-  showDetails() {
-    this.displayTollDetails = true;
-  }
-
-  onDetailsHide() {
+  onPayTollModalHide() {
     this.selectedToll = undefined;
-    this.selectedPaymentMethod = undefined;
-    this.displayUnselectedPaymentMethodError = false;
-  }
-
-  onPay(event: any) {
-    if (this.selectedPaymentMethod === undefined) {
-      this.displayUnselectedPaymentMethodError = true;
-    }
+    this.displayPayTollModal = false;
   }
 }

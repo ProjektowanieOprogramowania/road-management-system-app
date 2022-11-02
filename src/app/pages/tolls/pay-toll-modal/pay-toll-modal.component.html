@@ -1,0 +1,16 @@
+<p-dialog *ngIf="toll" header="Nieopłacony przejazd" [(visible)]="display" [modal]="true"
+          [dismissableMask]="true" [draggable]="false" [style]="{width: '500px'}"
+          (onHide)="onHide()">
+  <p class="font-semibold text-lg mt-0">Do zapłaty: {{toll.amount}} PLN</p>
+  <p>Data wystawienia: {{toll.ride.date.toLocaleString()}}</p>
+  <p>Lokalizacja: {{toll.ride.location.name}}</p>
+  <p class="text-md font-semibold mt-5 mb-4">Wybierz metodę płatności</p>
+  <p-selectButton [options]="paymentMethods" [(ngModel)]="selectedPaymentMethod" optionLabel="name"
+                  (onOptionClick)="onSelectPaymentMethodButtonClick()"></p-selectButton>
+  <p *ngIf="displayUnselectedPaymentMethodError" class="text-sm text-red-500 mb-0 mt-2 ml-1">
+    Nie wybrano metody płatności!
+  </p>
+  <ng-template pTemplate="footer">
+    <p-button label="Zapłać" styleClass="p-button-sm" (onClick)="onPay()"></p-button>
+  </ng-template>
+</p-dialog>

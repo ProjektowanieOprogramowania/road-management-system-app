@@ -1,10 +1,9 @@
-<div class="flex-container">
-  <p class="header">Przejazdy do opłacenia</p>
+<div class="flex flex-column align-items-center m-3">
+  <p class="my-5 text-xl">Przejazdy do opłacenia</p>
   <ng-container *ngIf="tolls; else loading">
-    <div *ngIf="tolls.length > 0; else noTools" class="card table">
+    <div *ngIf="tolls.length > 0; else noTools" class="card w-10">
       <p-table [value]="tolls" selectionMode="single" [(selection)]="selectedToll" dataKey="id"
-               responsiveLayout="scroll"
-               (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+               responsiveLayout="scroll" (onRowSelect)="onRowSelect($event)">
         <ng-template pTemplate="header">
           <tr>
             <th>Lp.</th>
@@ -32,17 +31,8 @@
   </ng-template>
 </div>
 
-<p-dialog *ngIf="selectedToll" header="Nieopłacony przejazd" [(visible)]="displayTollDetails" [modal]="true"
-          [dismissableMask]="true" [draggable]="false"
-          [style]="{width: '500px'}"
-          (onHide)="onDetailsHide()">
-  <p class="font-semibold text-lg mt-0">Do zapłaty: {{selectedToll!.amount}} PLN</p>
-  <p>Data wystawienia: {{selectedToll!.ride.date.toLocaleString()}}</p>
-  <p>Lokalizacja: {{selectedToll!.ride.location.name}}</p>
-  <p class="text-md font-semibold mt-5 mb-4">Wybierz formę płatności</p>
-  <p-selectButton [options]="paymentMethods" [(ngModel)]="selectedPaymentMethod" optionLabel="name"></p-selectButton>
-  <p *ngIf="displayUnselectedPaymentMethodError" class="text-sm text-red-500 mb-0 mt-2 ml-1">Nie wybrano metody płatności!</p>
-  <ng-template pTemplate="footer">
-    <p-button label="Zapłać" styleClass="p-button-sm" (onClick)="onPay($event)"></p-button>
-  </ng-template>
-</p-dialog>
+<app-pay-toll-modal *ngIf="selectedToll"
+                    [toll]="selectedToll"
+                    [display]="displayPayTollModal"
+                    (hide)="onPayTollModalHide()">
+</app-pay-toll-modal>
