@@ -1,0 +1,30 @@
+[
+  {
+  "id": 1,
+  "name": "Przekroczenie prędkości",
+  "date": "2022-10-02",
+  "price": 2000,
+  "isPayed": false
+},
+  {
+    "id": 2,
+    "name": "Stłuczka",
+    "date": "2022-09-02",
+    "price": 2000,
+    "isPayed": false
+  },
+  {
+    "id": 3,
+    "name": "Jazda w stanie nietrzeźwości",
+    "date": "2022-02-02",
+    "price": 4000,
+    "isPayed": true
+  },
+  {
+    "id": 4,
+    "name": "Przekroczenie prędkości",
+    "date": "2022-01-02",
+    "price": 1000,
+    "isPayed": false
+  }
+  ]

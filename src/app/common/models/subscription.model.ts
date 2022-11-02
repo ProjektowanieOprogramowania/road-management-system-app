@@ -5,9 +5,19 @@ export interface AvailableSubscriptionModel {
 }
 
 export interface SubscriptionOrderModel{
+  id?: number;
   startDate: Date,
   endDate: Date,
   price: number,
-  selectedSubscriptionId: number,
+  selectedSubscriptionIds: number[],
   orderUrl: string,
+}
+
+export interface SubscriptionSuccessModel{
+  id: number,
+  orderDate: Date,
+  startDate: Date,
+  endDate: Date,
+  price: number,
+  roadSubscriptions: AvailableSubscriptionModel[],
 }

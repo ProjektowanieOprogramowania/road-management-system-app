@@ -5,25 +5,39 @@ import {RouterModule, Routes} from "@angular/router";
 import {ListboxModule} from "primeng/listbox";
 import {FormsModule} from "@angular/forms";
 import {CalendarModule} from "primeng/calendar";
+import { SubscriptionModalComponent } from './subscription-modal/subscription-modal.component';
+import {DialogModule} from "primeng/dialog";
+import {SelectButtonModule} from "primeng/selectbutton";
+import {
+  SubscriptionSuccessDetailsComponent
+} from "./subscription-success-details/subscription-success-details.component";
 
 
 export const routes: Routes = [
   {
     path: 'subscribe',
     component: SubscriptionsPanelComponent
+  },
+  {
+    path: 'subscribe-success/:id',
+    component: SubscriptionSuccessDetailsComponent
   }
 ];
 
 @NgModule({
   declarations: [
-    SubscriptionsPanelComponent
+    SubscriptionsPanelComponent,
+    SubscriptionModalComponent,
+    SubscriptionSuccessDetailsComponent
   ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
     ListboxModule,
     FormsModule,
-    CalendarModule
+    CalendarModule,
+    DialogModule,
+    SelectButtonModule
   ]
 })
 export class SubscriptionsModule { }

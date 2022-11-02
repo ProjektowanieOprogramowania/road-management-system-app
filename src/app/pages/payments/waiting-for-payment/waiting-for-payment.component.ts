@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {TollsMock} from "../../../common/mocks/tolls/tollsMock";
@@ -15,6 +15,9 @@ export class WaitingForPaymentComponent implements OnInit {
   chargeId: string | null | undefined;
   paymentMethodId: string | null | undefined;
 
+  navigateWhenSuccess = '';
+  navigateWhenFailure = '';
+
   constructor(private router: Router,
               private route: ActivatedRoute,
               private messageService: MessageService) {
@@ -24,8 +27,14 @@ export class WaitingForPaymentComponent implements OnInit {
     this.chargeId = this.route.snapshot.queryParamMap.get('chargeId');
     this.paymentMethodId = this.route.snapshot.queryParamMap.get('methodId');
 
+    const navWhenFailure = this.route.snapshot.paramMap.get('whenFailure');
+    const navWhenSuccess = this.route.snapshot.paramMap.get('whenSuccess');
+    this.navigateWhenFailure =  navWhenFailure ? navWhenFailure : '';
+    this.navigateWhenSuccess = navWhenSuccess ? navWhenSuccess : '';
+
     setTimeout(() => {
-      if (Math.random() > 0.5) {
+      //przelew spejclanie nie bedzie dzialac
+      if (this.paymentMethodId !== '2') {
         this.onSuccess();
       } else {
         this.onFailure();
@@ -36,14 +45,14 @@ export class WaitingForPaymentComponent implements OnInit {
   onSuccess() {
     this.messageService.add({severity: 'success', summary: 'Płatność przebiegła pomyślnie!'});
 
-    TollsMock.find(x => x.id === Number.parseInt(this.chargeId!))!.payment = {
-      id: Number.parseInt(this.chargeId!),
-      paymentMethod: PaymentMethods.find(x => x.id === Number.parseInt(this.paymentMethodId!))!,
-      date: new Date(2022, 2, 2)
-    }
+    // TollsMock.find(x => x.id === Number.parseInt(this.chargeId!))!.payment = {
+    //   id: Number.parseInt(this.chargeId!),
+    //   paymentMethod: PaymentMethods.find(x => x.id === Number.parseInt(this.paymentMethodId!))!,
+    //   date: new Date(2022, 2, 2)
+    // }
 
     setTimeout(() => {
-      this.router.navigate(['/tolls/history']);
+      this.router.navigate([this.navigateWhenSuccess]);
     }, 3000)
   }
 
@@ -51,7 +60,7 @@ export class WaitingForPaymentComponent implements OnInit {
     this.messageService.add({severity: 'error', summary: 'Płatność nie powiodła się!'});
 
     setTimeout(() => {
-      this.router.navigate(['/tolls'], {
+      this.router.navigate([this.navigateWhenFailure], {
         queryParams: {
           chargeId: this.chargeId,
         }

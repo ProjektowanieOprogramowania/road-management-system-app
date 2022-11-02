@@ -1,0 +1,27 @@
+
+<div class="flex flex-column justify-content-center align-items-center p-card m-6 p-2">
+  <p class="text-center text-xl p-card-title">Abonament pomyślne zakupiono</p>
+  <div class="block p-card bg-green-50 max-w-30rem px-6 py-2 my-5" *ngIf="subData">
+    <p>
+      <span class="font-bold">Data zakupu:</span>
+      {{subData.orderDate}}
+    </p>
+    <p>
+      <span class="font-bold">Od:</span> {{subData.startDate}}
+    </p>
+    <p>
+      <span class="font-bold">Do:</span> {{subData.endDate}}
+    </p>
+      <p class="font-bold">Trasy:</p>
+    <ul>
+      <li *ngFor="let subs of subData.roadSubscriptions">
+        {{subs.name}}
+      </li>
+    </ul>
+    <p>
+      <span class="font-bold">Cena:</span> {{subData.price}}
+    </p>
+  </div>
+  <p-button (click)="onBack()">Powrót</p-button>
+</div>
+

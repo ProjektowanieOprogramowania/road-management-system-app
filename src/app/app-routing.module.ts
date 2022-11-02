@@ -20,11 +20,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/penalties/penalties.module').then(m => m.PenaltiesModule)
   },
   {
-    path: '**',
-    pathMatch: 'full',
-    component: PageNotFoundComponent
-  },
-  {
     path: 'tolls',
     loadChildren: () => import('./pages/tolls/tolls.module').then(m => m.TollsModule)
   },
@@ -32,6 +27,11 @@ const routes: Routes = [
     path: 'payments',
     loadChildren: () => import('./pages/payments/payments.module').then(m => m.PaymentsModule)
   },
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: PageNotFoundComponent
+  }
 
 ];
 

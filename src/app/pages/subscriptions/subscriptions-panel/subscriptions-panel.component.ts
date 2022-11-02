@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {SubscriptionsService} from "../../../services/subscriptions.service";
-import {AvailableSubscriptionModel} from "../../../common/models/subscription.model";
+import {AvailableSubscriptionModel, SubscriptionOrderModel} from "../../../common/models/subscription.model";
 
 @Component({
   selector: 'app-subscriptions-panel',
@@ -19,9 +19,12 @@ export class SubscriptionsPanelComponent implements OnInit {
   selectedAvailableSubs: AvailableSubscriptionModel[] = []
   fromDate!: Date;
   toDate!: Date;
+  subscriptionOrderData!: SubscriptionOrderModel;
 
   //calculates
   priceToPay = 0;
+  displaySubDetailsModal = false;
+
 
   //validate
   minDate = new Date();
@@ -50,7 +53,7 @@ export class SubscriptionsPanelComponent implements OnInit {
 
   private calculatePrice(): void{
     let finalPrice = 0;
-    const daysRange = (this.toDate.getTime() - this.fromDate.getTime()) / (1000*3600*24);
+    const daysRange = Math.round((this.toDate.getTime() - this.fromDate.getTime()) / (1000*3600*24));
     this.selectedAvailableSubs.forEach(sub => {
       finalPrice += sub.price * daysRange;
     });
@@ -58,6 +61,23 @@ export class SubscriptionsPanelComponent implements OnInit {
     this.priceToPay = finalPrice;
   }
 
+  onSubDetailsModalHide(){
+    this.displaySubDetailsModal = false;
+  }
+
+  showSubDetailsModal(){
+    const subIds = this.selectedAvailableSubs.map(sub => sub.id);
+
+    this.subscriptionOrderData = {
+      price: this.priceToPay,
+      endDate: this.toDate,
+      startDate: this.fromDate,
+      selectedSubscriptionIds: subIds,
+      orderUrl: ''
+    }
+
+    this.displaySubDetailsModal = true;
+  }
 
 
 }

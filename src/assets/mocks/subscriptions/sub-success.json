@@ -1,0 +1,24 @@
+{
+  "id": 123456,
+  "orderDate": "2022-11-02",
+  "startDate": "2022-11-04",
+  "endDate": "2022-11-12",
+  "price": "4500",
+  "roadSubscriptions": [
+    {
+      "id": 1,
+      "name": "Trasa 1",
+      "price": 200
+    },
+    {
+      "id": 2,
+      "name": "Trasa 2",
+      "price": 200
+    },
+    {
+      "id": 4,
+      "name": "Trasa 4",
+      "price": 200
+    }
+  ]
+}

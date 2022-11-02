@@ -1,5 +1,5 @@
 <div class="p-card my-4 p-4">
-  <h1 class="p-card-title text-center mb-4">Zakup subskrypcję</h1>
+  <p class="p-card-title text-center mb-4 text-xl">Zakup abonament</p>
   <form class="flex flex-column justify-content-center gap-6" >
     <div class="flex card-container justify-content-center flex-wrap gap-6">
       <div class="block">
@@ -46,6 +46,14 @@
         </div>
       </div>
     </div>
-    <p-button class="text-center" [disabled]="priceToPay === 0">Przejdź do płatności</p-button>
+    <p-button class="text-center" [disabled]="priceToPay === 0" (click)="showSubDetailsModal()" >Przejdź do płatności</p-button>
   </form>
 </div>
+
+<app-subscription-modal *ngIf="displaySubDetailsModal"
+                        [subscriptionOrderData]="subscriptionOrderData"
+                        [display]="displaySubDetailsModal"
+                        (hide)="onSubDetailsModalHide()">
+
+</app-subscription-modal>
+

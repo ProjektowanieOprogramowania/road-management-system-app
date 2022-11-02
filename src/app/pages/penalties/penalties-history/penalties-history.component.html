@@ -1,1 +1,43 @@
-<p>penalties-history works!</p>
+
+
+<div class="flex flex-column align-items-center m-3">
+  <p class="my-5 text-xl">Historia kar</p>
+  <ng-container *ngIf="penalties; else loading">
+    <div *ngIf="penalties.length > 0; else noTools" class="card w-10">
+      <p-table [value]="penalties" dataKey="id"
+               responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nazwa</th>
+            <th>Data wystawienia</th>
+            <th>Kwota [PLN]</th>
+            <th>Opłacone?</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-penalty>
+          <tr [pSelectableRow]="penalty">
+            <td>{{penalty.name}}</td>
+            <td>{{penalty.date}}</td>
+            <td>{{penalty.price}}</td>
+            <td>
+              <span *ngIf="penalty.isPayed == true">
+                TAK
+              </span>
+              <span *ngIf="penalty.isPayed == false">
+                NIE
+              </span>
+            </td>
+
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <ng-template #noTools>
+      <p>Brak dokonanych opłat</p>
+    </ng-template>
+  </ng-container>
+  <ng-template #loading>
+    <p-progressSpinner [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
+  </ng-template>
+</div>
+

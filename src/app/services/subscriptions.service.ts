@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {AvailableSubscriptionModel} from "../common/models/subscription.model";
+import {AvailableSubscriptionModel, SubscriptionSuccessModel} from "../common/models/subscription.model";
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +17,10 @@ export class SubscriptionsService {
   getAvailableSubscriptions(): Observable<any>{
     return this.http.get<AvailableSubscriptionModel[]>
     (`${this.API_URL}/sub-available.json`);
+  }
+
+  getSuccessSubscription(): Observable<any> {
+    return this.http.get<SubscriptionSuccessModel>(
+      `${this.API_URL}/sub-success.json`);
   }
 }

@@ -2,6 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PenaltiesHistoryComponent } from './penalties-history/penalties-history.component';
 import {RouterModule, Routes} from "@angular/router";
+import {TableModule} from "primeng/table";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {CheckboxModule} from "primeng/checkbox";
+import {FormsModule} from "@angular/forms";
 
 
 const routes: Routes = [
@@ -17,7 +21,11 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forChild(routes),
-    CommonModule
+    CommonModule,
+    TableModule,
+    ProgressSpinnerModule,
+    CheckboxModule,
+    FormsModule
   ]
 })
 export class PenaltiesModule { }

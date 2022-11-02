@@ -1,16 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {SubscriptionOrderModel} from "../../../common/models/subscription.model";
 import {PaymentMethod, PaymentMethods} from "../../../common/models/paymentMethod";
-import {Toll} from "../../../common/models/toll";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-pay-toll-modal',
-  templateUrl: './pay-toll-modal.component.html',
-  styleUrls: ['./pay-toll-modal.component.scss']
+  selector: 'app-subscription-modal',
+  templateUrl: './subscription-modal.component.html',
+  styleUrls: ['./subscription-modal.component.scss']
 })
-export class PayTollModalComponent implements OnInit {
+export class SubscriptionModalComponent implements OnInit {
 
-  @Input() toll: Toll | undefined;
+  @Input() subscriptionOrderData: SubscriptionOrderModel | undefined;
   @Input() display = false;
 
   @Output() hide = new EventEmitter();
@@ -21,8 +21,7 @@ export class PayTollModalComponent implements OnInit {
 
   displayUnselectedPaymentMethodError = false;
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -37,19 +36,18 @@ export class PayTollModalComponent implements OnInit {
       return;
     }
 
-    this.router.navigate(['/payments/waiting', {
-    whenSuccess:'/tolls/history', whenFailure:'/tolls/' }],
-      {
-        queryParams: {
-          chargeId: this.toll?.id,
-          methodId: this.selectedPaymentMethod.id
-        }
-      },
-
-    )
+    this.router.navigate(['/payments/waiting',{
+      whenSuccess:'/subscriptions/subscribe-success/0', whenFailure:'/subscriptions/subscribe' }], {
+      queryParams: {
+        chargeId: 123,
+        methodId: this.selectedPaymentMethod.id
+      }
+    })
   }
 
   onSelectPaymentMethodButtonClick() {
     this.displayUnselectedPaymentMethodError = false;
   }
+
+
 }
