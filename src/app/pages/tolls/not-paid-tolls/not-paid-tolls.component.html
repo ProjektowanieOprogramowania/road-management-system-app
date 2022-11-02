@@ -1,0 +1,38 @@
+<div class="flex flex-column align-items-center m-3">
+  <p class="my-5 text-xl">Przejazdy do opłacenia</p>
+  <ng-container *ngIf="tolls; else loading">
+    <div *ngIf="tolls.length > 0; else noTools" class="card w-10">
+      <p-table [value]="tolls" selectionMode="single" [(selection)]="selectedToll" dataKey="id"
+               responsiveLayout="scroll" (onRowSelect)="onRowSelect($event)">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Lp.</th>
+            <th>Kwota [PLN]</th>
+            <th>Data wystawienia</th>
+            <th>Lokalizacja</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-toll let-it>
+          <tr [pSelectableRow]="toll">
+            <td>{{toll.orderNumber}}</td>
+            <td>{{toll.amount}}</td>
+            <td>{{toll.ride.date.toLocaleString()}}</td>
+            <td>{{toll.ride.location.name}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <ng-template #noTools>
+      <p>Brak nieopłaconych przejazdów</p>
+    </ng-template>
+  </ng-container>
+  <ng-template #loading>
+    <p-progressSpinner [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
+  </ng-template>
+</div>
+
+<app-pay-toll-modal *ngIf="selectedToll"
+                    [toll]="selectedToll"
+                    [display]="displayPayTollModal"
+                    (hide)="onPayTollModalHide()">
+</app-pay-toll-modal>

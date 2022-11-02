@@ -23,7 +23,16 @@ const routes: Routes = [
     path: '**',
     pathMatch: 'full',
     component: PageNotFoundComponent
-  }
+  },
+  {
+    path: 'tolls',
+    loadChildren: () => import('./pages/tolls/tolls.module').then(m => m.TollsModule)
+  },
+  {
+    path: 'payments',
+    loadChildren: () => import('./pages/payments/payments.module').then(m => m.PaymentsModule)
+  },
+
 ];
 
 @NgModule({
