@@ -1,7 +1,7 @@
 <div class="flex-container test" [style]="{width: '800px', marginLeft: 'auto', marginRight: 'auto'}">
   <p class="header">Stwórz nowy taryfikator</p>
   <div [style]="{display: 'flex', flexDirection: 'column', gap: '20px'}">
-    <input type="text" pInputText [(ngModel)]="name" placeholder="Nazwa taryfikatora">
+    <input type="text" pInputText [(ngModel)]="name" placeholder="Nazwa taryfikatora" [class]="tariffNameValid ? '' : 'ng-invalid ng-dirty'">
     <p-checkbox label="Aktywny po stworzeniu" [(ngModel)]="active" [binary]="true"></p-checkbox>
 
     <div>
@@ -64,3 +64,5 @@
           [style]="{marginTop: '20px', marginLeft: 'auto', marginRight: '0', display: 'flex', width: '10em' }"
           (click)="createSubmit()"></button>
 </div>
+
+<p-toast position="top-left" key="tl"></p-toast>

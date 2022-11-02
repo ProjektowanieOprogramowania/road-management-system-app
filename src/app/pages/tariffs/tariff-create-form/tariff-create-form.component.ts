@@ -1,27 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {TariffService} from "../../../services/tariff.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-tariff-create-form',
   templateUrl: './tariff-create-form.component.html',
-  styleUrls: ['./tariff-create-form.component.scss']
+  styleUrls: ['./tariff-create-form.component.scss'],
+  providers: [MessageService]
+
 })
 export class TariffCreateFormComponent implements OnInit {
-
   active : boolean = true;
   name: string = "";
   prices: Map<string, number> = new Map;
-
   addPriceName: string = ""
   addPriceValue: number | undefined
-
   nameFieldValid: boolean = true;
   priceFieldValid: boolean = true;
 
   tariffNameValid: boolean = true;
+  tariffPricesValid: boolean = true;
 
-  constructor(private tariffService: TariffService, private router: Router) { }
+  constructor(private tariffService: TariffService, private router: Router, private messageService: MessageService) { }
 
   ngOnInit(): void {
   }
@@ -53,6 +54,21 @@ export class TariffCreateFormComponent implements OnInit {
   deletePrice(any: string) {
     this.prices.delete(any)
   }
+
+  validateForm() {
+    if(!this.prices || this.prices.size === 0) {
+      this.tariffPricesValid = false;
+      this.messageService.add({key: 'tl', severity:'error', summary: 'Błąd', detail: 'Taryfikator musi zawierać prznajmniej wariant cenowy'});
+    } else {
+      this.tariffPricesValid = true;
+    }
+    if(!this.name || this.name.length === 0) {
+      this.tariffNameValid = false;
+    } else {
+      this.tariffNameValid = true;
+    }
+  }
+
   createSubmit(){
     const tariff = {
       id: 0,
@@ -60,8 +76,10 @@ export class TariffCreateFormComponent implements OnInit {
       name: this.name,
       prices: this.prices,
     }
-
-    this.tariffService.addTariff(tariff)
-    this.router.navigate(['/tariffs']);
+    this.validateForm()
+    if(this.tariffPricesValid && this.tariffNameValid) {
+      this.tariffService.addTariff(tariff)
+      this.router.navigate(['/tariffs']);
+    }
   }
 }

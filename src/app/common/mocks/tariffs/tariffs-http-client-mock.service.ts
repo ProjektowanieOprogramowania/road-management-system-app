@@ -44,9 +44,10 @@ export class TariffsHttpClientMockService {
   }
 
   editTariff(tariff: Tariff) {
-    const res = TariffsMock;
-    res.filter(x => x.id !== tariff.id)
-    res.push(tariff)
+    let res = TariffsMock;
+    res = res.filter(x => x.id !== tariff.id)
+    const a = res.push(tariff)
+    console.log(res)
     return new Observable<Tariff[]>(sub => {
       setTimeout(() => {
         sub.next(res);

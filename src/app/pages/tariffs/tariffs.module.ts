@@ -12,6 +12,8 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
 import { EditTariffComponent } from './edit-tariff/edit-tariff.component';
+import {ToastModule} from "primeng/toast";
+import {TooltipModule} from "primeng/tooltip";
 
 export const routes: Routes = [
   {
@@ -35,17 +37,19 @@ export const routes: Routes = [
     EditTariffComponent,
     TariffCreateFormComponent
   ],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    TableModule,
-    ProgressSpinnerModule,
-    ButtonModule,
-    DialogModule,
-    InputNumberModule,
-    InputTextModule,
-    FormsModule,
-    CheckboxModule
-  ]
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        TableModule,
+        ProgressSpinnerModule,
+        ButtonModule,
+        DialogModule,
+        InputNumberModule,
+        InputTextModule,
+        FormsModule,
+        CheckboxModule,
+        ToastModule,
+        TooltipModule
+    ]
 })
 export class TariffsModule { }
