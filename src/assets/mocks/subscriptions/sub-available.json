@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "trasa 1",
+    "price": "250"
+  },
+  {
+    "id": 2,
+    "name": "trasa 2",
+    "price": "350"
+  },
+  {
+    "id": 3,
+    "name": "trasa 3",
+    "price": "450"
+  },
+  {
+    "id": 4,
+    "name": "trasa 4",
+    "price": "140"
+  },
+  {
+    "id": 5,
+    "name": "trasa 5",
+    "price": "240"
+  },
+  {
+    "id": 6,
+    "name": "trasa 6",
+    "price": "210"
+  }
+]

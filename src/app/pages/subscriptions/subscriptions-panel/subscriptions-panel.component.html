@@ -1,0 +1,51 @@
+<div class="p-card my-4 p-4">
+  <h1 class="p-card-title text-center mb-4">Zakup subskrypcję</h1>
+  <form class="flex flex-column justify-content-center gap-6" >
+    <div class="flex card-container justify-content-center flex-wrap gap-6">
+      <div class="block">
+        <p class="form-label">Wybór trasy</p>
+        <p-listbox [options]="availableSubs"  [(ngModel)]="selectedAvailableSubs"
+                   name="selectedAvailableSubs"
+                   [metaKeySelection]="false" [checkbox]="true" [filter]="true" [multiple]="true"
+                   optionLabel="name" [listStyle]="{'max-height':'250px'}" [style]="{'width':'300px'}"
+                   (ngModelChange)="onInput()"
+        >
+          <ng-template let-availableSubs pTemplate="item">
+            <div class="sub-item">
+              <div>
+                <span>{{availableSubs.name}}</span>
+                <small class="text-500">  {{availableSubs.price}} zł</small>
+              </div>
+            </div>
+          </ng-template>
+        </p-listbox>
+      </div>
+      <div class="flex flex-column gap-2">
+        <div class="block">
+          <p class="form-label">Od daty:</p>
+          <p-calendar [(ngModel)]="fromDate"
+                      name="dateRangeFrom" [readonlyInput]="true" inputId="dateRangeFrom"
+                      [minDate]="toDate ? toDate : minDate" (ngModelChange)="onInput()">
+
+          </p-calendar>
+        </div>
+
+        <div class="block">
+          <p class="form-label">Do daty:</p>
+          <p-calendar [(ngModel)]="toDate"
+                      name="dateRangeTo" [readonlyInput]="true" inputId="dateRangeTo"
+                      [minDate]="fromDate ? fromDate : minDate" (ngModelChange)="onInput()" >
+
+          </p-calendar>
+        </div>
+
+        <div [className]="priceToPay === 0 ? 'bg-yellow-300 block px-2 p-card mt-auto' : 'bg-green-200 block px-2 p-card mt-auto' ">
+          <p>Do zapłaty:</p>
+          <p class="font-bold" *ngIf="priceToPay !== 0">{{priceToPay}} zł</p>
+          <p class="font-bold" *ngIf="priceToPay === 0">Zaznacz dane</p>
+        </div>
+      </div>
+    </div>
+    <p-button class="text-center" [disabled]="priceToPay === 0">Przejdź do płatności</p-button>
+  </form>
+</div>

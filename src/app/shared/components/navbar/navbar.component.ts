@@ -36,6 +36,7 @@ export class NavbarComponent implements OnInit {
           },
           {
             label: 'Wykup abonament',
+            routerLink: ['/subscriptions/subscribe'],
             icon: 'pi pi-fw pi-credit-card'
           },
           {
@@ -49,6 +50,7 @@ export class NavbarComponent implements OnInit {
         items: [
           {
             label: 'Historia kar',
+            routerLink: ['/penalties'],
             icon: 'pi pi-fw pi-exclamation-triangle',
           },
         ]

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {PageNotFoundComponent} from "./pages/page-not-found/page-not-found.component";
 
 const routes: Routes = [
   {
@@ -9,6 +10,19 @@ const routes: Routes = [
   {
     path: 'tariffs',
     loadChildren: () => import('./pages/tariffs/tariffs.module').then(m => m.TariffsModule)
+  },
+  {
+    path: 'subscriptions',
+    loadChildren: () => import('./pages/subscriptions/subscriptions.module').then(m => m.SubscriptionsModule)
+  },
+  {
+    path: 'penalties',
+    loadChildren: () => import('./pages/penalties/penalties.module').then(m => m.PenaltiesModule)
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: PageNotFoundComponent
   }
 ];
 
