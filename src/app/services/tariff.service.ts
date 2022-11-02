@@ -12,7 +12,6 @@ export class TariffService {
   }
 
   getTariff(id: number) {
-    console.log(id)
     return this.http.getById(id)
       .pipe(
         shareReplay(),
