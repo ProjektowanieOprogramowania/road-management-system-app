@@ -9,7 +9,10 @@ export class TariffCreateFormComponent implements OnInit {
 
   active : boolean = true;
   name: string = "";
-  prices: Map<string, number> = new Map<string, number>;
+  prices: Map<string, number> = new Map;
+
+  addPriceName: string = ""
+  addPriceValue: number = 0
 
   constructor() { }
 
@@ -20,4 +23,7 @@ export class TariffCreateFormComponent implements OnInit {
     return Array.from(map, ([name, value]) => ({ name, value }));
   }
 
+  newRow() {
+    this.prices.set(this.addPriceName, this.addPriceValue);
+  }
 }
