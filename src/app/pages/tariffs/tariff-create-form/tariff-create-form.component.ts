@@ -46,4 +46,15 @@ export class TariffCreateFormComponent implements OnInit {
       this.prices.set(this.addPriceName, this.addPriceValue);
     }
   }
+
+  addPrice() {
+    if (this.addPriceValue != null) {
+      this.prices.set(this.addPriceName, this.addPriceValue);
+    }
+  }
+
+  deletePrice(any: string) {
+    this.prices.delete(any)
+  }
+
 }
