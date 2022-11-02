@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {Tariff} from "../../../common/models/tariff";
 import {TariffService} from "../../../services/tariff.service";
@@ -30,6 +30,10 @@ export class EditTariffComponent implements OnInit {
         );
       this.subscriptions.add(sub);
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   getArray(map: Map<string, number>) {
