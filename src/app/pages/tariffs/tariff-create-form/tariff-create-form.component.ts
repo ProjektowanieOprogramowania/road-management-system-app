@@ -23,7 +23,11 @@ export class TariffCreateFormComponent implements OnInit {
     return Array.from(map, ([name, value]) => ({ name, value }));
   }
 
-  newRow() {
+  addPrice() {
     this.prices.set(this.addPriceName, this.addPriceValue);
+  }
+
+  deletePrice(any: string) {
+    this.prices.delete(any)
   }
 }

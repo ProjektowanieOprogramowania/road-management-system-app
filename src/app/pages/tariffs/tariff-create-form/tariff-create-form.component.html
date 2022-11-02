@@ -6,15 +6,12 @@
  </div>
   <p-checkbox label="Aktywny po stworzeniu" [(ngModel)]="active" [binary]="true"></p-checkbox>
   <p class="header">Warianty cenowe</p>
-  <p-table #dt [value]="getArray(prices)">
+  <p-table [value]="getArray(prices)">
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="name">
-          Nazwa <p-sortIcon field="name"></p-sortIcon>
-        </th>
-        <th pSortableColumn="customer">
-          Cena
-        </th>
+        <th>Nazwa</th>
+          <th>Cena</th>
+        <th style="width: 3rem"></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-price>
@@ -24,13 +21,17 @@
 
         <td>{{price.name}}</td>
         <td>{{price.value + " zł"}}</td>
+        <td [style]="{display: 'flex'}">
+          <button type="button" pButton class="p-button-text p-button-rounded p-button-danger" icon="pi pi-trash"
+          (click) = "deletePrice(price.name)"></button>
+        </td>
       </tr>
     </ng-template>
 
   </p-table>
   <input type="text" pInputTex [(ngModel)]="addPriceName"><input type="text" pInputTex [(ngModel)]="addPriceValue">
   <button pButton type="button" icon="pi pi-plus" class = "ui-button-info" [label] = "'Add'"
-  (click) = "newRow()"></button>
+  (click) = "addPrice()"></button>
   <button pButton type="button" icon="pi pi-plus" class = "ui-button-success" [label] = "'Create'"
   ></button>
 </div>
