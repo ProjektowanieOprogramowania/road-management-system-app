@@ -17,6 +17,8 @@ export class TariffCreateFormComponent implements OnInit {
   nameFieldValid: boolean = true;
   priceFieldValid: boolean = true;
 
+  tariffNameValid: boolean = true;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -32,7 +34,6 @@ export class TariffCreateFormComponent implements OnInit {
     } else {
       this.nameFieldValid = true
     }
-    console.log(this.addPriceValue)
     if(!this.addPriceValue) {
       this.priceFieldValid = false
     } else {
@@ -47,14 +48,7 @@ export class TariffCreateFormComponent implements OnInit {
     }
   }
 
-  addPrice() {
-    if (this.addPriceValue != null) {
-      this.prices.set(this.addPriceName, this.addPriceValue);
-    }
-  }
-
   deletePrice(any: string) {
     this.prices.delete(any)
   }
-
 }
