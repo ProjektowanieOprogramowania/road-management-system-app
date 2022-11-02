@@ -7,13 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TariffCreateFormComponent implements OnInit {
 
-  tariffName : string = "";
-
   active : boolean = true;
+  name: string = "";
+  prices: Map<string, number> = new Map<string, number>;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  getArray(map: Map<string, number>) {
+    return Array.from(map, ([name, value]) => ({ name, value }));
   }
 
 }
