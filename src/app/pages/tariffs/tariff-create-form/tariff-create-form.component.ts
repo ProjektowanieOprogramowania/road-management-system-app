@@ -12,7 +12,10 @@ export class TariffCreateFormComponent implements OnInit {
   prices: Map<string, number> = new Map;
 
   addPriceName: string = ""
-  addPriceValue: number = 0
+  addPriceValue: number | undefined
+
+  nameFieldValid: boolean = true;
+  priceFieldValid: boolean = true;
 
   constructor() { }
 
@@ -23,7 +26,24 @@ export class TariffCreateFormComponent implements OnInit {
     return Array.from(map, ([name, value]) => ({ name, value }));
   }
 
+  validateInput() {
+    if(this.addPriceName === null || this.addPriceName.length === 0) {
+      this.nameFieldValid = false
+    } else {
+      this.nameFieldValid = true
+    }
+    console.log(this.addPriceValue)
+    if(!this.addPriceValue) {
+      this.priceFieldValid = false
+    } else {
+      this.priceFieldValid = true;
+    }
+  }
+
   newRow() {
-    this.prices.set(this.addPriceName, this.addPriceValue);
+    this.validateInput()
+    if(this.nameFieldValid && this.priceFieldValid && this.addPriceValue) {
+      this.prices.set(this.addPriceName, this.addPriceValue);
+    }
   }
 }

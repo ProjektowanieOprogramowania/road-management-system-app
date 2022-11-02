@@ -1,7 +1,7 @@
 <div class="flex-container test" [style]="{width: '800px', marginLeft: 'auto', marginRight: 'auto'}">
   <p class="header">Taryfikatory</p>
   <ng-container *ngIf="tariffs; else loading">
-    <div *ngIf="tariffs.length > 0; else noTools" class="card table">
+    <div *ngIf="tariffs.length > 0; else noTariffs" class="card table">
       <p-table [value]="tariffs" selectionMode="single" [(selection)]="selectedTariff" dataKey="id" responsiveLayout="scroll"
                (onRowSelect)="onRowSelect($event)">
         <ng-template pTemplate="header">
@@ -27,7 +27,7 @@
         </ng-template>
       </p-table>
     </div>
-    <ng-template #noTools>
+    <ng-template #noTariffs>
       <p>Brak taryfikatorów</p>
     </ng-template>
   </ng-container>
