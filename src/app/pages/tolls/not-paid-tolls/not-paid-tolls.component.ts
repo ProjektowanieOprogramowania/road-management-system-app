@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Toll} from "../../../common/models/toll";
 import {TollsService} from "../../../services/tolls.service";
 import {Subscription} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-not-paid-tolls',
@@ -17,7 +18,7 @@ export class NotPaidTollsComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription = new Subscription();
 
-  constructor(private tollsService: TollsService) {
+  constructor(private tollsService: TollsService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -28,6 +29,18 @@ export class NotPaidTollsComponent implements OnInit, OnDestroy {
         }
       );
     this.subscriptions.add(sub);
+
+    const tollId = this.route.snapshot.queryParamMap.get('chargeId');
+
+    if (tollId != null) {
+      const sub = this.tollsService.getToll(Number.parseInt(tollId))
+        .subscribe(data => {
+            this.selectedToll = data;
+            this.displayPayTollModal = true;
+          }
+        );
+      this.subscriptions.add(sub);
+    }
   }
 
   ngOnDestroy() {

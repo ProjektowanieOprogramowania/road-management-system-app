@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PaymentMethod, PaymentMethods} from "../../../common/models/paymentMethod";
 import {Toll} from "../../../common/models/toll";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-pay-toll-modal',
@@ -20,7 +21,7 @@ export class PayTollModalComponent implements OnInit {
 
   displayUnselectedPaymentMethodError = false;
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -33,7 +34,15 @@ export class PayTollModalComponent implements OnInit {
   onPay() {
     if (this.selectedPaymentMethod === undefined) {
       this.displayUnselectedPaymentMethodError = true;
+      return;
     }
+
+    this.router.navigate(['/payments/waiting'], {
+      queryParams: {
+        chargeId: this.toll?.id,
+        methodId: this.selectedPaymentMethod.id
+      }
+    })
   }
 
   onSelectPaymentMethodButtonClick() {
