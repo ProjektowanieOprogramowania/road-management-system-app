@@ -13,6 +13,7 @@ export class TariffsListComponent implements OnInit, OnDestroy {
   selectedTariff: Tariff | undefined;
   subscriptions: Subscription = new Subscription();
   displayTariffDetails: boolean = false;
+  displayTariffDelete: boolean = false;
   constructor(private tariffService: TariffService) { }
 
   ngOnInit() {
@@ -36,10 +37,28 @@ export class TariffsListComponent implements OnInit, OnDestroy {
     this.displayTariffDetails = true;
   }
 
-  onRowUnselect(event: any) {
-  }
-
   onDetailsHide() {
     this.selectedTariff = undefined;
+  }
+
+  onDeleteDialogHide() {
+    this.selectedTariff = undefined;
+  }
+
+  handleShowDelete(event: any) {
+    this.selectedTariff = event
+    this.displayTariffDelete = true
+  }
+
+  handleDelete(tariff: Tariff) {
+    this.tariffs = undefined
+    const sub = this.tariffService.deleteTariff(tariff)
+      .subscribe(data => {
+          this.tariffs = data;
+        }
+      );
+    this.subscriptions.add(sub);
+    this.selectedTariff = undefined
+    this.displayTariffDelete = false
   }
 }

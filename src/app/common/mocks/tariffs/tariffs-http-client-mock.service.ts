@@ -55,8 +55,8 @@ export class TariffsHttpClientMockService {
   }
 
   deleteTariff(tariff: Tariff) {
-    const res = TariffsMock;
-    res.filter(x => x.id !== tariff.id)
+    let res = TariffsMock;
+    res = res.filter(x => x.id !== tariff.id)
     return new Observable<Tariff[]>(sub => {
       setTimeout(() => {
         sub.next(res);
