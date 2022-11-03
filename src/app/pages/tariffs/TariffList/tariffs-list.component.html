@@ -1,0 +1,94 @@
+<div class="flex-container test" [style]="{width: '800px', marginLeft: 'auto', marginRight: 'auto'}">
+  <p class="header">Taryfikatory</p>
+  <ng-container *ngIf="tariffs; else loading">
+    <div *ngIf="tariffs.length > 0; else noTariffs" class="card table">
+      <p-table [value]="tariffs" selectionMode="single" [(selection)]="selectedTariff" dataKey="id" responsiveLayout="scroll"
+               (onRowSelect)="onRowSelect($event)">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Aktywny</th>
+            <th>Nazwa</th>
+            <th style="width: 3rem"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tariff>
+          <tr [pSelectableRow]="tariff">
+            <td>
+              <i [class]="tariff.active ? 'pi pi-check' : 'pi pi-times'"></i>
+            </td>
+            <td>
+              {{tariff.name}}
+            </td>
+            <td [style]="{display: 'flex'}">
+              <button type="button" pButton class="p-button-text p-button-rounded p-button-plain" icon="pi pi-pencil" [routerLink]="['./edit/' + tariff.id]"></button>
+              <button type="button" pButton class="p-button-text p-button-rounded p-button-danger" icon="pi pi-trash" (click)="handleShowDelete(tariff)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <ng-template #noTariffs>
+      <p>Brak taryfikatorów</p>
+    </ng-template>
+  </ng-container>
+  <ng-template #loading>
+    <p-progressSpinner [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
+  </ng-template>
+</div>
+
+<p-dialog *ngIf="selectedTariff" header="Szczegóły taryfikatora" [(visible)]="displayTariffDetails" [modal]="true"
+          [dismissableMask]="true" [draggable]="false"
+          [style]="{width: '500px'}"
+          (onHide)="onDetailsHide()">
+          <ng-template pTemplate="rowexpansion">
+            <div>
+              <p-table [value]="getArray(selectedTariff.prices)" dataKey="id">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="name">
+                      Nazwa <p-sortIcon field="name"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="customer">
+                      Cena
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-price>
+                  <tr>
+                    <td>{{price.name}}</td>
+                    <td>{{price.value + " zł"}}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </ng-template>
+</p-dialog>
+
+<p-dialog *ngIf="selectedTariff" header="Usuwanie taryfikatora" [(visible)]="displayTariffDelete" [modal]="true"
+          [dismissableMask]="true" [draggable]="false"
+          [style]="{width: '500px'}"
+          (onHide)="onDeleteDialogHide()">
+  <ng-template pTemplate="rowexpansion">
+    <div>
+      <p-table [value]="getArray(selectedTariff.prices)" dataKey="id">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name">
+              Nazwa <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="customer">
+              Cena
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-price>
+          <tr>
+            <td>{{price.name}}</td>
+            <td>{{price.value + " zł"}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <button pButton type="button" icon="pi pi-trash" class="p-button-danger" [style]="{width: '25%', marginTop: '10px', marginLeft: 'auto', marginRight: '10px', display: 'flex'}" label="Usuń" (click)="handleDelete(selectedTariff)"></button>
+  </ng-template>
+</p-dialog>
