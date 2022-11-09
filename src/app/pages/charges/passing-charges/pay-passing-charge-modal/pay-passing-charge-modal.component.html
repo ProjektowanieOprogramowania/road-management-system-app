@@ -2,8 +2,8 @@
           [dismissableMask]="true" [draggable]="false" [style]="{width: '500px'}"
           (onHide)="onHide()">
   <p class="font-semibold text-lg mt-0">Do zapłaty: {{passingCharge.charge.amount}} PLN</p>
-  <p>Data wystawienia: {{passingCharge.passing.dateTime.toLocaleString()}}</p>
-  <p>Pojazd: {{passingCharge.passing.vehicle.model}}</p>
+  <p>Data wystawienia: {{passingCharge.issueDate | date}}</p>
+  <p>Pojazd: {{passingCharge.vehicleName}}</p>
   <p class="text-md font-semibold mt-5 mb-4">Wybierz metodę płatności</p>
   <p-selectButton [options]="paymentMethods" [(ngModel)]="selectedPaymentMethod" optionLabel="name"
                   (onOptionClick)="onSelectPaymentMethodButtonClick()"></p-selectButton>

@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit {
         items: [
           {
             label: 'Opłać przejazd',
-            routerLink: ['/charges/passingCharges'],
+            routerLink: ['/charges/notPaidPassingCharges'],
             icon: 'pi pi-fw pi-dollar'
           },
           {
