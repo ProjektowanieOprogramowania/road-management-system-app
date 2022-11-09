@@ -19,7 +19,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { PassingCharge } from '../model/passingCharge';
+import { Road } from '../model/road';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -30,7 +30,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class PassingChargesService {
+export class RoadsService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -87,19 +87,15 @@ export class PassingChargesService {
     }
 
     /**
-     * Get users not payed passing charges
-     * Get users not payed passing charges
-     * @param userUUID 
+     * Get all roads
+     * Get all roads
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getNotPaidPassingCharges(userUUID: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<PassingCharge>>;
-    public getNotPaidPassingCharges(userUUID: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<PassingCharge>>>;
-    public getNotPaidPassingCharges(userUUID: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<PassingCharge>>>;
-    public getNotPaidPassingCharges(userUUID: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (userUUID === null || userUUID === undefined) {
-            throw new Error('Required parameter userUUID was null or undefined when calling getNotPaidPassingCharges.');
-        }
+    public getAllRoads(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<Road>>;
+    public getAllRoads(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<Road>>>;
+    public getAllRoads(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<Road>>>;
+    public getAllRoads(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -132,70 +128,7 @@ export class PassingChargesService {
             }
         }
 
-        return this.httpClient.get<Array<PassingCharge>>(`${this.configuration.basePath}/charges/passing/${encodeURIComponent(String(userUUID))}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Pay PassingCharge
-     * Pay PassingCharge
-     * @param passingChargeId PassingCharge id
-     * @param paymentMethod Payment method
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public payPassingCharge(passingChargeId: number, paymentMethod: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<string>;
-    public payPassingCharge(passingChargeId: number, paymentMethod: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<string>>;
-    public payPassingCharge(passingChargeId: number, paymentMethod: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<string>>;
-    public payPassingCharge(passingChargeId: number, paymentMethod: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (passingChargeId === null || passingChargeId === undefined) {
-            throw new Error('Required parameter passingChargeId was null or undefined when calling payPassingCharge.');
-        }
-        if (paymentMethod === null || paymentMethod === undefined) {
-            throw new Error('Required parameter paymentMethod was null or undefined when calling payPassingCharge.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        return this.httpClient.post<string>(`${this.configuration.basePath}/charges/passing/${encodeURIComponent(String(passingChargeId))}/payment/${encodeURIComponent(String(paymentMethod))}`,
-            null,
+        return this.httpClient.get<Array<Road>>(`${this.configuration.basePath}/roads`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

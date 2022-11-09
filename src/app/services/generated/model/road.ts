@@ -13,5 +13,6 @@
 
 export interface Road { 
     id?: number;
+    name: string;
 }
 

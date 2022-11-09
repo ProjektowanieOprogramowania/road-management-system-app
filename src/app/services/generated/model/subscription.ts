@@ -9,14 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Road } from './road';
+import { Charge } from './charge';
 
 
 export interface Subscription { 
-    id: number;
+    id?: number;
     subscriberId: string;
-    from: string;
-    to: string;
-    roads?: Array<Road>;
+    subscriptionFrom?: string;
+    subscriptionTo?: string;
+    roadsIds: Array<number>;
+    charge?: Charge;
 }
 

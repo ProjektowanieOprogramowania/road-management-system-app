@@ -1,4 +1,5 @@
 export * from './charge';
+export * from './chargeType';
 export * from './localization';
 export * from './passing';
 export * from './passingCharge';

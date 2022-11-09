@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChargesService } from './api/charges.service';
 import { PassingChargesService } from './api/passingCharges.service';
 import { PenaltiesService } from './api/penalties.service';
+import { RoadsService } from './api/roads.service';
 import { SubscriptionsService } from './api/subscriptions.service';
 import { TariffsService } from './api/tariffs.service';
 

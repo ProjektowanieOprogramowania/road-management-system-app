@@ -1,7 +1,8 @@
 import {Payment} from "./payment";
 
 export interface Charge {
-  id: number,
-  amount: number,
-  payment: Payment | null
+  id?: number;
+  amount: number;
+  paid: boolean;
+  payment?: Payment;
 }
