@@ -9,7 +9,7 @@ import {DialogModule} from "primeng/dialog";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {FormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
-import { PayTollModalComponent } from './pay-toll-modal/pay-toll-modal.component';
+import { PayPassingChargeModalComponent } from './pay-toll-modal/pay-passing-charge-modal.component';
 import { TollDetailsModalComponent } from './toll-details-modal/toll-details-modal.component';
 
 export const routes: Routes = [
@@ -27,7 +27,7 @@ export const routes: Routes = [
   declarations: [
     NotPaidPassingChargesComponent,
     TollsHistoryComponent,
-    PayTollModalComponent,
+    PayPassingChargeModalComponent,
     TollDetailsModalComponent
   ],
   imports: [

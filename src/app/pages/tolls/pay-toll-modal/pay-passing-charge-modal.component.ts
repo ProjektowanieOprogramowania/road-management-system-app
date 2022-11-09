@@ -5,19 +5,19 @@ import {PassingChargeModel} from "../../../common/models/passingChargeModel";
 
 @Component({
   selector: 'app-pay-toll-modal',
-  templateUrl: './pay-toll-modal.component.html',
-  styleUrls: ['./pay-toll-modal.component.scss']
+  templateUrl: './pay-passing-charge-modal.component.html',
+  styleUrls: ['./pay-passing-charge-modal.component.scss']
 })
-export class PayTollModalComponent implements OnInit {
+export class PayPassingChargeModalComponent implements OnInit {
 
-  @Input() toll: PassingChargeModel | undefined;
+  @Input() passingCharge?: PassingChargeModel;
   @Input() display = false;
 
   @Output() hide = new EventEmitter();
 
   paymentMethods = PaymentMethods;
 
-  selectedPaymentMethod: PaymentMethod | undefined;
+  selectedPaymentMethod?: PaymentMethod;
 
   displayUnselectedPaymentMethodError = false;
 
@@ -38,14 +38,14 @@ export class PayTollModalComponent implements OnInit {
     }
 
     this.router.navigate(['/payments/waiting', {
-    whenSuccess:'/passingCharges/history', whenFailure:'/passingCharges/' }],
+        whenSuccess: '/passingCharges/history', whenFailure: '/passingCharges/'
+      }],
       {
         queryParams: {
-          chargeId: this.toll?.id,
+          chargeId: this.passingCharge?.id,
           methodId: this.selectedPaymentMethod.id
         }
       },
-
     )
   }
 
