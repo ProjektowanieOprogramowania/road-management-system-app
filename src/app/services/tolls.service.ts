@@ -22,8 +22,8 @@ export class TollsService {
     return this.http.getAll()
       .pipe(
         shareReplay(),
-        map(res => res.filter(x => x.payment === null)
-          .sort((a, b) => a.ride.date.getTime() - b.ride.date.getTime())),
+        map(res => res.filter(x => !x.charge.paid)
+          .sort((a, b) => a.passing.dateTime.getTime() - b.passing.dateTime.getTime())),
         retry(5)
       );
   }
@@ -32,8 +32,8 @@ export class TollsService {
     return this.http.getAll()
       .pipe(
         shareReplay(),
-        map(res => res.filter(x => x.payment !== null)
-          .sort((a, b) => b.payment!.date.getTime() - a.payment!.date.getTime())),
+        map(res => res.filter(x => x.charge.paid)),
+          // .sort((a, b) => b.charge.!.date.getTime() - a.payment!.date.getTime())),
         retry(5)
       );
   }

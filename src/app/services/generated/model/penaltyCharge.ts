@@ -15,7 +15,6 @@ import { Charge } from './charge';
 
 export interface PenaltyCharge { 
     id?: number;
-    userId: string;
     description?: string;
     passing: Passing;
     charge: Charge;

@@ -87,17 +87,21 @@ export class SubscriptionsService {
     }
 
     /**
-     * Get subscription info
-     * @param userUUID 
+     * Buy subscription
+     * @param paymentMethod Payment method
+     * @param subscription 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSubscription(userUUID: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Subscription>;
-    public getSubscription(userUUID: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Subscription>>;
-    public getSubscription(userUUID: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Subscription>>;
-    public getSubscription(userUUID: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (userUUID === null || userUUID === undefined) {
-            throw new Error('Required parameter userUUID was null or undefined when calling getSubscription.');
+    public buySubscription(paymentMethod: string, subscription: Subscription, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Subscription>;
+    public buySubscription(paymentMethod: string, subscription: Subscription, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Subscription>>;
+    public buySubscription(paymentMethod: string, subscription: Subscription, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Subscription>>;
+    public buySubscription(paymentMethod: string, subscription: Subscription, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (paymentMethod === null || paymentMethod === undefined) {
+            throw new Error('Required parameter paymentMethod was null or undefined when calling buySubscription.');
+        }
+        if (subscription === null || subscription === undefined) {
+            throw new Error('Required parameter subscription was null or undefined when calling buySubscription.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -120,6 +124,15 @@ export class SubscriptionsService {
         }
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -131,7 +144,8 @@ export class SubscriptionsService {
             }
         }
 
-        return this.httpClient.get<Subscription>(`${this.configuration.basePath}/charges/passing/subscription/${encodeURIComponent(String(userUUID))}`,
+        return this.httpClient.post<Subscription>(`${this.configuration.basePath}/charges/passing/subscription/payment/${encodeURIComponent(String(paymentMethod))}`,
+            subscription,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -144,14 +158,18 @@ export class SubscriptionsService {
     }
 
     /**
-     * Pay subscription
+     * Get user\&#39;s subscriptions
+     * @param userUUID 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public paySubscription(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<object>;
-    public paySubscription(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public paySubscription(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public paySubscription(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public getSubscriptions(userUUID: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<Subscription>>;
+    public getSubscriptions(userUUID: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<Subscription>>>;
+    public getSubscriptions(userUUID: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<Subscription>>>;
+    public getSubscriptions(userUUID: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (userUUID === null || userUUID === undefined) {
+            throw new Error('Required parameter userUUID was null or undefined when calling getSubscriptions.');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -184,8 +202,7 @@ export class SubscriptionsService {
             }
         }
 
-        return this.httpClient.post<object>(`${this.configuration.basePath}/charges/passing/subscribtion/payment`,
-            null,
+        return this.httpClient.get<Array<Subscription>>(`${this.configuration.basePath}/charges/passing/subscription/${encodeURIComponent(String(userUUID))}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
