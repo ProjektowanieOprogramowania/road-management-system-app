@@ -4,12 +4,17 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import {MenubarModule} from "primeng/menubar";
 import {MenuModule} from "primeng/menu";
 import {ButtonModule} from "primeng/button";
+import { ProfileChangeComponent } from './components/profile-change/profile-change.component';
+import {DialogModule} from "primeng/dialog";
+import {InputTextModule} from "primeng/inputtext";
+import {FormsModule} from "@angular/forms";
 
 
 
 @NgModule({
   declarations: [
-    NavbarComponent
+    NavbarComponent,
+    ProfileChangeComponent
   ],
   exports: [
     NavbarComponent
@@ -18,7 +23,10 @@ import {ButtonModule} from "primeng/button";
     CommonModule,
     MenubarModule,
     MenuModule,
-    ButtonModule
+    ButtonModule,
+    DialogModule,
+    InputTextModule,
+    FormsModule
   ]
 })
 export class SharedModule { }

@@ -9,3 +9,7 @@
     <p-menu #menu [popup]="true" [model]="rightItems"></p-menu>
   </ng-template>
 </p-menubar>
+
+<app-profile-change *ngIf="displayProfileSelectionModal"
+[display]="displayProfileSelectionModal"
+(hide)="onProfileModalHide()"></app-profile-change>

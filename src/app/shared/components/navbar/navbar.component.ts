@@ -11,6 +11,8 @@ export class NavbarComponent implements OnInit {
   items: MenuItem[] = [];
   rightItems: MenuItem[] = [];
 
+  displayProfileSelectionModal = false;
+
   ngOnInit() {
     this.items = [
       {
@@ -64,13 +66,29 @@ export class NavbarComponent implements OnInit {
       label: 'Opcje',
       items: [
         {
-          label: 'Profil'
+          label: 'Profil',
+        },
+        {
+          label: 'UUID',
+          command: event => this.onProfileClick()
         },
         {
           label: 'Wyloguj'
         }
       ]
     }]
+  }
+
+  onProfileClick(){
+    this.showProfileModal();
+  }
+
+  showProfileModal(){
+    this.displayProfileSelectionModal = true;
+  }
+
+  onProfileModalHide(){
+    this.displayProfileSelectionModal = false;
   }
 
 }
