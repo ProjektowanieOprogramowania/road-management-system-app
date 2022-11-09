@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import {TariffsHttpClientMockService} from "../common/mocks/tariffs/tariffs-http-client-mock.service";
-import {retry, shareReplay} from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import {ObjectUnsubscribedError, retry, shareReplay} from "rxjs";
 import {Tariff} from "../common/models/tariff";
+import {TariffSimplified} from "./generated";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TariffService {
 
-  constructor(private http: TariffsHttpClientMockService) {
+  constructor(private http: HttpClient) {
   }
 
   getTariff(id: number) {
-    return this.http.getById(id)
+    return this.http.get("http://localhost:8080/tariff/" + id)
       .pipe(
         shareReplay(),
         retry(5)
@@ -20,7 +21,7 @@ export class TariffService {
   }
 
   getAllTariffs() {
-    return this.http.getAll()
+    return this.http.get("http://localhost:8080/tariff")
       .pipe(
         shareReplay(),
         retry(5)
@@ -28,7 +29,7 @@ export class TariffService {
   }
 
   addTariff(tariff: Tariff) {
-    return this.http.addTariff(tariff)
+    return this.http.post<Tariff>('/http://localhost:8080/roads', JSON.stringify(tariff))
       .pipe(
         shareReplay(),
         retry(5)
@@ -36,7 +37,7 @@ export class TariffService {
   }
 
   editTariff(tariff: Tariff) {
-    return this.http.editTariff(tariff)
+    return this.http.put<Tariff>("/http://localhost:8080/roads" + tariff.id, JSON.stringify(tariff))
       .pipe(
         shareReplay(),
         retry(5)
@@ -44,7 +45,7 @@ export class TariffService {
   }
 
   deleteTariff(tariff: Tariff) {
-    return this.http.deleteTariff(tariff)
+    return this.http.delete("http://localhost:8080/tariff/" + tariff.id)
       .pipe(
         shareReplay(),
         retry(5)

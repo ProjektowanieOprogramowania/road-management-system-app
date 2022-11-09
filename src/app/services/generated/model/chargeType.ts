@@ -9,16 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Payment } from './payment';
 
 
-export interface Charge { 
-    id?: number;
-    userId: string;
-    description?: string;
-    chargeType?: string;
-    amount: number;
-    paid: boolean;
-    payment?: Payment;
-}
+export type ChargeType = 'penalty_charge' | 'passing_charge' | 'subscription_charge';
+
+export const ChargeType = {
+    PenaltyCharge: 'penalty_charge' as ChargeType,
+    PassingCharge: 'passing_charge' as ChargeType,
+    SubscriptionCharge: 'subscription_charge' as ChargeType
+};
 

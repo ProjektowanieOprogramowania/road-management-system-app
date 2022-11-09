@@ -132,7 +132,7 @@ export class PenaltiesService {
             }
         }
 
-        return this.httpClient.get<Array<PenaltyCharge>>(`${this.configuration.basePath}/penalty/${encodeURIComponent(String(userUUID))}`,
+        return this.httpClient.get<Array<PenaltyCharge>>(`${this.configuration.basePath}/charges/penalty/${encodeURIComponent(String(userUUID))}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

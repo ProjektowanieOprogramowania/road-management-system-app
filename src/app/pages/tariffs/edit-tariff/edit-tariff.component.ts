@@ -25,15 +25,15 @@ export class EditTariffComponent implements OnInit {
   constructor(private route: ActivatedRoute, private tariffService: TariffService, private router: Router, private messageService: MessageService) { }
 
   ngOnInit() {
-    if(this.route.snapshot.paramMap.get('id')) {
-      this.id = parseInt(<string>this.route.snapshot.paramMap.get('id'));
-      const sub = this.tariffService.getTariff(this.id)
-        .subscribe(data => {
-            this.tariff = data;
-          }
-        );
-      this.subscriptions.add(sub);
-    }
+    // if(this.route.snapshot.paramMap.get('id')) {
+    //   this.id = parseInt(<string>this.route.snapshot.paramMap.get('id'));
+    //   const sub = this.tariffService.getTariff(this.id)
+    //     .subscribe(data => {
+    //         this.tariff = data;
+    //       }
+    //     );
+    //   this.subscriptions.add(sub);
+    // }
   }
 
   ngOnDestroy() {

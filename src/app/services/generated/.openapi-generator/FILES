@@ -5,6 +5,7 @@ api/api.ts
 api/charges.service.ts
 api/passingCharges.service.ts
 api/penalties.service.ts
+api/roads.service.ts
 api/subscriptions.service.ts
 api/tariffs.service.ts
 configuration.ts
@@ -12,6 +13,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/charge.ts
+model/chargeType.ts
 model/localization.ts
 model/models.ts
 model/passing.ts
