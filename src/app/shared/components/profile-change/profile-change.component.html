@@ -1,0 +1,16 @@
+<p-dialog header="Profil użytkownika" [(visible)]="display" [modal]="true"
+          [dismissableMask]="true" [draggable]="false" [style]="{width: '500px'}"
+          (onHide)="onHide()" xmlns="http://www.w3.org/1999/html">
+  <p>UUID:</p>
+  <div class="flex-row">
+    <input type="text" pInputText [(ngModel)]="userId"/>
+    <p-button label="Zmień" class="ml-3" styleClass="p-button-sm p-button-outlined" (onClick)="onChangeId()"></p-button>
+  </div>
+
+  <p *ngIf="changeResult" class="text-green-500">Sukces!</p>
+
+
+  <ng-template pTemplate="footer">
+    <p-button label="Ok" styleClass="p-button-sm p-button-outlined" (onClick)="onOk()"></p-button>
+  </ng-template>
+</p-dialog>
