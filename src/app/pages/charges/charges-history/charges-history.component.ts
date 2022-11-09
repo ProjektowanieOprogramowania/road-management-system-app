@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ChargesService} from "../../../services/generated";
 import {ChargeModel} from "../../../common/models/charge.model";
+import {UserProfileService} from "../../../services/user-profile.service";
+import {ToChargeModel} from "../../../common/utils/chargeConverter";
 
 @Component({
   selector: 'app-charges-history',
@@ -18,19 +20,19 @@ export class ChargesHistoryComponent implements OnInit {
 
   subscriptions: Subscription = new Subscription();
 
-  constructor(private chargesService: ChargesService) {
+  uuid = '';
+
+  constructor(
+    private chargesService: ChargesService,
+    private userService: UserProfileService) {
   }
 
   ngOnInit() {
-    const sub = this.chargesService.getUsersCharges('1')
+    this.uuid = this.userService.getUserId();
+    const sub = this.chargesService.getUsersCharges(this.uuid)
       .subscribe(data => {
-          data.map(c => (
-            {
-              ...c,
-              orderNumber: this.chargeOrderNumber++
-            }
-          ));
-          this.charges = data;
+          this.charges = data.filter(c => c.payment)
+            .map(c => ToChargeModel(c, this.chargeOrderNumber++));
         }
       );
     this.subscriptions.add(sub);
