@@ -22,7 +22,7 @@ export class NavbarComponent implements OnInit {
             icon: 'pi pi-fw pi-plus',
           },
           {
-            label: 'Lista taryfikatorów',
+            label: 'Wyświetl listę',
             routerLink: ['/tariffs'],
             icon: 'pi pi-fw pi-list'
           },
