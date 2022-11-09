@@ -7,7 +7,7 @@
   <p *ngIf="subscriptionOrderData.charge !== undefined">Kwota: <span class="font-semibold">{{subscriptionOrderData.charge.amount}} PLN</span></p>
 
   <p class="text-md font-semibold mt-5 mb-4">Wybierz metodę płatności</p>
-  <p-selectButton [options]="paymentMethodsArray" [(ngModel)]="selectedPaymentMethod" optionLabel="name"
+  <p-selectButton [options]="paymentMethods" [(ngModel)]="selectedPaymentMethod" optionLabel="name"
                   (onOptionClick)="onSelectPaymentMethodButtonClick()"></p-selectButton>
   <p *ngIf="displayUnselectedPaymentMethodError" class="text-sm text-red-500 mb-0 mt-2 ml-1">
     Nie wybrano metody płatności!

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PaymentMethod, PaymentMethods} from "../../../../common/models/paymentMethod";
 import {Router} from "@angular/router";
 import {PassingChargeModel} from "../../../../common/models/passingCharge.model";
 
@@ -15,7 +14,7 @@ export class PayPassingChargeModalComponent implements OnInit {
 
   @Output() hide = new EventEmitter();
 
-  paymentMethods = PaymentMethods;
+  paymentMethods = PaymentMethodModels;
 
   selectedPaymentMethod?: PaymentMethod;
 

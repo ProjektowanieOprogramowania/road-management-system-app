@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SubscriptionOrderModel} from "../../../common/models/subscription.model";
 import {Router} from "@angular/router";
-import {PaymentMethod, SubscriptionModel} from "../../../services/generated";
-import {MessageService} from "primeng/api";
+import {SubscriptionModel} from "../../../services/generated";
+import {PaymentMethodModel, PaymentMethodModels} from "../../../common/models/paymentMethod";
 
 @Component({
   selector: 'app-subscription-modal',
@@ -16,15 +15,14 @@ export class SubscriptionModalComponent implements OnInit {
 
   @Output() hide = new EventEmitter();
 
-  paymentMethods = PaymentMethod;
+  paymentMethods = PaymentMethodModels;
 
-  paymentMethodsArray = [this.paymentMethods.Blik, this.paymentMethods.BankTransfer, this.paymentMethods.PostalOrder];
-
-  selectedPaymentMethod: PaymentMethod | undefined;
+  selectedPaymentMethod: PaymentMethodModel | undefined;
 
   displayUnselectedPaymentMethodError = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+  }
 
   ngOnInit(): void {
   }
@@ -51,6 +49,4 @@ export class SubscriptionModalComponent implements OnInit {
   onSelectPaymentMethodButtonClick() {
     this.displayUnselectedPaymentMethodError = false;
   }
-
-
 }
