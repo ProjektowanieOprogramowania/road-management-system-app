@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PenaltiesService } from './penalties.service';
+import { Old_penaltiesService } from './penalties.service';
 
 describe('PenaltiesService', () => {
-  let service: PenaltiesService;
+  let service: Old_penaltiesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PenaltiesService);
+    service = TestBed.inject(Old_penaltiesService);
   });
 
   it('should be created', () => {

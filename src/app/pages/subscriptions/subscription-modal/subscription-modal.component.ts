@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SubscriptionOrderModel} from "../../../common/models/subscription.model";
-import {PaymentMethod, PaymentMethods} from "../../../common/models/paymentMethod";
 import {Router} from "@angular/router";
+import {PaymentMethod, SubscriptionModel} from "../../../services/generated";
 
 @Component({
   selector: 'app-subscription-modal',
@@ -10,12 +10,12 @@ import {Router} from "@angular/router";
 })
 export class SubscriptionModalComponent implements OnInit {
 
-  @Input() subscriptionOrderData: SubscriptionOrderModel | undefined;
+  @Input() subscriptionOrderData: SubscriptionModel | undefined;
   @Input() display = false;
 
   @Output() hide = new EventEmitter();
 
-  paymentMethods = PaymentMethods;
+  paymentMethods = PaymentMethod;
 
   selectedPaymentMethod: PaymentMethod | undefined;
 
@@ -36,13 +36,13 @@ export class SubscriptionModalComponent implements OnInit {
       return;
     }
 
-    this.router.navigate(['/payments/waiting',{
-      whenSuccess:'/subscriptions/subscribe-success/0', whenFailure:'/subscriptions/subscribe' }], {
-      queryParams: {
-        chargeId: 123,
-        methodId: this.selectedPaymentMethod.id
-      }
-    })
+    // this.router.navigate(['/payments/waiting',{
+    //   whenSuccess:'/subscriptions/subscribe-success/0', whenFailure:'/subscriptions/subscribe' }], {
+    //   queryParams: {
+    //     chargeId: 123,
+    //     methodId: this.selectedPaymentMethod.
+    //   }
+    // })
   }
 
   onSelectPaymentMethodButtonClick() {

@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
+import {Subscription, zip} from "rxjs";
+import {Road, RoadsService, SubscriptionModel} from "../../../services/generated";
 import {SubscriptionsService} from "../../../services/subscriptions.service";
 import {AvailableSubscriptionModel, SubscriptionOrderModel} from "../../../common/models/subscription.model";
+import {MessageService} from "primeng/api";
+import {UserProfileService} from "../../../services/user-profile.service";
 
 @Component({
   selector: 'app-subscriptions-panel',
@@ -13,13 +16,18 @@ export class SubscriptionsPanelComponent implements OnInit {
   //rxjs subscription
   subscription = new Subscription();
 
-  availableSubs: AvailableSubscriptionModel[] = [];
+  roads: Road[] = [];
+  userId: string = '';
 
   //forms
-  selectedAvailableSubs: AvailableSubscriptionModel[] = []
+  selectedRoads: Road[] = [];
   fromDate!: Date;
   toDate!: Date;
-  subscriptionOrderData!: SubscriptionOrderModel;
+
+  subscriptionOrderData: SubscriptionModel ={
+    roadsIds: [],
+    subscriberId: ''
+  }
 
   //calculates
   priceToPay = 0;
@@ -29,22 +37,32 @@ export class SubscriptionsPanelComponent implements OnInit {
   //validate
   minDate = new Date();
 
-  constructor(private subService: SubscriptionsService) {
+  constructor(private roadService: RoadsService,
+              private messageService: MessageService,
+              private userService: UserProfileService) {
   }
 
   ngOnInit(): void {
     this.subscription.add(
-      this.subService.getAvailableSubscriptions().subscribe(
-        e => {
-          this.availableSubs = e;
-        }));
+      this.roadService.getAllRoads().subscribe(
+        {
+          next: value => this.roads = value,
+          error: err => {
+            this.messageService.add({severity:'error', summary:'Error roads', detail:err });
+            console.error(err);
+          }
+        }
+      )
+    );
+
+    this.userId = this.userService.getUserId();
   }
 
   onInput(): void{
     console.log('change');
     //console.log(this.selectedAvailableSubs.length > 0 && this.fromDate !== undefined && this.toDate !== undefined);
     // console.log(this.rangeDates);
-    if(this.selectedAvailableSubs.length > 0 && this.fromDate !== undefined && this.toDate !== undefined){
+    if(this.selectedRoads.length > 0 && this.fromDate !== undefined && this.toDate !== undefined){
       this.calculatePrice();
     } else{
       this.priceToPay = 0;
@@ -54,8 +72,8 @@ export class SubscriptionsPanelComponent implements OnInit {
   private calculatePrice(): void{
     let finalPrice = 0;
     const daysRange = Math.round((this.toDate.getTime() - this.fromDate.getTime()) / (1000*3600*24));
-    this.selectedAvailableSubs.forEach(sub => {
-      finalPrice += sub.price * daysRange;
+    this.selectedRoads.forEach(sub => {
+      finalPrice += sub.subscriptionPriceForOneDay * daysRange;
     });
 
     this.priceToPay = finalPrice;
@@ -66,14 +84,21 @@ export class SubscriptionsPanelComponent implements OnInit {
   }
 
   showSubDetailsModal(){
-    const subIds = this.selectedAvailableSubs.map(sub => sub.id);
+
+    let formRoadIds: number[] = [];
+
+    if(this.selectedRoads){
+      this.selectedRoads.forEach(value => {
+        if(value.id !== undefined){
+          formRoadIds.push(value.id);
+        }});
+    }
 
     this.subscriptionOrderData = {
-      price: this.priceToPay,
-      endDate: this.toDate,
-      startDate: this.fromDate,
-      selectedSubscriptionIds: subIds,
-      orderUrl: ''
+      roadsIds: formRoadIds,
+      subscriptionFrom: this.fromDate.toISOString(),
+      subscriptionTo: this.toDate.toISOString(),
+      subscriberId: this.userId,
     }
 
     this.displaySubDetailsModal = true;

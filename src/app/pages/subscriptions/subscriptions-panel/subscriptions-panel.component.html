@@ -4,17 +4,17 @@
     <div class="flex card-container justify-content-center flex-wrap gap-6">
       <div class="block">
         <p class="form-label">Wybór trasy</p>
-        <p-listbox [options]="availableSubs"  [(ngModel)]="selectedAvailableSubs"
+        <p-listbox [options]="roads"  [(ngModel)]="selectedRoads"
                    name="selectedAvailableSubs"
                    [metaKeySelection]="false" [checkbox]="true" [filter]="true" [multiple]="true"
                    optionLabel="name" [listStyle]="{'max-height':'250px'}" [style]="{'width':'300px'}"
                    (ngModelChange)="onInput()"
         >
-          <ng-template let-availableSubs pTemplate="item">
+          <ng-template let-selectedRoads pTemplate="item">
             <div class="sub-item">
               <div>
-                <span>{{availableSubs.name}}</span>
-                <small class="text-500">  {{availableSubs.price}} zł</small>
+                <span>{{selectedRoads.name}}</span>
+                <small class="text-500">  {{selectedRoads.subscriptionPriceForOneDay}} zł</small>
               </div>
             </div>
           </ng-template>
