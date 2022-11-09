@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {PassingChargeModel} from "../../../../common/models/passingCharge.model";
+import {PaymentMethod} from "../../../../services/generated";
+import {PaymentMethodModel, PaymentMethodModels} from "../../../../common/models/paymentMethod";
 
 @Component({
   selector: 'app-pay-passing-charge-modal',
@@ -16,7 +18,7 @@ export class PayPassingChargeModalComponent implements OnInit {
 
   paymentMethods = PaymentMethodModels;
 
-  selectedPaymentMethod?: PaymentMethod;
+  selectedPaymentMethod?: PaymentMethodModel;
 
   displayUnselectedPaymentMethodError = false;
 
@@ -36,16 +38,16 @@ export class PayPassingChargeModalComponent implements OnInit {
       return;
     }
 
-    this.router.navigate(['/payments/waiting', {
-        whenSuccess: '/charges/history', whenFailure: '/charges/'
-      }],
-      {
-        queryParams: {
-          chargeId: this.passingCharge?.id,
-          methodId: this.selectedPaymentMethod.id
-        }
-      },
-    )
+    // this.router.navigate(['/payments/waiting', {
+    //     whenSuccess: '/charges/history', whenFailure: '/charges/'
+    //   }],
+    //   {
+    //     queryParams: {
+    //       chargeId: this.passingCharge?.id,
+    //       methodId:
+    //     }
+    //   },
+    // )
   }
 
   onSelectPaymentMethodButtonClick() {

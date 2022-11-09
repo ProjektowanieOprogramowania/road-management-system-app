@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {PenaltiesService, PenaltyCharge} from "../../../services/generated";
 import {UserProfileService} from "../../../services/user-profile.service";
 import {MessageService} from "primeng/api";
+import {dateFromArray} from "../../../common/utils/dateFromArray";
 
 @Component({
   selector: 'app-penalties-history',
@@ -29,7 +30,7 @@ export class PenaltiesHistoryComponent implements OnInit {
       this.penaltiesService.getAllPenalties(this.uuid).subscribe(
         {
           next: value => {
-            this.penalties = value;
+            this.penalties = this.changeDates(value);
           },
           error: err => {
             this.messageService.add({severity:'error', summary: 'Error', detail: err});
@@ -40,4 +41,13 @@ export class PenaltiesHistoryComponent implements OnInit {
     )
   }
 
+  changeDates(penalties: PenaltyCharge[]): PenaltyCharge[]{
+    let newPenalties: PenaltyCharge[] = [];
+    penalties.forEach(value => {
+      value.passing.dateTime = dateFromArray(value.passing.dateTime).toLocaleString();
+      newPenalties.push(value);
+    });
+    return newPenalties;
+  }
+//2022,10,15,15,55,7
 }

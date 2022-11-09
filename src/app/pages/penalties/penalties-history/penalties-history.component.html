@@ -17,7 +17,7 @@
         <ng-template pTemplate="body" let-penalty>
           <tr [pSelectableRow]="penalty">
             <td>{{penalty.description}}</td>
-            <td>{{penalty.date}}</td>
+            <td>{{penalty.passing.dateTime}}</td>
             <td>
               <span>{{penalty.charge.amount}}</span>
 <!--              <span>{{penalty.charge.chargeType}}</span>-->

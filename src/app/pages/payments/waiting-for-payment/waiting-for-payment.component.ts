@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
-import {PassingChargesMock} from "../../../common/mocks/tolls/passingChargesMock";
-import {PaymentMethods} from "../../../common/models/paymentMethod";
 
 @Component({
   selector: 'app-waiting-for-payment',

@@ -2,8 +2,8 @@
           [dismissableMask]="true" [draggable]="false" [style]="{width: '500px'}"
           (onHide)="onHide()">
 
-  <p>Od: <span class="font-semibold">{{subscriptionOrderData.subscriptionFrom}}</span></p>
-  <p>Do: <span class="font-semibold">{{subscriptionOrderData.subscriptionTo}}</span></p>
+  <p>Od: <span class="font-semibold">{{subscriptionOrderData.subscriptionFrom | date}}</span></p>
+  <p>Do: <span class="font-semibold">{{subscriptionOrderData.subscriptionTo | date}}</span></p>
   <p *ngIf="subscriptionOrderData.charge !== undefined">Kwota: <span class="font-semibold">{{subscriptionOrderData.charge.amount}} PLN</span></p>
 
   <p class="text-md font-semibold mt-5 mb-4">Wybierz metodę płatności</p>
