@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription, zip} from "rxjs";
-import {Road, RoadsService, SubscriptionModel} from "../../../services/generated";
+import {Charge, Road, RoadsService, SubscriptionModel} from "../../../services/generated";
 import {SubscriptionsService} from "../../../services/subscriptions.service";
 import {AvailableSubscriptionModel, SubscriptionOrderModel} from "../../../common/models/subscription.model";
 import {MessageService} from "primeng/api";
@@ -9,7 +9,8 @@ import {UserProfileService} from "../../../services/user-profile.service";
 @Component({
   selector: 'app-subscriptions-panel',
   templateUrl: './subscriptions-panel.component.html',
-  styleUrls: ['./subscriptions-panel.component.scss']
+  styleUrls: ['./subscriptions-panel.component.scss'],
+  providers: [MessageService]
 })
 export class SubscriptionsPanelComponent implements OnInit {
 
@@ -59,9 +60,6 @@ export class SubscriptionsPanelComponent implements OnInit {
   }
 
   onInput(): void{
-    console.log('change');
-    //console.log(this.selectedAvailableSubs.length > 0 && this.fromDate !== undefined && this.toDate !== undefined);
-    // console.log(this.rangeDates);
     if(this.selectedRoads.length > 0 && this.fromDate !== undefined && this.toDate !== undefined){
       this.calculatePrice();
     } else{
@@ -85,6 +83,10 @@ export class SubscriptionsPanelComponent implements OnInit {
 
   showSubDetailsModal(){
 
+    if(this.priceToPay === 0){
+      return;
+    }
+
     let formRoadIds: number[] = [];
 
     if(this.selectedRoads){
@@ -94,11 +96,18 @@ export class SubscriptionsPanelComponent implements OnInit {
         }});
     }
 
+    const newCharge: Charge = {
+      amount: this.priceToPay,
+      userId: this.userId,
+      paid: false
+    };
+
     this.subscriptionOrderData = {
       roadsIds: formRoadIds,
       subscriptionFrom: this.fromDate.toISOString(),
       subscriptionTo: this.toDate.toISOString(),
       subscriberId: this.userId,
+      charge: newCharge
     }
 
     this.displaySubDetailsModal = true;

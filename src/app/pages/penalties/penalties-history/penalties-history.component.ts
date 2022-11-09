@@ -8,12 +8,12 @@ import {MessageService} from "primeng/api";
 @Component({
   selector: 'app-penalties-history',
   templateUrl: './penalties-history.component.html',
-  styleUrls: ['./penalties-history.component.scss']
+  styleUrls: ['./penalties-history.component.scss'],
+  providers: [MessageService]
 })
 export class PenaltiesHistoryComponent implements OnInit {
 
   subscription = new Subscription();
-
 
   penalties: PenaltyCharge[] = [];
   penaltiesPayed: number[] = [];

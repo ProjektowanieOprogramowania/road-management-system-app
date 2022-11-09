@@ -2,11 +2,12 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SubscriptionOrderModel} from "../../../common/models/subscription.model";
 import {Router} from "@angular/router";
 import {PaymentMethod, SubscriptionModel} from "../../../services/generated";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-subscription-modal',
   templateUrl: './subscription-modal.component.html',
-  styleUrls: ['./subscription-modal.component.scss']
+  styleUrls: ['./subscription-modal.component.scss'],
 })
 export class SubscriptionModalComponent implements OnInit {
 
@@ -16,6 +17,8 @@ export class SubscriptionModalComponent implements OnInit {
   @Output() hide = new EventEmitter();
 
   paymentMethods = PaymentMethod;
+
+  paymentMethodsArray = [this.paymentMethods.Blik, this.paymentMethods.BankTransfer, this.paymentMethods.PostalOrder];
 
   selectedPaymentMethod: PaymentMethod | undefined;
 

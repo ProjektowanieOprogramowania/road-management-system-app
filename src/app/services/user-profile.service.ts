@@ -18,6 +18,9 @@ export class UserProfileService {
   }
 
   public setUserId(id: string): string{
+    if(id === ''){
+      id = '4d312962-5bbf-11ed-9b6a-0242ac120002';
+    }
     localStorage.setItem(this.profileId, `${id}`);
     return this.getUserId();
   }
