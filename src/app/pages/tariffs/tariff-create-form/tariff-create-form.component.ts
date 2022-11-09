@@ -58,7 +58,7 @@ export class TariffCreateFormComponent implements OnInit {
   }
 
   deletePrice(any: string) {
-    delete this.prices[this.addPriceName]
+    delete this.prices[any]
   }
 
   validateForm() {
@@ -84,7 +84,6 @@ export class TariffCreateFormComponent implements OnInit {
     }
     this.validateForm()
     if(this.tariffPricesValid && this.tariffNameValid) {
-      console.log("ADDED")
       const sub = this.tariffService.addTariff(tariff)
         .subscribe(data => {
             console.log("Added", data)

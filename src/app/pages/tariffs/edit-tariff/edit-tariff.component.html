@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <p-table [value]="getArray(tariff.prices)" *ngIf="tariff.prices.size > 0; else noTariffs">
+      <p-table [value]="getArray(tariff.prices)" *ngIf="getArray(tariff.prices).length > 0; else noTariffs">
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name">
