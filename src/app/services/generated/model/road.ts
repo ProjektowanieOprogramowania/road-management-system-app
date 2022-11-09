@@ -14,5 +14,6 @@
 export interface Road { 
     id?: number;
     name: string;
+    subscriptionPriceForOneDay: number;
 }
 
