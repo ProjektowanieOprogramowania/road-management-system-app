@@ -16,8 +16,8 @@
           <tr [pSelectableRow]="ps">
             <td>{{ps.orderNumber}}</td>
             <td>{{ps.charge.amount}}</td>
-            <td>{{ps.passing.dateTime.toLocaleString()}}</td>
-            <td>{{ps.passing.vehice.model}}</td>
+            <td>{{ps.issueDate | date}}</td>
+            <td>{{ps.vehicleName}}</td>
           </tr>
         </ng-template>
       </p-table>

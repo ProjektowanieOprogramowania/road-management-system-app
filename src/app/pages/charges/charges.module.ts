@@ -18,13 +18,13 @@ import {ChargeDetailsModalComponent} from './charge-details-modal/charge-details
 
 export const routes: Routes = [
   {
-    path: 'passingCharges',
-    component: NotPaidPassingChargesComponent
-  },
-  {
     path: '',
     component: ChargesHistoryComponent
-  }
+  },
+  {
+    path: 'notPaidPassingCharges',
+    component: NotPaidPassingChargesComponent
+  },
 ];
 
 @NgModule({

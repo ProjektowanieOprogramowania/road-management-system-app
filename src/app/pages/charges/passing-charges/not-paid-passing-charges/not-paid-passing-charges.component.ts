@@ -4,6 +4,7 @@ import {ActivatedRoute} from "@angular/router";
 import {PassingChargesService} from "../../../../services/generated";
 import {PassingChargeModel} from "../../../../common/models/passingCharge.model";
 import {UserProfileService} from "../../../../services/user-profile.service";
+import {ToPassingChargeModel} from "../../../../common/utils/passingChargeConverter";
 
 @Component({
   selector: 'app-not-paid-passing-charges',
@@ -11,8 +12,8 @@ import {UserProfileService} from "../../../../services/user-profile.service";
   styleUrls: ['./not-paid-passing-charges.component.scss'],
 })
 export class NotPaidPassingChargesComponent implements OnInit, OnDestroy {
-  passingCharges: PassingChargeModel[] | undefined;
-  selectedPassingCharge: PassingChargeModel | undefined;
+  passingCharges?: PassingChargeModel[];
+  selectedPassingCharge?: PassingChargeModel;
   passingChargeOrderNumber = 1;
 
   displayPayPassingChargeModal = false;
@@ -31,13 +32,7 @@ export class NotPaidPassingChargesComponent implements OnInit, OnDestroy {
     this.uuid = this.userService.getUserId();
     const sub = this.passingChargesService.getNotPaidPassingCharges(this.uuid)
       .subscribe(data => {
-          data.map(ps => (
-            {
-              ...ps,
-              orderNumber: this.passingChargeOrderNumber++
-            }
-          ));
-          this.passingCharges = data;
+          this.passingCharges = data.map(ps => ToPassingChargeModel(ps, this.passingChargeOrderNumber++));
         }
       );
     this.subscriptions.add(sub);
