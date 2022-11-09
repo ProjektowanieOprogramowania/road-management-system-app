@@ -1,0 +1,11 @@
+<p-dialog *ngIf="charge" header="Opłacony przejazd" [(visible)]="display" [modal]="true"
+          [dismissableMask]="true" [draggable]="false" [style]="{width: '500px'}"
+          (onHide)="onHide()">
+  <p>Kwota: <span class="font-semibold">{{charge.amount}} PLN</span></p>
+  <p>Data opłacenia: <span class="font-semibold">{{charge.payment?.dateTime}}</span></p>
+  <p>Typ opłaty: <span class="font-semibold">{{charge.chargeType}}</span></p>
+  <p>Opis: <span class="font-semibold">{{charge.description}}</span></p>
+  <ng-template pTemplate="footer">
+    <p-button label="Ok" styleClass="p-button-sm p-button-outlined" (onClick)="onOk()"></p-button>
+  </ng-template>
+</p-dialog>

@@ -2,10 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {PassingChargesService} from "../../../services/generated";
-import {PassingChargeModel} from "../../../common/models/passingChargeModel";
+import {PassingChargeModel} from "../../../common/models/passingCharge.model";
 
 @Component({
-  selector: 'app-not-paid-passingCharges',
+  selector: 'app-not-paid-passing-charges',
   templateUrl: './not-paid-passing-charges.component.html',
   styleUrls: ['./not-paid-passing-charges.component.scss'],
 })

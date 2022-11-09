@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
-import {TollsMock} from "../../../common/mocks/tolls/tollsMock";
+import {PassingChargesMock} from "../../../common/mocks/tolls/passingChargesMock";
 import {PaymentMethods} from "../../../common/models/paymentMethod";
 
 @Component({
@@ -45,7 +45,7 @@ export class WaitingForPaymentComponent implements OnInit {
   onSuccess() {
     this.messageService.add({severity: 'success', summary: 'Płatność przebiegła pomyślnie!'});
 
-    // TollsMock.find(x => x.id === Number.parseInt(this.chargeId!))!.payment = {
+    // PassingChargesMock.find(x => x.id === Number.parseInt(this.chargeId!))!.payment = {
     //   id: Number.parseInt(this.chargeId!),
     //   paymentMethod: PaymentMethods.find(x => x.id === Number.parseInt(this.paymentMethodId!))!,
     //   date: new Date(2022, 2, 2)

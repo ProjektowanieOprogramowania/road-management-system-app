@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import {TollsMock} from "./tollsMock";
+import {PassingChargesMock} from "./passingChargesMock";
 import {PassingCharge} from "../../../services/generated";
 
 @Injectable({
@@ -12,7 +12,7 @@ export class TollsHttpClientMockService {
   }
 
   getById(id: number) {
-    const res = TollsMock.find(x => x.id == id);
+    const res = PassingChargesMock.find(x => x.id == id);
     return new Observable<PassingCharge>(sub => {
       setTimeout(() => {
         sub.next(res);
@@ -22,7 +22,7 @@ export class TollsHttpClientMockService {
   }
 
   getAll() {
-    const res = TollsMock;
+    const res = PassingChargesMock;
     return new Observable<PassingCharge[]>(sub => {
       setTimeout(() => {
         sub.next(res);

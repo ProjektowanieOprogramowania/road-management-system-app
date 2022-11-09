@@ -1,0 +1,38 @@
+<div class="flex flex-column align-items-center m-3">
+  <p class="my-5 text-xl">Historia opłat</p>
+  <ng-container *ngIf="charges; else loading">
+    <div *ngIf="charges.length > 0; else noCharges" class="card w-10">
+      <p-table [value]="charges" selectionMode="single" [(selection)]="selectedCharge" dataKey="id"
+               responsiveLayout="scroll" (onRowSelect)="onRowSelect()">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Lp.</th>
+            <th>Kwota [PLN]</th>
+            <th>Data opłacenia</th>
+            <th>Typ opłaty</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-charge>
+          <tr [pSelectableRow]="charge">
+            <td>{{charge.orderNumber}}</td>
+            <td>{{charge.amount}}</td>
+            <td>{{charge.payment?.dateTime.toLocaleString()}}</td>
+            <td>{{charge.chargeType}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <ng-template #noCharges>
+      <p>Brak dokonanych opłat</p>
+    </ng-template>
+  </ng-container>
+  <ng-template #loading>
+    <p-progressSpinner [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
+  </ng-template>
+</div>
+
+<app-charge-details-modal *ngIf="selectedCharge"
+                        [charge]="selectedCharge"
+                        [display]="displayChargeDetailsModal"
+                        (hide)="onTollDetailsModalHide()">
+</app-charge-details-modal>

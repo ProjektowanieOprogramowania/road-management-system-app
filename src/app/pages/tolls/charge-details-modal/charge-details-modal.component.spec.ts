@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TollDetailsModalComponent } from './toll-details-modal.component';
+import { ChargeDetailsModalComponent } from './charge-details-modal.component';
 
 describe('TollDetailsModalComponent', () => {
-  let component: TollDetailsModalComponent;
-  let fixture: ComponentFixture<TollDetailsModalComponent>;
+  let component: ChargeDetailsModalComponent;
+  let fixture: ComponentFixture<ChargeDetailsModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TollDetailsModalComponent ]
+      declarations: [ ChargeDetailsModalComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TollDetailsModalComponent);
+    fixture = TestBed.createComponent(ChargeDetailsModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TollsHistoryComponent } from './tolls-history.component';
+import { ChargesHistoryComponent } from './charges-history.component';
 
 describe('TollsHistoryComponent', () => {
-  let component: TollsHistoryComponent;
-  let fixture: ComponentFixture<TollsHistoryComponent>;
+  let component: ChargesHistoryComponent;
+  let fixture: ComponentFixture<ChargesHistoryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TollsHistoryComponent ]
+      declarations: [ ChargesHistoryComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TollsHistoryComponent);
+    fixture = TestBed.createComponent(ChargesHistoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

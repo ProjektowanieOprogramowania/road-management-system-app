@@ -1,8 +1,8 @@
 import {PassingsMock} from "../passings/passingsMock";
 import {ChargesMock} from "../charges/chargesMock";
-import {PassingChargeModel} from "../../models/passingChargeModel";
+import {PassingChargeModel} from "../../models/passingCharge.model";
 
-export const TollsMock: PassingChargeModel[] = [
+export const PassingChargesMock: PassingChargeModel[] = [
   // {
   //   id: 1,
   //   passing: PassingsMock.find(x => x.id === 1)!,

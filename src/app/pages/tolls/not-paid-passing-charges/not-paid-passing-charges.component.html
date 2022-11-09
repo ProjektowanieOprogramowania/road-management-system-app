@@ -31,8 +31,8 @@
   </ng-template>
 </div>
 
-<app-pay-toll-modal *ngIf="selectedPassingCharge"
-                    [toll]="selectedPassingCharge"
+<app-pay-passing-charge-modal *ngIf="selectedPassingCharge"
+                    [passingCharge]="selectedPassingCharge"
                     [display]="displayPayPassingChargeModal"
                     (hide)="onPayTollModalHide()">
-</app-pay-toll-modal>
+</app-pay-passing-charge-modal>

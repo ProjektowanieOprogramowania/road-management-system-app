@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PaymentMethod, PaymentMethods} from "../../../common/models/paymentMethod";
 import {Router} from "@angular/router";
-import {PassingChargeModel} from "../../../common/models/passingChargeModel";
+import {PassingChargeModel} from "../../../common/models/passingCharge.model";
 
 @Component({
-  selector: 'app-pay-toll-modal',
+  selector: 'app-pay-passing-charge-modal',
   templateUrl: './pay-passing-charge-modal.component.html',
   styleUrls: ['./pay-passing-charge-modal.component.scss']
 })
@@ -38,7 +38,7 @@ export class PayPassingChargeModalComponent implements OnInit {
     }
 
     this.router.navigate(['/payments/waiting', {
-        whenSuccess: '/passingCharges/history', whenFailure: '/passingCharges/'
+        whenSuccess: '/charges/history', whenFailure: '/charges/'
       }],
       {
         queryParams: {
