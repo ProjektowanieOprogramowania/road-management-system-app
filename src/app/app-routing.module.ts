@@ -20,8 +20,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/penalties/penalties.module').then(m => m.PenaltiesModule)
   },
   {
-    path: 'passingCharges',
-    loadChildren: () => import('./pages/tolls/tolls.module').then(m => m.TollsModule)
+    path: 'charges',
+    loadChildren: () => import('./pages/charges/charges.module').then(m => m.ChargesModule)
   },
   {
     path: 'payments',

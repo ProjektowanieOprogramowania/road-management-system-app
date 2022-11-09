@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import {PassingChargesService} from "../../../services/generated";
-import {PassingChargeModel} from "../../../common/models/passingCharge.model";
+import {PassingChargesService} from "../../../../services/generated";
+import {PassingChargeModel} from "../../../../common/models/passingCharge.model";
+import {UserProfileService} from "../../../../services/user-profile.service";
 
 @Component({
   selector: 'app-not-paid-passing-charges',
@@ -18,11 +19,17 @@ export class NotPaidPassingChargesComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription = new Subscription();
 
-  constructor(private passingChargesService: PassingChargesService, private route: ActivatedRoute) {
+  uuid = '';
+
+  constructor(
+    private passingChargesService: PassingChargesService,
+    private userService: UserProfileService,
+    private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    const sub = this.passingChargesService.getNotPaidPassingCharges('1')
+    this.uuid = this.userService.getUserId();
+    const sub = this.passingChargesService.getNotPaidPassingCharges(this.uuid)
       .subscribe(data => {
           data.map(ps => (
             {

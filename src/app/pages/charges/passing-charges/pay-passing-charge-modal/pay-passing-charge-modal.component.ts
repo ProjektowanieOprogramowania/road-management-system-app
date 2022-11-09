@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PaymentMethod, PaymentMethods} from "../../../common/models/paymentMethod";
+import {PaymentMethod, PaymentMethods} from "../../../../common/models/paymentMethod";
 import {Router} from "@angular/router";
-import {PassingChargeModel} from "../../../common/models/passingCharge.model";
+import {PassingChargeModel} from "../../../../common/models/passingCharge.model";
 
 @Component({
   selector: 'app-pay-passing-charge-modal',

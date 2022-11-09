@@ -12,7 +12,7 @@ export class UserProfileService {
   public getUserId(): string{
     const userId = localStorage.getItem(this.profileId);
     if(userId === null){
-      return 'none';
+      return '4d312962-5bbf-11ed-9b6a-0242ac120002';
     }
     return userId;
   }
