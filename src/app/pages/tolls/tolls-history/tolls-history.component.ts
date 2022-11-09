@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {Toll} from "../../../common/models/toll";
 import {Subscription} from "rxjs";
 import {TollsService} from "../../../services/tolls.service";
+import {PassingChargeModel} from "../../../common/models/passingChargeModel";
 
 @Component({
-  selector: 'app-tolls-history',
+  selector: 'app-passingCharges-history',
   templateUrl: './tolls-history.component.html',
   styleUrls: ['./tolls-history.component.scss']
 })
 export class TollsHistoryComponent implements OnInit {
 
-  tolls: Toll[] | undefined;
-  selectedToll: Toll | undefined;
+  tolls: PassingChargeModel[] | undefined;
+  selectedToll: PassingChargeModel | undefined;
   tollOrderNumber = 1;
 
   displayTollDetailsModal = false;
@@ -24,8 +24,8 @@ export class TollsHistoryComponent implements OnInit {
   ngOnInit() {
     const sub = this.tollsService.getPaidTolls()
       .subscribe(data => {
-          data.forEach(x => x.orderNumber = this.tollOrderNumber++);
-          this.tolls = data;
+          // data.forEach(x => x.orderNumber = this.tollOrderNumber++);
+          // this.tolls = data;
         }
       );
     this.subscriptions.add(sub);
@@ -35,7 +35,7 @@ export class TollsHistoryComponent implements OnInit {
     this.subscriptions.unsubscribe();
   }
 
-  onRowSelect(event: any) {
+  onRowSelect() {
     this.showTollDetailsModal();
   }
 

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Toll} from "../../../common/models/toll";
+import {PassingChargeModel} from "../../../common/models/passingChargeModel";
 
 @Component({
   selector: 'app-toll-details-modal',
@@ -8,7 +8,7 @@ import {Toll} from "../../../common/models/toll";
 })
 export class TollDetailsModalComponent implements OnInit {
 
-  @Input() toll: Toll | undefined;
+  @Input() toll: PassingChargeModel | undefined;
   @Input() display = false;
 
   @Output() hide = new EventEmitter();

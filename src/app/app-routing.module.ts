@@ -20,7 +20,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/penalties/penalties.module').then(m => m.PenaltiesModule)
   },
   {
-    path: 'tolls',
+    path: 'passingCharges',
     loadChildren: () => import('./pages/tolls/tolls.module').then(m => m.TollsModule)
   },
   {

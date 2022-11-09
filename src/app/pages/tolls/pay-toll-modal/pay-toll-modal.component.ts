@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PaymentMethod, PaymentMethods} from "../../../common/models/paymentMethod";
-import {Toll} from "../../../common/models/toll";
 import {Router} from "@angular/router";
+import {PassingChargeModel} from "../../../common/models/passingChargeModel";
 
 @Component({
   selector: 'app-pay-toll-modal',
@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 })
 export class PayTollModalComponent implements OnInit {
 
-  @Input() toll: Toll | undefined;
+  @Input() toll: PassingChargeModel | undefined;
   @Input() display = false;
 
   @Output() hide = new EventEmitter();
@@ -38,7 +38,7 @@ export class PayTollModalComponent implements OnInit {
     }
 
     this.router.navigate(['/payments/waiting', {
-    whenSuccess:'/tolls/history', whenFailure:'/tolls/' }],
+    whenSuccess:'/passingCharges/history', whenFailure:'/passingCharges/' }],
       {
         queryParams: {
           chargeId: this.toll?.id,

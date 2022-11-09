@@ -1,9 +1,9 @@
 <div class="flex flex-column align-items-center m-3">
   <p class="my-5 text-xl">Historia opłat</p>
   <ng-container *ngIf="tolls; else loading">
-    <div *ngIf="tolls.length > 0; else noTools" class="card w-10">
+    <div *ngIf="tolls.length > 0; else noPassingCharges" class="card w-10">
       <p-table [value]="tolls" selectionMode="single" [(selection)]="selectedToll" dataKey="id"
-               responsiveLayout="scroll" (onRowSelect)="onRowSelect($event)">
+               responsiveLayout="scroll" (onRowSelect)="onRowSelect()">
         <ng-template pTemplate="header">
           <tr>
             <th>Lp.</th>
@@ -24,7 +24,7 @@
         </ng-template>
       </p-table>
     </div>
-    <ng-template #noTools>
+    <ng-template #noPassingCharges>
       <p>Brak dokonanych opłat</p>
     </ng-template>
   </ng-container>

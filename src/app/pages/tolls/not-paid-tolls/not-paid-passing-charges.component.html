@@ -1,0 +1,38 @@
+<div class="flex flex-column align-items-center m-3">
+  <p class="my-5 text-xl">Przejazdy do opłacenia</p>
+  <ng-container *ngIf="passingCharges; else loading">
+    <div *ngIf="passingCharges.length > 0; else noPassingCharges" class="card w-10">
+      <p-table [value]="passingCharges" selectionMode="single" [(selection)]="selectedPassingCharge" dataKey="id"
+               responsiveLayout="scroll" (onRowSelect)="onRowSelect($event)">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Lp.</th>
+            <th>Kwota [PLN]</th>
+            <th>Data wystawienia</th>
+            <th>Pojazd</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-ps>
+          <tr [pSelectableRow]="ps">
+            <td>{{ps.orderNumber}}</td>
+            <td>{{ps.charge.amount}}</td>
+            <td>{{ps.passing.dateTime.toLocaleString()}}</td>
+            <td>{{ps.passing.vehice.model}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <ng-template #noPassingCharges>
+      <p>Brak nieopłaconych przejazdów</p>
+    </ng-template>
+  </ng-container>
+  <ng-template #loading>
+    <p-progressSpinner [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
+  </ng-template>
+</div>
+
+<app-pay-toll-modal *ngIf="selectedPassingCharge"
+                    [toll]="selectedPassingCharge"
+                    [display]="displayPayPassingChargeModal"
+                    (hide)="onPayTollModalHide()">
+</app-pay-toll-modal>

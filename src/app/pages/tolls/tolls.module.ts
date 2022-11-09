@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotPaidTollsComponent } from './not-paid-tolls/not-paid-tolls.component';
+import { NotPaidPassingChargesComponent } from './not-paid-tolls/not-paid-passing-charges.component';
 import { TollsHistoryComponent } from './tolls-history/tolls-history.component';
 import {RouterModule, Routes} from "@angular/router";
 import {TableModule} from "primeng/table";
@@ -15,7 +15,7 @@ import { TollDetailsModalComponent } from './toll-details-modal/toll-details-mod
 export const routes: Routes = [
   {
     path: '',
-    component: NotPaidTollsComponent
+    component: NotPaidPassingChargesComponent
   },
   {
     path: 'history',
@@ -25,7 +25,7 @@ export const routes: Routes = [
 
 @NgModule({
   declarations: [
-    NotPaidTollsComponent,
+    NotPaidPassingChargesComponent,
     TollsHistoryComponent,
     PayTollModalComponent,
     TollDetailsModalComponent

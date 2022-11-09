@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
         items: [
           {
             label: 'Opłać przejazd',
-            routerLink: ['/tolls'],
+            routerLink: ['/passingCharges'],
             icon: 'pi pi-fw pi-dollar'
           },
           {
@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit {
           },
           {
             label: 'Historia opłat',
-            routerLink: ['/tolls/history'],
+            routerLink: ['/passingCharges/history'],
             icon: 'pi pi-fw pi-history'
           },
         ]

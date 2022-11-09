@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NotPaidTollsComponent } from './not-paid-tolls.component';
+import { NotPaidPassingChargesComponent } from './not-paid-passing-charges.component';
 
 describe('NotPaidTollsComponent', () => {
-  let component: NotPaidTollsComponent;
-  let fixture: ComponentFixture<NotPaidTollsComponent>;
+  let component: NotPaidPassingChargesComponent;
+  let fixture: ComponentFixture<NotPaidPassingChargesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NotPaidTollsComponent ]
+      declarations: [ NotPaidPassingChargesComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NotPaidTollsComponent);
+    fixture = TestBed.createComponent(NotPaidPassingChargesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
