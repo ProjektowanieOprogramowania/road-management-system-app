@@ -7,7 +7,10 @@
     <p-button label="Zmień" class="ml-3" styleClass="p-button-sm p-button-outlined" (onClick)="onChangeId()"></p-button>
   </div>
 
-  <p *ngIf="changeResult" class="text-green-500">Sukces!</p>
+  <div *ngIf="changeResult" >
+    <p class="text-green-500">Sukces!!</p>
+    <p class="font-bold">{{userId}}</p>
+  </div>
 
 
   <ng-template pTemplate="footer">

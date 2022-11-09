@@ -4,7 +4,7 @@ api.module.ts
 api/api.ts
 api/charges.service.ts
 api/passingCharges.service.ts
-api/penalties.service.ts
+api/old_penalties.service.ts
 api/roads.service.ts
 api/subscriptions.service.ts
 api/tariffs.service.ts

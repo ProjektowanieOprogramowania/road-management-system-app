@@ -16,14 +16,17 @@
         </ng-template>
         <ng-template pTemplate="body" let-penalty>
           <tr [pSelectableRow]="penalty">
-            <td>{{penalty.name}}</td>
+            <td>{{penalty.description}}</td>
             <td>{{penalty.date}}</td>
-            <td>{{penalty.price}}</td>
             <td>
-              <span *ngIf="penalty.isPayed == true">
+              <span>{{penalty.charge.amount}}</span>
+              <span>{{penalty.charge.chargeType}}</span>
+            </td>
+            <td>
+              <span *ngIf="penalty.charge.paid == true">
                 TAK
               </span>
-              <span *ngIf="penalty.isPayed == false">
+              <span *ngIf="penalty.charge.paid == false">
                 NIE
               </span>
             </td>

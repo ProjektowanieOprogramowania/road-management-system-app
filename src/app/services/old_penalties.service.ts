@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class PenaltiesService {
+export class Old_penaltiesService {
 
   API_URL = '/assets/mocks/penalties'
 
