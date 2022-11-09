@@ -1,21 +1,16 @@
-export interface PaymentMethod {
-  id: number,
+export interface PaymentMethodModel {
   name: string,
-  icon?: string,
-  url?: string
+  value: string
 }
 
-export const PaymentMethods: PaymentMethod[] = [
-  {
-    id: 1,
-    name: "Blik"
-  },
-  {
-    id: 2,
-    name: "Przelew"
-  },
-  {
-    id: 3,
-    name: "PayU"
-  }
-]
+// export const PaymentMethods: PaymentMethodModel[] = [
+//   {
+//     name: "Blik"
+//   },
+//   {
+//     name: "Przelew"
+//   },
+//   {
+//     name: "PayU"
+//   }
+// ]
