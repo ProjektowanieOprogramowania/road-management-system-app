@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {MessageService} from "primeng/api";
 import {Tariff, TariffsService} from "../../../services/generated";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-tariff-create-form',
@@ -21,6 +22,7 @@ export class TariffCreateFormComponent implements OnInit {
 
   tariffNameValid: boolean = true;
   tariffPricesValid: boolean = true;
+  subscriptions: Subscription = new Subscription();
 
   constructor(private tariffService: TariffsService, private router: Router, private messageService: MessageService) { }
 
@@ -60,17 +62,17 @@ export class TariffCreateFormComponent implements OnInit {
   }
 
   validateForm() {
-    // if(!this.prices || this.prices.size === 0) {
-    //   this.tariffPricesValid = false;
-    //   this.messageService.add({key: 'tl', severity:'error', summary: 'Błąd', detail: 'Taryfikator musi zawierać prznajmniej wariant cenowy'});
-    // } else {
-    //   this.tariffPricesValid = true;
-    // }
-    // if(!this.name || this.name.length === 0) {
-    //   this.tariffNameValid = false;
-    // } else {
-    //   this.tariffNameValid = true;
-    // }
+    if(!this.prices || this.getArray(this.prices).length === 0) {
+      this.tariffPricesValid = false;
+      this.messageService.add({key: 'tl', severity:'error', summary: 'Błąd', detail: 'Taryfikator musi zawierać prznajmniej wariant cenowy'});
+    } else {
+      this.tariffPricesValid = true;
+    }
+    if(!this.name || this.name.length === 0) {
+      this.tariffNameValid = false;
+    } else {
+      this.tariffNameValid = true;
+    }
   }
 
   createSubmit(){
@@ -82,8 +84,14 @@ export class TariffCreateFormComponent implements OnInit {
     }
     this.validateForm()
     if(this.tariffPricesValid && this.tariffNameValid) {
-      this.tariffService.addTariff(tariff)
-      this.router.navigate(['/tariffs']);
+      console.log("ADDED")
+      const sub = this.tariffService.addTariff(tariff)
+        .subscribe(data => {
+            console.log("Added", data)
+            this.router.navigate(['/tariffs']);
+          }
+        );
+      this.subscriptions.add(sub);
     }
   }
 }
