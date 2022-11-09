@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Subscription} from "rxjs";
 import {Tariff, TariffSimplified, TariffsService} from "../../../services/generated";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-tariff.ts',
@@ -14,7 +15,7 @@ export class TariffsListComponent implements OnInit, OnDestroy {
   subscriptions: Subscription = new Subscription();
   displayTariffDetails: boolean = false;
   displayTariffDelete: boolean = false;
-  constructor(private tariffService: TariffsService) { }
+  constructor(private tariffService: TariffsService, private router: Router) { }
 
   ngOnInit() {
     const sub = this.tariffService.getAllTariffs()
@@ -67,6 +68,10 @@ export class TariffsListComponent implements OnInit, OnDestroy {
       this.subscriptions.add(sub);
     }
     this.displayTariffDelete = true
+  }
+
+  handleAddTariff() {
+    this.router.navigate(['/tariffs/create']);
   }
 
   handleDelete(tariff: Tariff) {
