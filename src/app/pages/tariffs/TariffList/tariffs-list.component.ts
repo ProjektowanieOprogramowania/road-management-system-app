@@ -10,6 +10,7 @@ import {Tariff, TariffSimplified, TariffsService} from "../../../services/genera
 export class TariffsListComponent implements OnInit, OnDestroy {
   tariffs: TariffSimplified[] | undefined;
   selectedTariff: TariffSimplified | undefined;
+  tariffDetails: Tariff | undefined;
   subscriptions: Subscription = new Subscription();
   displayTariffDetails: boolean = false;
   displayTariffDelete: boolean = false;
@@ -28,14 +29,24 @@ export class TariffsListComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  getArray(map: Map<string, number>) {
-    return Array.from(map, ([name, value]) => ({ name, value }));
+  getArray(map: any) {
+    const newArray = Object.entries(map).map(([k,v]) => ({
+      name: k,
+      value: v
+    }))
+    return newArray
   }
 
-  onRowSelect(event: any, tariffs: any) {
-    console.log(tariffs)
+  onRowSelect(event: any) {
+    if(this.selectedTariff && this.selectedTariff.id) {
+      const sub = this.tariffService.getTariff(this.selectedTariff.id)
+        .subscribe(data => {
+            this.tariffDetails = data;
+          }
+        );
+      this.subscriptions.add(sub);
+    }
     this.displayTariffDetails = true;
-
   }
 
   onDetailsHide() {
@@ -46,21 +57,35 @@ export class TariffsListComponent implements OnInit, OnDestroy {
     this.selectedTariff = undefined;
   }
 
-  handleShowDelete(event: any) {
-    this.selectedTariff = event
+  handleShowDelete(tariff: TariffSimplified) {
+    if(tariff && tariff.id) {
+      const sub = this.tariffService.getTariff(tariff.id)
+        .subscribe(data => {
+            this.tariffDetails = data;
+          }
+        );
+      this.subscriptions.add(sub);
+    }
     this.displayTariffDelete = true
   }
 
   handleDelete(tariff: Tariff) {
     this.tariffs = undefined
-    if(tariff.id) {
+    let sub2 = undefined
+    if (tariff.id) {
       const sub = this.tariffService.deleteTariff(tariff.id)
         .subscribe(data => {
-            this.tariffs = data;
+            console.log("Deleted", data)
+                sub2 = this.tariffService.getAllTariffs().subscribe(data => {
+                this.tariffs = data;
+              }
+            );
           }
         );
       this.subscriptions.add(sub);
+      this.subscriptions.add(sub2);
       this.selectedTariff = undefined
+      this.tariffDetails = undefined
       this.displayTariffDelete = false
     }
   }

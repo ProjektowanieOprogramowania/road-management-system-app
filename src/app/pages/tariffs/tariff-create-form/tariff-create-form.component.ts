@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {TariffService} from "../../../services/tariff.service";
 import {MessageService} from "primeng/api";
+import {Tariff, TariffsService} from "../../../services/generated";
 
 @Component({
   selector: 'app-tariff-create-form',
@@ -13,7 +13,7 @@ import {MessageService} from "primeng/api";
 export class TariffCreateFormComponent implements OnInit {
   active : boolean = true;
   name: string = "";
-  prices: Map<string, number> = new Map;
+  prices: Record<string, number> = {};
   addPriceName: string = ""
   addPriceValue: number | undefined
   nameFieldValid: boolean = true;
@@ -22,13 +22,17 @@ export class TariffCreateFormComponent implements OnInit {
   tariffNameValid: boolean = true;
   tariffPricesValid: boolean = true;
 
-  constructor(private tariffService: TariffService, private router: Router, private messageService: MessageService) { }
+  constructor(private tariffService: TariffsService, private router: Router, private messageService: MessageService) { }
 
   ngOnInit(): void {
   }
 
-  getArray(map: Map<string, number>) {
-    return Array.from(map, ([name, value]) => ({ name, value }));
+  getArray(map: any) {
+    const newArray = Object.entries(map).map(([k,v]) => ({
+      name: k,
+      value: v
+    }))
+    return newArray
   }
 
   validateInput() {
@@ -47,30 +51,30 @@ export class TariffCreateFormComponent implements OnInit {
   newRow() {
     this.validateInput()
     if(this.nameFieldValid && this.priceFieldValid && this.addPriceValue) {
-      this.prices.set(this.addPriceName, this.addPriceValue);
+      this.prices[this.addPriceName] = this.addPriceValue
     }
   }
 
   deletePrice(any: string) {
-    this.prices.delete(any)
+    delete this.prices[this.addPriceName]
   }
 
   validateForm() {
-    if(!this.prices || this.prices.size === 0) {
-      this.tariffPricesValid = false;
-      this.messageService.add({key: 'tl', severity:'error', summary: 'Błąd', detail: 'Taryfikator musi zawierać prznajmniej wariant cenowy'});
-    } else {
-      this.tariffPricesValid = true;
-    }
-    if(!this.name || this.name.length === 0) {
-      this.tariffNameValid = false;
-    } else {
-      this.tariffNameValid = true;
-    }
+    // if(!this.prices || this.prices.size === 0) {
+    //   this.tariffPricesValid = false;
+    //   this.messageService.add({key: 'tl', severity:'error', summary: 'Błąd', detail: 'Taryfikator musi zawierać prznajmniej wariant cenowy'});
+    // } else {
+    //   this.tariffPricesValid = true;
+    // }
+    // if(!this.name || this.name.length === 0) {
+    //   this.tariffNameValid = false;
+    // } else {
+    //   this.tariffNameValid = true;
+    // }
   }
 
   createSubmit(){
-    const tariff = {
+    const tariff: Tariff = {
       id: 0,
       active: this.active,
       name: this.name,
