@@ -1,6 +1,8 @@
 <div class="flex-container test" [style]="{width: '800px', marginLeft: 'auto', marginRight: 'auto'}">
   <p class="header">Taryfikatory</p>
   <ng-container *ngIf="tariffs; else loading">
+    <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Dodaj taryfikator'"
+            [style]="{marginTop: '20px', marginBottom: '20px', marginLeft: 'auto', marginRight: 'auto', display: 'flex', width: '15em'}" (click)="handleAddTariff()"></button>
     <div *ngIf="tariffs.length > 0; else noTariffs" class="card table">
       <p-table [value]="tariffs" selectionMode="single" [(selection)]="selectedTariff" dataKey="id" responsiveLayout="scroll"
                (onRowSelect)="onRowSelect($event)">
@@ -36,13 +38,13 @@
   </ng-template>
 </div>
 
-<p-dialog *ngIf="selectedTariff" header="Szczegóły taryfikatora" [(visible)]="displayTariffDetails" [modal]="true"
+<p-dialog *ngIf="tariffDetails" header="Szczegóły taryfikatora" [(visible)]="displayTariffDetails" [modal]="true"
           [dismissableMask]="true" [draggable]="false"
           [style]="{width: '500px'}"
           (onHide)="onDetailsHide()">
           <ng-template pTemplate="rowexpansion">
             <div>
-              <p-table [value]="getArray(selectedTariff.prices)" dataKey="id">
+              <p-table [value]="getArray(tariffDetails.prices)" dataKey="id">
                 <ng-template pTemplate="header">
                   <tr>
                     <th pSortableColumn="name">
@@ -64,13 +66,13 @@
           </ng-template>
 </p-dialog>
 
-<p-dialog *ngIf="selectedTariff" header="Usuwanie taryfikatora" [(visible)]="displayTariffDelete" [modal]="true"
+<p-dialog *ngIf="tariffDetails" header="Usuwanie taryfikatora" [(visible)]="displayTariffDelete" [modal]="true"
           [dismissableMask]="true" [draggable]="false"
           [style]="{width: '500px'}"
           (onHide)="onDeleteDialogHide()">
   <ng-template pTemplate="rowexpansion">
     <div>
-      <p-table [value]="getArray(selectedTariff.prices)" dataKey="id">
+      <p-table [value]="getArray(tariffDetails.prices)" dataKey="id">
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name">
@@ -89,6 +91,6 @@
         </ng-template>
       </p-table>
     </div>
-    <button pButton type="button" icon="pi pi-trash" class="p-button-danger" [style]="{width: '25%', marginTop: '10px', marginLeft: 'auto', marginRight: '10px', display: 'flex'}" label="Usuń" (click)="handleDelete(selectedTariff)"></button>
+    <button pButton type="button" icon="pi pi-trash" class="p-button-danger" [style]="{width: '25%', marginTop: '10px', marginLeft: 'auto', marginRight: '10px', display: 'flex'}" label="Usuń" (click)="handleDelete(tariffDetails)"></button>
   </ng-template>
 </p-dialog>

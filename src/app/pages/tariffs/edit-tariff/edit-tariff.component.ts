@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Tariff} from "../../../common/models/tariff";
-import {TariffService} from "../../../services/tariff.service";
 import {Subscription} from "rxjs";
 import {MessageService} from 'primeng/api';
+import {Tariff, TariffsService} from "../../../services/generated";
 
 @Component({
   selector: 'app-edit-tariff',
@@ -22,7 +21,7 @@ export class EditTariffComponent implements OnInit {
   tariffNameValid: boolean = true;
   tariffPricesValid: boolean = true;
 
-  constructor(private route: ActivatedRoute, private tariffService: TariffService, private router: Router, private messageService: MessageService) { }
+  constructor(private route: ActivatedRoute, private tariffService: TariffsService, private router: Router, private messageService: MessageService) { }
 
   ngOnInit() {
     if(this.route.snapshot.paramMap.get('id')) {
@@ -40,8 +39,12 @@ export class EditTariffComponent implements OnInit {
     this.subscriptions.unsubscribe();
   }
 
-  getArray(map: Map<string, number>) {
-    return Array.from(map, ([name, value]) => ({ name, value }));
+  getArray(map: any) {
+    const newArray = Object.entries(map).map(([k,v]) => ({
+      name: k,
+      value: v
+    }))
+    return newArray
   }
 
   validateInput() {
@@ -60,18 +63,18 @@ export class EditTariffComponent implements OnInit {
   newRow() {
     this.validateInput()
     if(this.nameFieldValid && this.priceFieldValid && this.addPriceValue && this.tariff) {
-      this.tariff.prices.set(this.addPriceName, this.addPriceValue);
+      this.tariff.prices[this.addPriceName] = this.addPriceValue
     }
   }
 
   deletePrice(any: string) {
     if(this.tariff) {
-      this.tariff.prices.delete(any)
+      delete this.tariff.prices[any]
     }
   }
 
   validateForm() {
-    if(!this.tariff?.prices || this.tariff.prices.size === 0) {
+    if(!this.tariff?.prices || this.getArray(this.tariff.prices).length === 0) {
       this.tariffPricesValid = false;
       this.messageService.add({key: 'tl', severity:'error', summary: 'Błąd', detail: 'Taryfikator musi zawierać prznajmniej wariant cenowy'});
     } else {
@@ -87,9 +90,13 @@ export class EditTariffComponent implements OnInit {
   async editSubmit() {
     this.validateForm();
     if(this.tariffPricesValid && this.tariffNameValid) {
-      if (this.tariff) {
-        this.tariffService.editTariff(this.tariff)
-        this.router.navigate(['/tariffs']);
+      if (this.tariff && this.tariff.id) {
+        const sub = this.tariffService.updateTariff(this.tariff.id, this.tariff)
+          .subscribe(data => {
+              console.log("Added", data)
+              this.router.navigate(['/tariffs']);
+            }
+          );
       }
     }
   }

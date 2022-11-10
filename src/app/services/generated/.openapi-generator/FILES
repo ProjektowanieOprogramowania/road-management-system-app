@@ -6,6 +6,7 @@ api/charges.service.ts
 api/passingCharges.service.ts
 api/old_penalties.service.ts
 api/roads.service.ts
+api/penalties.service.ts
 api/subscriptions.service.ts
 api/tariffs.service.ts
 configuration.ts

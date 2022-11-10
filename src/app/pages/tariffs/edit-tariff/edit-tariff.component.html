@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <p-table [value]="getArray(tariff.prices)" *ngIf="tariff.prices.size > 0; else noTariffs">
+      <p-table [value]="getArray(tariff.prices)" *ngIf="getArray(tariff.prices).length > 0; else noTariffs">
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name">
@@ -61,7 +61,7 @@
         </p-table>
       </ng-template>
     </div>
-    <button pButton type="button" icon="" class="ui-button-success" [label]="'Zapisz'"
+    <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Zapisz'"
             [style]="{marginTop: '20px', marginLeft: 'auto', marginRight: '0', display: 'flex', width: '10em'}" (click)="editSubmit()"></button>
   </div>
 </ng-container>

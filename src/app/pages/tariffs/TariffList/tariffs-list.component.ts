@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Tariff} from "../../../common/models/tariff";
 import {Subscription} from "rxjs";
-import {TariffService} from "../../../services/tariff.service";
+import {Tariff, TariffSimplified, TariffsService} from "../../../services/generated";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-tariff.ts',
@@ -9,12 +9,13 @@ import {TariffService} from "../../../services/tariff.service";
   styleUrls: ['./tariffs-list.component.scss']
 })
 export class TariffsListComponent implements OnInit, OnDestroy {
-  tariffs: Tariff[] | undefined;
-  selectedTariff: Tariff | undefined;
+  tariffs: TariffSimplified[] | undefined;
+  selectedTariff: TariffSimplified | undefined;
+  tariffDetails: Tariff | undefined;
   subscriptions: Subscription = new Subscription();
   displayTariffDetails: boolean = false;
   displayTariffDelete: boolean = false;
-  constructor(private tariffService: TariffService) { }
+  constructor(private tariffService: TariffsService, private router: Router) { }
 
   ngOnInit() {
     const sub = this.tariffService.getAllTariffs()
@@ -29,11 +30,23 @@ export class TariffsListComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  getArray(map: Map<string, number>) {
-    return Array.from(map, ([name, value]) => ({ name, value }));
+  getArray(map: any) {
+    const newArray = Object.entries(map).map(([k,v]) => ({
+      name: k,
+      value: v
+    }))
+    return newArray
   }
 
   onRowSelect(event: any) {
+    if(this.selectedTariff && this.selectedTariff.id) {
+      const sub = this.tariffService.getTariff(this.selectedTariff.id)
+        .subscribe(data => {
+            this.tariffDetails = data;
+          }
+        );
+      this.subscriptions.add(sub);
+    }
     this.displayTariffDetails = true;
   }
 
@@ -45,20 +58,40 @@ export class TariffsListComponent implements OnInit, OnDestroy {
     this.selectedTariff = undefined;
   }
 
-  handleShowDelete(event: any) {
-    this.selectedTariff = event
+  handleShowDelete(tariff: TariffSimplified) {
+    if(tariff && tariff.id) {
+      const sub = this.tariffService.getTariff(tariff.id)
+        .subscribe(data => {
+            this.tariffDetails = data;
+          }
+        );
+      this.subscriptions.add(sub);
+    }
     this.displayTariffDelete = true
+  }
+
+  handleAddTariff() {
+    this.router.navigate(['/tariffs/create']);
   }
 
   handleDelete(tariff: Tariff) {
     this.tariffs = undefined
-    const sub = this.tariffService.deleteTariff(tariff)
-      .subscribe(data => {
-          this.tariffs = data;
-        }
-      );
-    this.subscriptions.add(sub);
-    this.selectedTariff = undefined
-    this.displayTariffDelete = false
+    let sub2 = undefined
+    if (tariff.id) {
+      const sub = this.tariffService.deleteTariff(tariff.id)
+        .subscribe(data => {
+            console.log("Deleted", data)
+                sub2 = this.tariffService.getAllTariffs().subscribe(data => {
+                this.tariffs = data;
+              }
+            );
+          }
+        );
+      this.subscriptions.add(sub);
+      this.subscriptions.add(sub2);
+      this.selectedTariff = undefined
+      this.tariffDetails = undefined
+      this.displayTariffDelete = false
+    }
   }
 }
