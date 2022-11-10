@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import {PassingChargesService} from "../../../../services/generated";
+import {PassingChargesService, PaymentMethod} from "../../../../services/generated";
 import {PassingChargeModel} from "../../../../common/models/passingCharge.model";
 import {UserProfileService} from "../../../../services/user-profile.service";
 import {ToPassingChargeModel} from "../../../../common/utils/passingChargeConverter";
@@ -22,6 +22,9 @@ export class NotPaidPassingChargesComponent implements OnInit, OnDestroy {
 
   uuid = '';
 
+  isPaying = false;
+  paymentMethod?: PaymentMethod;
+
   constructor(
     private passingChargesService: PassingChargesService,
     private userService: UserProfileService,
@@ -36,13 +39,6 @@ export class NotPaidPassingChargesComponent implements OnInit, OnDestroy {
         }
       );
     this.subscriptions.add(sub);
-
-    const tollId = this.route.snapshot.queryParamMap.get('chargeId');
-
-    if (tollId) {
-      this.selectedPassingCharge = this.passingCharges?.find(ps => ps.id === Number.parseInt(tollId));
-      this.displayPayPassingChargeModal = true;
-    }
   }
 
   ngOnDestroy() {
@@ -60,5 +56,19 @@ export class NotPaidPassingChargesComponent implements OnInit, OnDestroy {
   onPayTollModalHide() {
     this.selectedPassingCharge = undefined;
     this.displayPayPassingChargeModal = false;
+  }
+
+  onPay(paymentMethod: PaymentMethod) {
+    this.isPaying = true;
+    this.paymentMethod = paymentMethod;
+  }
+
+  onFail() {
+    this.isPaying = false;
+    const passingChargeId = this.route.snapshot.queryParamMap.get('passingChargeId');
+    if (passingChargeId) {
+      this.selectedPassingCharge = this.passingCharges?.find(ps => ps.id === Number.parseInt(passingChargeId));
+      this.displayPayPassingChargeModal = true;
+    }
   }
 }

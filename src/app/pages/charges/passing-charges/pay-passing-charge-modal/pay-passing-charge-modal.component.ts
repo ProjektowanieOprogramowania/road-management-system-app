@@ -15,6 +15,7 @@ export class PayPassingChargeModalComponent implements OnInit {
   @Input() display = false;
 
   @Output() hide = new EventEmitter();
+  @Output() pay = new EventEmitter<PaymentMethod>();
 
   paymentMethods = PaymentMethodModels;
 
@@ -38,16 +39,7 @@ export class PayPassingChargeModalComponent implements OnInit {
       return;
     }
 
-    // this.router.navigate(['/payments/waiting', {
-    //     whenSuccess: '/charges/history', whenFailure: '/charges/'
-    //   }],
-    //   {
-    //     queryParams: {
-    //       chargeId: this.passingCharge?.id,
-    //       methodId:
-    //     }
-    //   },
-    // )
+    this.pay.emit(this.selectedPaymentMethod.value);
   }
 
   onSelectPaymentMethodButtonClick() {

@@ -2,7 +2,7 @@
           [dismissableMask]="true" [draggable]="false" [style]="{width: '500px'}"
           (onHide)="onHide()">
   <p>Kwota: <span class="font-semibold">{{charge.amount}} PLN</span></p>
-  <p>Data opłacenia: <span class="font-semibold">{{charge.payment?.dateTime}}</span></p>
+  <p>Data opłacenia: <span class="font-semibold">{{charge.paymentDate | date}}</span></p>
   <p>Typ opłaty: <span class="font-semibold">{{charge.chargeType}}</span></p>
   <p>Opis: <span class="font-semibold">{{charge.description}}</span></p>
   <ng-template pTemplate="footer">

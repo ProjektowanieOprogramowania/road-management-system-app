@@ -15,6 +15,7 @@ import {
   PayPassingChargeModalComponent
 } from './passing-charges/pay-passing-charge-modal/pay-passing-charge-modal.component';
 import {ChargeDetailsModalComponent} from './charge-details-modal/charge-details-modal.component';
+import {PaymentsModule} from "../payments/payments.module";
 
 export const routes: Routes = [
   {
@@ -42,7 +43,8 @@ export const routes: Routes = [
     DialogModule,
     SelectButtonModule,
     FormsModule,
-    ButtonModule
+    ButtonModule,
+    PaymentsModule
   ]
 })
 export class ChargesModule {

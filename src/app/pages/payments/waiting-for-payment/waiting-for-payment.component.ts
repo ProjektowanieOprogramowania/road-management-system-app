@@ -16,28 +16,24 @@ export class WaitingForPaymentComponent implements OnInit {
   navigateWhenSuccess = '';
   navigateWhenFailure = '';
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private messageService: MessageService) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private messageService: MessageService,
+    private subscriptionService: SubscriptionsService,
+    private passingChargesService: PassingChargesService
+  ) {
   }
 
   ngOnInit(): void {
-    this.chargeId = this.route.snapshot.queryParamMap.get('chargeId');
-    this.paymentMethodId = this.route.snapshot.queryParamMap.get('methodId');
 
-    const navWhenFailure = this.route.snapshot.paramMap.get('whenFailure');
-    const navWhenSuccess = this.route.snapshot.paramMap.get('whenSuccess');
-    this.navigateWhenFailure =  navWhenFailure ? navWhenFailure : '';
-    this.navigateWhenSuccess = navWhenSuccess ? navWhenSuccess : '';
-
-    setTimeout(() => {
-      //przelew spejclanie nie bedzie dzialac
-      if (this.paymentMethodId !== '2') {
-        this.onSuccess();
-      } else {
-        this.onFailure();
-      }
-    }, 2000)
+    if (this.subscriptionModel !== undefined) {
+      this.onPaySubscription();
+    } else if (this.passingChargeId !== undefined) {
+      this.onPayPassingCharge();
+    } else {
+      this.onBadInput();
+    }
   }
 
   onSuccess() {
@@ -54,7 +50,61 @@ export class WaitingForPaymentComponent implements OnInit {
     }, 3000)
   }
 
-  onFailure() {
+  onPayPassingChargeSuccess() {
+    this.messageService.add({severity: 'success', summary: 'Płatność przebiegła pomyślnie!'})
+
+    this.subscription.add(
+      this.passingChargesService.payPassingCharge(this.passingChargeId!, this.paymentMethod!)
+        .subscribe(data => {
+          setTimeout(() => {
+            this.router.navigate(['/charges']);
+          }, 2500)
+        })
+    );
+  }
+
+  onPayPassingChargeFailure() {
+    this.messageService.add({severity: 'error', summary: 'Płatność nie powiodła się!'});
+
+    setTimeout(() => {
+      this.router.navigate(['/charges/notPaidPassingCharges'], {
+        queryParams: {
+          passingChargeId: this.passingChargeId
+        }
+      });
+      this.fail.emit();
+      // window.location.href = window.location.origin + `/charges/notPaidPassingCharges?passingChargeId=${this.passingChargeId}`;
+    }, 2500);
+  }
+
+  onPaySubscriptionFailure() {
+    this.messageService.add({severity: 'error', summary: 'Płatność nie powiodła się!'});
+
+    setTimeout(() => {
+      this.router.navigate(['/subscriptions/subscribe'], {});
+      window.location.reload();
+    }, 2500);
+  }
+
+  onPaySubscriptionSuccess() {
+
+    this.subscription.add(
+      this.subscriptionService.buySubscription(this.paymentMethod!, this.subscriptionModel!)
+        .subscribe({
+          next: value => {
+            this.messageService.add({severity: 'success', summary: 'Płatność przebiegła pomyślnie!'});
+            setTimeout(() => {
+              this.router.navigate(['/subscriptions/payed']);
+            }, 3000);
+          },
+          error: err => {
+            this.messageService.add({severity: 'error', summary: err});
+            console.log('err');
+          }
+        }));
+  }
+
+  onBadInput() {
     this.messageService.add({severity: 'error', summary: 'Płatność nie powiodła się!'});
 
     setTimeout(() => {

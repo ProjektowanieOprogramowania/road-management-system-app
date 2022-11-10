@@ -16,7 +16,7 @@
           <tr [pSelectableRow]="charge">
             <td>{{charge.orderNumber}}</td>
             <td>{{charge.amount}}</td>
-            <td>{{charge.paymentDate ? charge.pamentDate : 'Brak danych'}}</td>
+            <td>{{charge.paymentDate | date}}</td>
             <td>{{charge.chargeType}}</td>
           </tr>
         </ng-template>

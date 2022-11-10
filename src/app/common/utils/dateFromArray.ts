@@ -1,6 +1,5 @@
 
 export const dateFromArray = (dateArray : string) => {
-
   return new Date(
   Number(dateArray[0]),
     Number(dateArray[1]),

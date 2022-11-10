@@ -2,7 +2,7 @@ import {PaymentMethod} from "../../services/generated";
 
 export interface PaymentMethodModel {
   name: string,
-  value: string
+  value: PaymentMethod
 }
 
 export const PaymentMethodModels: PaymentMethodModel[] = [
