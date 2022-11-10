@@ -44,6 +44,11 @@ export class NavbarComponent implements OnInit {
             icon: 'pi pi-fw pi-credit-card'
           },
           {
+            label: 'Posiadane abonamenty',
+            routerLink: ['/subscriptions/payed'],
+            icon: 'pi pi-fw pi-credit-card'
+          },
+          {
             label: 'Historia opłat',
             routerLink: ['/charges'],
             icon: 'pi pi-fw pi-history'

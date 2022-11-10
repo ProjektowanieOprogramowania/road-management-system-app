@@ -1,59 +1,72 @@
-<div class="p-card my-4 p-4">
-  <p class="p-card-title text-center mb-4 text-xl">Zakup abonament</p>
-  <form class="flex flex-column justify-content-center gap-6" >
-    <div class="flex card-container justify-content-center flex-wrap gap-6">
-      <div class="block">
-        <p class="form-label">Wybór trasy</p>
-        <p-listbox [options]="roads"  [(ngModel)]="selectedRoads"
-                   name="selectedAvailableSubs"
-                   [metaKeySelection]="false" [checkbox]="true" [filter]="true" [multiple]="true"
-                   optionLabel="name" [listStyle]="{'max-height':'250px'}" [style]="{'width':'300px'}"
-                   (ngModelChange)="onInput()"
-        >
-          <ng-template let-selectedRoads pTemplate="item">
-            <div class="sub-item">
-              <div>
-                <span>{{selectedRoads.name}}</span>
-                <small class="text-500">  {{selectedRoads.subscriptionPriceForOneDay}} zł</small>
+
+<ng-container *ngIf="!hideMainContent; else payment_fired">
+  <div class="p-card my-4 p-4">
+    <p class="p-card-title text-center mb-4 text-xl">Zakup abonament</p>
+    <form class="flex flex-column justify-content-center gap-6" >
+      <div class="flex card-container justify-content-center flex-wrap gap-6">
+        <div class="block">
+          <p class="form-label">Wybór trasy</p>
+          <p-listbox [options]="roads"  [(ngModel)]="selectedRoads"
+                     name="selectedAvailableSubs"
+                     [metaKeySelection]="false" [checkbox]="true" [filter]="true" [multiple]="true"
+                     optionLabel="name" [listStyle]="{'max-height':'250px'}" [style]="{'width':'300px'}"
+                     (ngModelChange)="onInput()"
+          >
+            <ng-template let-selectedRoads pTemplate="item">
+              <div class="sub-item">
+                <div>
+                  <span>{{selectedRoads.name}}</span>
+                  <small class="text-500">  {{selectedRoads.subscriptionPriceForOneDay}} zł</small>
+                </div>
               </div>
-            </div>
-          </ng-template>
-        </p-listbox>
+            </ng-template>
+          </p-listbox>
+        </div>
+        <div class="flex flex-column gap-2">
+          <div class="block">
+            <p class="form-label">Od daty:</p>
+            <p-calendar [(ngModel)]="fromDate"
+                        name="dateRangeFrom" [readonlyInput]="true" inputId="dateRangeFrom"
+                        [minDate]="toDate ? toDate : minDate" (ngModelChange)="onInput()">
+
+            </p-calendar>
+          </div>
+
+          <div class="block">
+            <p class="form-label">Do daty:</p>
+            <p-calendar [(ngModel)]="toDate"
+                        name="dateRangeTo" [readonlyInput]="true" inputId="dateRangeTo"
+                        [minDate]="fromDate ? fromDate : minDate" (ngModelChange)="onInput()" >
+
+            </p-calendar>
+          </div>
+
+          <div [className]="priceToPay === 0 ? 'bg-yellow-300 block px-2 p-card mt-auto' : 'bg-green-200 block px-2 p-card mt-auto' ">
+            <p>Do zapłaty:</p>
+            <p class="font-bold" *ngIf="priceToPay !== 0">{{priceToPay}} zł</p>
+            <p class="font-bold" *ngIf="priceToPay === 0">Zaznacz dane</p>
+          </div>
+        </div>
       </div>
-      <div class="flex flex-column gap-2">
-        <div class="block">
-          <p class="form-label">Od daty:</p>
-          <p-calendar [(ngModel)]="fromDate"
-                      name="dateRangeFrom" [readonlyInput]="true" inputId="dateRangeFrom"
-                      [minDate]="toDate ? toDate : minDate" (ngModelChange)="onInput()">
-
-          </p-calendar>
-        </div>
-
-        <div class="block">
-          <p class="form-label">Do daty:</p>
-          <p-calendar [(ngModel)]="toDate"
-                      name="dateRangeTo" [readonlyInput]="true" inputId="dateRangeTo"
-                      [minDate]="fromDate ? fromDate : minDate" (ngModelChange)="onInput()" >
-
-          </p-calendar>
-        </div>
-
-        <div [className]="priceToPay === 0 ? 'bg-yellow-300 block px-2 p-card mt-auto' : 'bg-green-200 block px-2 p-card mt-auto' ">
-          <p>Do zapłaty:</p>
-          <p class="font-bold" *ngIf="priceToPay !== 0">{{priceToPay}} zł</p>
-          <p class="font-bold" *ngIf="priceToPay === 0">Zaznacz dane</p>
-        </div>
-      </div>
-    </div>
-    <p-button class="text-center" [disabled]="priceToPay === 0" (click)="showSubDetailsModal()" >Przejdź do płatności</p-button>
-  </form>
-</div>
+      <p-button class="text-center" [disabled]="priceToPay === 0" (click)="showSubDetailsModal()" >Przejdź do płatności</p-button>
+    </form>
+  </div>
+</ng-container>
 
 <app-subscription-modal *ngIf="displaySubDetailsModal"
                         [subscriptionOrderData]="subscriptionOrderData"
                         [display]="displaySubDetailsModal"
-                        (hide)="onSubDetailsModalHide()">
+                        (hide)="onSubDetailsModalHide()"
+                        (onPaymentFired)="onPaymentFiredFromModal($event)"
+>
 
 </app-subscription-modal>
+
+<ng-template #payment_fired>
+  <app-waiting-for-payment
+    [subscriptionModel]="subscriptionOrderData"
+    [paymentMethod]="selectedPaymentMethod"
+  >
+  </app-waiting-for-payment>
+</ng-template>
 

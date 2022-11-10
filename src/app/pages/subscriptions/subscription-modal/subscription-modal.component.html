@@ -1,19 +1,22 @@
-<p-dialog *ngIf="subscriptionOrderData" header="Płatność abonamentu" [(visible)]="display" [modal]="true"
-          [dismissableMask]="true" [draggable]="false" [style]="{width: '500px'}"
-          (onHide)="onHide()">
 
-  <p>Od: <span class="font-semibold">{{subscriptionOrderData.subscriptionFrom | date}}</span></p>
-  <p>Do: <span class="font-semibold">{{subscriptionOrderData.subscriptionTo | date}}</span></p>
-  <p *ngIf="subscriptionOrderData.charge !== undefined">Kwota: <span class="font-semibold">{{subscriptionOrderData.charge.amount}} PLN</span></p>
+  <p-dialog *ngIf="subscriptionOrderData" header="Płatność abonamentu" [(visible)]="display" [modal]="true"
+            [dismissableMask]="true" [draggable]="false" [style]="{width: '500px'}"
+            (onHide)="onHide()">
 
-  <p class="text-md font-semibold mt-5 mb-4">Wybierz metodę płatności</p>
-  <p-selectButton [options]="paymentMethods" [(ngModel)]="selectedPaymentMethod" optionLabel="name"
-                  (onOptionClick)="onSelectPaymentMethodButtonClick()"></p-selectButton>
-  <p *ngIf="displayUnselectedPaymentMethodError" class="text-sm text-red-500 mb-0 mt-2 ml-1">
-    Nie wybrano metody płatności!
-  </p>
+    <p>Od: <span class="font-semibold">{{subscriptionOrderData.subscriptionFrom | date}}</span></p>
+    <p>Do: <span class="font-semibold">{{subscriptionOrderData.subscriptionTo | date}}</span></p>
+    <p *ngIf="subscriptionOrderData.charge !== undefined">Kwota: <span class="font-semibold">{{subscriptionOrderData.charge.amount}} PLN</span></p>
 
-  <ng-template pTemplate="footer">
-    <p-button label="Ok" styleClass="p-button-sm p-button-outlined" (onClick)="onPay()"></p-button>
-  </ng-template>
-</p-dialog>
+    <p class="text-md font-semibold mt-5 mb-4">Wybierz metodę płatności</p>
+    <p-selectButton [options]="paymentMethods" [(ngModel)]="selectedPaymentMethod" optionLabel="name"
+                    (onOptionClick)="onSelectPaymentMethodButtonClick()"></p-selectButton>
+    <p *ngIf="displayUnselectedPaymentMethodError" class="text-sm text-red-500 mb-0 mt-2 ml-1">
+      Nie wybrano metody płatności!
+    </p>
+
+    <ng-template pTemplate="footer">
+      <p-button label="Ok" styleClass="p-button-sm p-button-outlined" (onClick)="onPay()"></p-button>
+    </ng-template>
+  </p-dialog>
+
+

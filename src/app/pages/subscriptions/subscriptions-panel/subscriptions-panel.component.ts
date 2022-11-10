@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription, zip} from "rxjs";
-import {Charge, Road, RoadsService, SubscriptionModel} from "../../../services/generated";
+import {Charge, PaymentMethod, Road, RoadsService, SubscriptionModel} from "../../../services/generated";
 import {SubscriptionsService} from "../../../services/subscriptions.service";
 import {AvailableSubscriptionModel, SubscriptionOrderModel} from "../../../common/models/subscription.model";
 import {MessageService} from "primeng/api";
@@ -24,6 +24,7 @@ export class SubscriptionsPanelComponent implements OnInit {
   selectedRoads: Road[] = [];
   fromDate!: Date;
   toDate!: Date;
+  selectedPaymentMethod!: PaymentMethod;
 
   subscriptionOrderData: SubscriptionModel ={
     roadsIds: [],
@@ -33,6 +34,7 @@ export class SubscriptionsPanelComponent implements OnInit {
   //calculates
   priceToPay = 0;
   displaySubDetailsModal = false;
+  hideMainContent = false;
 
 
   //validate
@@ -111,6 +113,12 @@ export class SubscriptionsPanelComponent implements OnInit {
     }
 
     this.displaySubDetailsModal = true;
+  }
+
+  onPaymentFiredFromModal(paymentMethod: PaymentMethod){
+    this.onSubDetailsModalHide();
+    this.selectedPaymentMethod = paymentMethod;
+    this.hideMainContent = true;
   }
 
 

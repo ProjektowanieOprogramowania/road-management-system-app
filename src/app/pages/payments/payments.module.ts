@@ -13,14 +13,17 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    WaitingForPaymentComponent
-  ],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    ProgressSpinnerModule,
-    ToastModule
-  ]
+    declarations: [
+        WaitingForPaymentComponent
+    ],
+    exports: [
+        WaitingForPaymentComponent
+    ],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        ProgressSpinnerModule,
+        ToastModule
+    ]
 })
 export class PaymentsModule { }

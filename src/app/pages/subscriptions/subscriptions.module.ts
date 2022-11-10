@@ -11,6 +11,7 @@ import {SelectButtonModule} from "primeng/selectbutton";
 import {
   SubscriptionSuccessDetailsComponent
 } from "./subscription-success-details/subscription-success-details.component";
+import {PaymentsModule} from "../payments/payments.module";
 
 
 export const routes: Routes = [
@@ -19,7 +20,7 @@ export const routes: Routes = [
     component: SubscriptionsPanelComponent
   },
   {
-    path: 'subscribe-success/:id',
+    path: 'payed',
     component: SubscriptionSuccessDetailsComponent
   }
 ];
@@ -37,7 +38,8 @@ export const routes: Routes = [
     FormsModule,
     CalendarModule,
     DialogModule,
-    SelectButtonModule
+    SelectButtonModule,
+    PaymentsModule
   ]
 })
 export class SubscriptionsModule { }

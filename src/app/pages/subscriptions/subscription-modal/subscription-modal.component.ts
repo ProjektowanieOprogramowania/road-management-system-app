@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
-import {SubscriptionModel} from "../../../services/generated";
+import {PaymentMethod, SubscriptionModel} from "../../../services/generated";
 import {PaymentMethodModel, PaymentMethodModels} from "../../../common/models/paymentMethod";
 
 @Component({
@@ -14,12 +14,17 @@ export class SubscriptionModalComponent implements OnInit {
   @Input() display = false;
 
   @Output() hide = new EventEmitter();
+  @Output() onPaymentFired = new EventEmitter<PaymentMethod>();
 
   paymentMethods = PaymentMethodModels;
+
+  selectedPaymentMethodLegacy: PaymentMethod | undefined;
 
   selectedPaymentMethod: PaymentMethodModel | undefined;
 
   displayUnselectedPaymentMethodError = false;
+
+  isPaymentWaiting = true;
 
   constructor(private router: Router) {
   }
@@ -37,13 +42,8 @@ export class SubscriptionModalComponent implements OnInit {
       return;
     }
 
-    // this.router.navigate(['/payments/waiting',{
-    //   whenSuccess:'/subscriptions/subscribe-success/0', whenFailure:'/subscriptions/subscribe' }], {
-    //   queryParams: {
-    //     chargeId: 123,
-    //     methodId: this.selectedPaymentMethod.
-    //   }
-    // })
+    this.selectedPaymentMethodLegacy = this.selectedPaymentMethod.value;
+    this.onPaymentFired.emit(this.selectedPaymentMethodLegacy);
   }
 
   onSelectPaymentMethodButtonClick() {

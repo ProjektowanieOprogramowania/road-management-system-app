@@ -1,6 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
+import {
+  PassingChargesService,
+  PaymentMethod,
+  SubscriptionModel,
+  SubscriptionsService
+} from "../../../services/generated";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-waiting-for-payment',
@@ -10,11 +17,13 @@ import {MessageService} from "primeng/api";
 })
 export class WaitingForPaymentComponent implements OnInit {
 
-  chargeId: string | null | undefined;
-  paymentMethodId: string | null | undefined;
+  @Input() subscriptionModel?: SubscriptionModel;
+  @Input() passingChargeId?: number;
+  @Input() paymentMethod?: PaymentMethod;
 
-  navigateWhenSuccess = '';
-  navigateWhenFailure = '';
+  @Output() fail = new EventEmitter();
+
+  subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -36,18 +45,25 @@ export class WaitingForPaymentComponent implements OnInit {
     }
   }
 
-  onSuccess() {
-    this.messageService.add({severity: 'success', summary: 'Płatność przebiegła pomyślnie!'});
-
-    // PassingChargesMock.find(x => x.id === Number.parseInt(this.chargeId!))!.payment = {
-    //   id: Number.parseInt(this.chargeId!),
-    //   paymentMethod: PaymentMethods.find(x => x.id === Number.parseInt(this.paymentMethodId!))!,
-    //   date: new Date(2022, 2, 2)
-    // }
-
+  onPaySubscription() {
     setTimeout(() => {
-      this.router.navigate([this.navigateWhenSuccess]);
-    }, 3000)
+      if (this.paymentMethod === PaymentMethod.PostalOrder) {
+        this.onPaySubscriptionFailure();
+      } else {
+        this.onPaySubscriptionSuccess();
+      }
+    }, 2000);
+
+  }
+
+  onPayPassingCharge() {
+    setTimeout(() => {
+      if (this.paymentMethod === PaymentMethod.PostalOrder) {
+        this.onPayPassingChargeFailure();
+      } else {
+        this.onPayPassingChargeSuccess();
+      }
+    }, 2000);
   }
 
   onPayPassingChargeSuccess() {
@@ -108,11 +124,7 @@ export class WaitingForPaymentComponent implements OnInit {
     this.messageService.add({severity: 'error', summary: 'Płatność nie powiodła się!'});
 
     setTimeout(() => {
-      this.router.navigate([this.navigateWhenFailure], {
-        queryParams: {
-          chargeId: this.chargeId,
-        }
-      });
-    }, 2500)
+      this.router.navigate([''], {});
+    }, 2500);
   }
 }
