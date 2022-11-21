@@ -64,6 +64,16 @@ export class NavbarComponent implements OnInit {
             icon: 'pi pi-fw pi-exclamation-triangle',
           },
         ]
+      },
+      {
+        label: 'Mapy',
+        items: [
+          {
+            label: 'Mapa dróg',
+            routerLink: ['/map/roadMap'],
+            icon: 'pi pi-fw pi-map',
+          },
+        ]
       }
     ];
 

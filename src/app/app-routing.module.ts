@@ -28,6 +28,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/payments/payments.module').then(m => m.PaymentsModule)
   },
   {
+    path: 'map',
+    loadChildren: () => import('./pages/map/map.module').then(m => m.MapModule)
+  },
+  {
     path: '**',
     pathMatch: 'full',
     component: PageNotFoundComponent
