@@ -2,10 +2,14 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { CameraStreamService } from './api/cameraStream.service';
 import { ChargesService } from './api/charges.service';
 import { PassingChargesService } from './api/passingCharges.service';
 import { PenaltiesService } from './api/penalties.service';
+import { RoadNodesService } from './api/roadNodes.service';
+import { RoadSegmentsService } from './api/roadSegments.service';
 import { RoadsService } from './api/roads.service';
+import { SensorsService } from './api/sensors.service';
 import { SubscriptionsService } from './api/subscriptions.service';
 import { TariffsService } from './api/tariffs.service';
 

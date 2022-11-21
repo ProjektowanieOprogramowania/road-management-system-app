@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription, zip} from "rxjs";
-import {Charge, PaymentMethod, Road, RoadsService, SubscriptionModel} from "../../../services/generated";
-import {SubscriptionsService} from "../../../services/subscriptions.service";
-import {AvailableSubscriptionModel, SubscriptionOrderModel} from "../../../common/models/subscription.model";
+import {Charge, PaymentMethod, Road, RoadsService} from "../../../services/generated";
 import {MessageService} from "primeng/api";
 import {UserProfileService} from "../../../services/user-profile.service";
+import {SubscriptionModel} from "../../../common/models/subscription.model";
 
 @Component({
   selector: 'app-subscriptions-panel',

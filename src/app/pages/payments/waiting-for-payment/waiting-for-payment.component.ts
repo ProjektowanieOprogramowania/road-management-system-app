@@ -4,10 +4,10 @@ import {MessageService} from "primeng/api";
 import {
   PassingChargesService,
   PaymentMethod,
-  SubscriptionModel,
   SubscriptionsService
 } from "../../../services/generated";
 import {Subscription} from "rxjs";
+import {SubscriptionModel} from "../../../common/models/subscription.model";
 
 @Component({
   selector: 'app-waiting-for-payment',

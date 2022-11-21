@@ -4,13 +4,12 @@ import {Router} from "@angular/router";
 import {
   Road,
   RoadsService,
-  SubscriptionModel,
   SubscriptionsService
 } from "../../../services/generated";
-import {SubscriptionSuccessModel} from "../../../common/models/subscription.model";
 import {Observable, Subscription} from "rxjs";
 import {UserProfileService} from "../../../services/user-profile.service";
 import {dateFromArray} from "../../../common/utils/dateFromArray";
+import {SubscriptionModel} from "../../../common/models/subscription.model";
 
 @Component({
   selector: 'app-subscription-success-details',
@@ -81,6 +80,5 @@ export class SubscriptionSuccessDetailsComponent implements OnInit {
   onBack(){
     this.router.navigate(['/subscriptions/subscribe']);
   }
-
 }
 

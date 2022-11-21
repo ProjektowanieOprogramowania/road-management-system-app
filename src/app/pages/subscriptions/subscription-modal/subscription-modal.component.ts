@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
-import {PaymentMethod, SubscriptionModel} from "../../../services/generated";
+import {PaymentMethod} from "../../../services/generated";
 import {PaymentMethodModel, PaymentMethodModels} from "../../../common/models/paymentMethod";
+import {SubscriptionModel} from "../../../common/models/subscription.model";
 
 @Component({
   selector: 'app-subscription-modal',
