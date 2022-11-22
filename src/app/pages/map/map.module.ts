@@ -13,6 +13,9 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ReactiveFormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {InputNumberModule} from "primeng/inputnumber";
+import { RoadMapDeleteModalComponent } from './road-map-delete-modal/road-map-delete-modal.component';
+import {DialogModule} from "primeng/dialog";
+import {SubscriptionsModule} from "../subscriptions/subscriptions.module";
 
 export const routes: Routes = [
   {
@@ -28,7 +31,8 @@ export const routes: Routes = [
 @NgModule({
   declarations: [
     RoadMapComponent,
-    RoadMapEditorComponent
+    RoadMapEditorComponent,
+    RoadMapDeleteModalComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -43,7 +47,9 @@ export const routes: Routes = [
     ReactiveFormsModule,
     InputTextModule,
     InputNumberModule,
-    ButtonModule
+    ButtonModule,
+    DialogModule,
+    SubscriptionsModule
   ]
 })
 export class MapModule {

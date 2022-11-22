@@ -3,6 +3,7 @@
   //flex-grow: 1;
   width:40%;
   min-width: 300px;
+  max-width: 600px;
   height: 100%;
 }
 
@@ -32,6 +33,17 @@
   background: #000000c2;
   justify-content: center;
   align-items: center;
+}
+
+.road-item{
+  width: 100%;
+}
+
+.buttons-items-div{
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 //.gmap{

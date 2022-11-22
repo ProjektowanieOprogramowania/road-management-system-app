@@ -26,20 +26,23 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    SubscriptionsPanelComponent,
-    SubscriptionModalComponent,
-    SubscriptionSuccessDetailsComponent
-  ],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    ListboxModule,
-    FormsModule,
-    CalendarModule,
-    DialogModule,
-    SelectButtonModule,
-    PaymentsModule
-  ]
+    declarations: [
+        SubscriptionsPanelComponent,
+        SubscriptionModalComponent,
+        SubscriptionSuccessDetailsComponent
+    ],
+    exports: [
+        SubscriptionModalComponent
+    ],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        ListboxModule,
+        FormsModule,
+        CalendarModule,
+        DialogModule,
+        SelectButtonModule,
+        PaymentsModule
+    ]
 })
 export class SubscriptionsModule { }

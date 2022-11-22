@@ -27,6 +27,8 @@ export class RoadMapComponent implements OnInit {
   mapOverlays: any[] = [];
   infoWindow: any;
 
+  displayRoadDeleteModal =  false;
+
   subscription = new Subscription();
 
   constructor(private roadsService: RoadsService,
@@ -52,7 +54,7 @@ export class RoadMapComponent implements OnInit {
   }
 
   private setOverlays(road: Road, map: any) {
-    this.mapOverlays = [];
+    this.clearOverlays();
     const segments = road.segments;
     if (segments !== undefined) {
       const polylines = segmentsToGooglePolylineArr(segments, {
@@ -69,6 +71,10 @@ export class RoadMapComponent implements OnInit {
       this.setBounds(markers, map);
     }
 
+  }
+
+  private clearOverlays(){
+    this.mapOverlays = [];
   }
 
   private setBounds(markers: any[], map: any){
@@ -97,8 +103,6 @@ export class RoadMapComponent implements OnInit {
   }
 
   onListChange(map: any) {
-    console.log(this.selectedRoad);
-    console.log('load road!')
     if(this.selectedRoad){
       this.setOverlays(this.selectedRoad, map);
     }
@@ -109,21 +113,35 @@ export class RoadMapComponent implements OnInit {
     this.router.navigate(['map/roadMapEditor']);
   }
 
-  onEditRoad() {
+  onEditRoad(id: number) {
     //TODO: b.kopysc dodaj edycje
 
-    if(this.selectedRoad !== undefined && this.selectedRoad.id !== undefined){
-      alert(`edit road: ${this.selectedRoad.id}`);
+    if(id !== undefined){
+      alert(`edit road: ${id}`);
     }
   }
 
-  onDeleteRoad() {
+  onDeleteRoad(road: Road) {
     //TODO: b.kopysc dodaj usuwanie
 
-    if(this.selectedRoad !== undefined && this.selectedRoad.id !== undefined){
-      alert(`delete: ${this.selectedRoad.id}`);
+    if(road !== undefined){
+      this.selectedRoad = road;
+      this.displayRoadDeleteModal = true;
     }
   }
+
+  onDeleteRoadModalHide() {
+    this.displayRoadDeleteModal = false;
+  }
+
+  onDeleteSuccess(id: number) {
+    this.selectedRoad = undefined;
+    this.clearOverlays();
+    this.roads = this.roads.filter(road => road.id != id);
+    this.onDeleteRoadModalHide();
+  }
+
+
 
   simpleMock: Road = {
     id: 1,
@@ -220,5 +238,6 @@ export class RoadMapComponent implements OnInit {
       }
     ]
   }
+
 
 }
