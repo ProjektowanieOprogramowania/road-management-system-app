@@ -1,1 +1,27 @@
-<p>road-map works!</p>
+
+<p-toast></p-toast>
+
+
+<div class="m-5 list-map-div">
+  <div class="listbox-div">
+    <div class="spinner" *ngIf="roadLoading">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+    <p-listbox [options]="roads" [(ngModel)]="selectedRoad" optionLabel="name" [disabled]="roadLoading"
+               (ngModelChange)="onListChange(gMap.getMap())"
+               [filter]="true" class="listbox" [listStyle]="{'min-height':'400px', 'max-height': '100%'}">
+    </p-listbox>
+    <div class="mt-3 flex flex-row justify-content-center gap-4">
+      <button pButton>Dodaj</button>
+      <button pButton class="p-button-secondary">Edytuj</button>
+      <button pButton class="p-button-danger">Usuń</button>
+    </div>
+
+  </div>
+  <p-gmap [options]="mapOptions" class="gmap" #gMap
+          [overlays]="mapOverlays"
+          (onOverlayClick)="handleOverlayClick($event)"
+          [style]="{'max-width':'800px', 'min-width':'300px', 'width':'800px', 'height':'100%'}">
+
+  </p-gmap>
+</div>

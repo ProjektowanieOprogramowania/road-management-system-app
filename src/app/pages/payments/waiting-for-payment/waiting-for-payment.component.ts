@@ -6,7 +6,7 @@ import {
   PaymentMethod,
   SubscriptionsService
 } from "../../../services/generated";
-import {Subscription} from "rxjs";
+import {Subscription}  from "rxjs";
 import {SubscriptionModel} from "../../../common/models/subscription.model";
 
 @Component({

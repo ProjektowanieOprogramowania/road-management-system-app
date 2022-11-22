@@ -1,0 +1,40 @@
+.listbox-div{
+  //width: 30%;
+  //flex-grow: 1;
+  width:40%;
+  min-width: 300px;
+  height: 100%;
+}
+
+.list-map-div{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  gap: 50px;
+  height: 80vh;
+}
+
+.list-style{
+  height: 300px !important;
+}
+
+.spinner{
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  /* height: 100%; */
+  width: inherit;
+  /* margin: unset; */
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #000000c2;
+  justify-content: center;
+  align-items: center;
+}
+
+//.gmap{
+//  width: 70%;
+//  height: 400px;
+//}
