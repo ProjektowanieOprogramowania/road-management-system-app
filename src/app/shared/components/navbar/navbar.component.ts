@@ -73,6 +73,11 @@ export class NavbarComponent implements OnInit {
             routerLink: ['/map/roadMap'],
             icon: 'pi pi-fw pi-map',
           },
+          {
+            label: 'Dodaj drogę',
+            routerLink: ['/map/roadMapEditor'],
+            icon: 'pi pi-fw pi-map',
+          },
         ]
       }
     ];

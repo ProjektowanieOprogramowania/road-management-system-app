@@ -11,5 +11,4 @@ export class RoadMapComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
