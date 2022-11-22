@@ -151,7 +151,6 @@ export class RoadMapComponent implements OnInit {
     segments: [
       {
         id: 1,
-        price: 12,
         endNode: {
           id: 1,
           name: 'jeden',
@@ -171,7 +170,6 @@ export class RoadMapComponent implements OnInit {
       },
       {
         id: 1,
-        price: 12,
         endNode: {
           id: 1,
           name: 'jeden',
@@ -199,7 +197,6 @@ export class RoadMapComponent implements OnInit {
     segments: [
       {
         id: 1,
-        price: 12,
         endNode: {
           id: 1,
           name: 'jeden',
@@ -219,7 +216,6 @@ export class RoadMapComponent implements OnInit {
       },
       {
         id: 1,
-        price: 12,
         endNode: {
           id: 1,
           name: 'jeden',
@@ -239,6 +235,4 @@ export class RoadMapComponent implements OnInit {
       }
     ]
   }
-
-
 }

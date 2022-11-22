@@ -10,12 +10,13 @@
  * Do not edit the class manually.
  */
 import { RoadNode } from './roadNode';
+import { Tariff } from './tariff';
 
 
 export interface RoadSegment { 
     id?: number;
     startNode: RoadNode;
     endNode: RoadNode;
-    price: number;
+    tariff?: Tariff;
 }
 
