@@ -139,6 +139,7 @@ export class RoadMapComponent implements OnInit {
     this.clearOverlays();
     this.roads = this.roads.filter(road => road.id != id);
     this.onDeleteRoadModalHide();
+    this.messageService.add({severity: 'success', summary: 'Sukces!', detail: 'Pomyślnie usunięto drogę'});
   }
 
 
