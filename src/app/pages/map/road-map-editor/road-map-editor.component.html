@@ -1,1 +1,30 @@
-<p>road-map-editor works!</p>
+<div class="flex flex-column align-items-center m-3">
+  <p class="my-5 text-xl">Dodaj drogę</p>
+  <form [formGroup]="roadForm" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label for="name" class="block">Name</label>
+      <input id="name" type="text"
+             class="w-full {{name?.invalid && (name?.dirty || name?.touched) ? 'ng-invalid ng-dirty' : ''}}" pInputText
+             formControlName="name"/>
+      <ng-container *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+        <small *ngIf="name?.errors?.['required']" id="name-help" class="p-error block">Name is required.</small>
+      </ng-container>
+    </div>
+    <div class="field">
+      <label for="sub" class="block">Subscription Price for one day</label>
+      <p-inputNumber formControlName="subscriptionPriceForOneDay" [showButtons]="true" id="sub" mode="currency"
+                     currency="PLN" class="w-full"
+                     decrementButtonClass="{{subscriptionPriceForOneDay?.value === null
+                                              || subscriptionPriceForOneDay!.value! <= 0 ? 'hidden' : ''}}">
+      </p-inputNumber>
+      <ng-container
+        *ngIf="subscriptionPriceForOneDay?.invalid && (subscriptionPriceForOneDay?.dirty || subscriptionPriceForOneDay?.touched)">
+        <small *ngIf="subscriptionPriceForOneDay?.errors?.['required']" class="p-error block">Subscription Price for one
+          day is required.</small>
+        <small *ngIf="subscriptionPriceForOneDay?.errors?.['min']" class="p-error block">Subscription Price for one day
+          cannot be negative.</small>
+      </ng-container>
+    </div>
+    <p-button type="submit">Submit</p-button>
+  </form>
+</div>

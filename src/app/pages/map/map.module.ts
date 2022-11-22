@@ -10,12 +10,19 @@ import {GMapModule} from "primeng/gmap";
 import {ButtonModule} from "primeng/button";
 import {SpinnerModule} from "primeng/spinner";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {ReactiveFormsModule} from "@angular/forms";
+import {InputTextModule} from "primeng/inputtext";
+import {InputNumberModule} from "primeng/inputnumber";
 
 export const routes: Routes = [
   {
     path: 'roadMap',
     component: RoadMapComponent
-  }
+  },
+  {
+    path: 'roadMapEditor',
+    component: RoadMapEditorComponent
+  },
 ];
 
 @NgModule({
@@ -32,7 +39,11 @@ export const routes: Routes = [
     GMapModule,
     ButtonModule,
     SpinnerModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    InputNumberModule,
+    ButtonModule
   ]
 })
 export class MapModule {

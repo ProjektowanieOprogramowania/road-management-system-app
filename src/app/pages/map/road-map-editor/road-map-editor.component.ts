@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-road-map-editor',
@@ -7,9 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoadMapEditorComponent implements OnInit {
 
-  constructor() { }
+  roadForm = this.fb.group({
+    name: ['', Validators.required],
+    subscriptionPriceForOneDay: [0, [Validators.required, Validators.min(0)]]
+  });
 
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder) {
   }
 
+  ngOnInit(): void {
+
+  }
+
+  onSubmit() {
+    this.roadForm.markAllAsTouched()
+  }
+
+  get name() {
+    return this.roadForm.get('name');
+  }
+
+  get subscriptionPriceForOneDay() {
+    return this.roadForm.get('subscriptionPriceForOneDay');
+  }
 }
