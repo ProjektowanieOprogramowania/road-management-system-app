@@ -4,17 +4,17 @@
 
 <div class="m-5 list-map-div">
   <div class="listbox-div">
-    <div class="spinner" *ngIf="roadLoading">
-      <p-progressSpinner></p-progressSpinner>
-    </div>
+<!--    <div class="spinner" *ngIf="roadLoading">-->
+<!--      <p-progressSpinner></p-progressSpinner>-->
+<!--    </div>-->
     <p-listbox [options]="roads" [(ngModel)]="selectedRoad" optionLabel="name" [disabled]="roadLoading"
                (ngModelChange)="onListChange(gMap.getMap())"
                [filter]="true" class="listbox" [listStyle]="{'min-height':'400px', 'max-height': '100%'}">
     </p-listbox>
-    <div class="mt-3 flex flex-row justify-content-center gap-4">
-      <button pButton>Dodaj</button>
-      <button pButton class="p-button-secondary">Edytuj</button>
-      <button pButton class="p-button-danger">Usuń</button>
+    <div class="mt-3 flex flex-row justify-content-center gap-4" *ngIf="!roadLoading">
+      <button pButton (click)="onAddRoad()">Dodaj</button>
+      <button pButton (click)="onEditRoad()" class="p-button-secondary" [disabled]="selectedRoad === undefined">Edytuj</button>
+      <button pButton (click)="onDeleteRoad()" class="p-button-danger" [disabled]="selectedRoad === undefined">Usuń</button>
     </div>
 
   </div>

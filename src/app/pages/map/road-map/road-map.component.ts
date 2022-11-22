@@ -7,6 +7,7 @@ import {
   segmentsToGoogleMarkersArr,
   segmentsToGooglePolylineArr
 } from "../../../common/utils/mapLocalization";
+import {Router} from "@angular/router";
 
 // declare var google: any; //new added line
 
@@ -29,7 +30,9 @@ export class RoadMapComponent implements OnInit {
   subscription = new Subscription();
 
   constructor(private roadsService: RoadsService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private router: Router) {
+
     this.roadLoading = true;
     this.subscription.add(this.roadsService.getAllRoads()
       .subscribe(
@@ -98,6 +101,27 @@ export class RoadMapComponent implements OnInit {
     console.log('load road!')
     if(this.selectedRoad){
       this.setOverlays(this.selectedRoad, map);
+    }
+  }
+
+
+  onAddRoad() {
+    this.router.navigate(['map/roadMapEditor']);
+  }
+
+  onEditRoad() {
+    //TODO: b.kopysc dodaj edycje
+
+    if(this.selectedRoad !== undefined && this.selectedRoad.id !== undefined){
+      alert(`edit road: ${this.selectedRoad.id}`);
+    }
+  }
+
+  onDeleteRoad() {
+    //TODO: b.kopysc dodaj usuwanie
+
+    if(this.selectedRoad !== undefined && this.selectedRoad.id !== undefined){
+      alert(`delete: ${this.selectedRoad.id}`);
     }
   }
 
@@ -196,4 +220,5 @@ export class RoadMapComponent implements OnInit {
       }
     ]
   }
+
 }
