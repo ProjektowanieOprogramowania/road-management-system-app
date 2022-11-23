@@ -122,7 +122,10 @@ export class RoadMapComponent implements OnInit {
   onDeleteRoad(road: Road) {
     //TODO: b.kopysc dodaj usuwanie
 
+    console.log('wtf?');
+
     if(road !== undefined){
+      console.log('delete');
       this.selectedRoad = road;
       this.displayRoadDeleteModal = true;
     }
