@@ -56,6 +56,8 @@
 <!--      <p-button label="Zapisz" styleClass="p-button-sm" icon="pi pi-arrow-down" iconPos="right"-->
 <!--                (click)="scroll(save)"></p-button>-->
     </div>
+    <p *ngIf="isAddingSegmentsModeOn">Zaznacz dwa węzły</p>
+    <button *ngIf="endSegmentNode && startSegmentNode" (click)="addSegment()">Dodaj odcinek</button>
     <p-gmap [options]="mapOptions" class="w-full h-full"
             [overlays]="mapOverlays"
             (onMapClick)="handleMapClick($event)"

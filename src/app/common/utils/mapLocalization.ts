@@ -32,6 +32,8 @@ export function roadNodeParsed(node: RoadNode){
   return {
     lat: parseFloat(node.localization.latitude),
     lng: parseFloat(node.localization.longitude)
+    // lat: node.localization.latitude,
+    // lng: node.localization.longitude
   }
 }
 

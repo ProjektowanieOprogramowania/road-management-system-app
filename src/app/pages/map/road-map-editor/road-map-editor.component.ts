@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
+import {RoadNode} from "../../../services/generated";
+import {roadNodeParsed} from "../../../common/utils/mapLocalization";
 
 @Component({
   selector: 'app-road-map-editor',
@@ -28,6 +30,9 @@ export class RoadMapEditorComponent implements OnInit {
   selectedPosition: any;
 
   infoWindow: any;
+
+  startSegmentNode?: RoadNode
+  endSegmentNode?: RoadNode
 
   constructor(private fb: FormBuilder) {
   }
@@ -92,9 +97,33 @@ export class RoadMapEditorComponent implements OnInit {
 
     if (isMarker) {
       let title = event.overlay.getTitle();
+      let position = event.overlay.getPosition();
       this.infoWindow.setContent('' + title + '');
       this.infoWindow.open(event.map, event.overlay);
       this.nodeInfoOpen = true;
+
+      console.log(event.overlay)
+
+      if (this.isAddingSegmentsModeOn) {
+        if (!this.startSegmentNode) {
+          this.startSegmentNode = {
+            name: title,
+            localization: {
+              latitude: position.lat(),
+              longitude: position.lng()
+            }
+          };
+        } else if (this.startSegmentNode && !this.endSegmentNode) {
+          this.endSegmentNode = {
+            name: title,
+            localization: {
+              latitude: position.lat(),
+              longitude: position.lng()
+            }
+          };
+        }
+      }
+
     }
   }
 
@@ -110,6 +139,27 @@ export class RoadMapEditorComponent implements OnInit {
     this.nodeName = null;
     this.addNodePopupOpen = false;
     this.closeNodeInfo();
+  }
+
+  addSegment() {
+    const start = roadNodeParsed(this.startSegmentNode!);
+    const end = roadNodeParsed(this.endSegmentNode!);
+
+    this.mapOverlays.push(
+      new google.maps.Polyline({
+        path: [{
+          lat: start.lat,
+          lng: start.lng
+        }, {lat: end.lat, lng: end.lng}],
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.5,
+        strokeWeight: 2
+      })
+    );
+
+    this.startSegmentNode = undefined;
+    this.endSegmentNode = undefined;
   }
 
   closeNodeInfo() {
