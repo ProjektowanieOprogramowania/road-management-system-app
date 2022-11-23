@@ -2,18 +2,27 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {RoadNode, RoadSegment} from "../../../services/generated";
 import {positionToLocalization, roadNodeParsed, segmentToPolyline} from "../../../common/utils/mapLocalization";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Road, RoadNode, RoadSegment, RoadsService} from "../../../services/generated";
+import {
+  getFitBounds,
+  roadNodeParsed,
+  segmentsToGoogleMarkersArr,
+  segmentsToGooglePolylineArr
+} from "../../../common/utils/mapLocalization";
+import {ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-road-map-editor',
   templateUrl: './road-map-editor.component.html',
-  styleUrls: ['./road-map-editor.component.scss']
+  styleUrls: ['./road-map-editor.component.scss'],
+  providers: [MessageService]
 })
 export class RoadMapEditorComponent implements OnInit {
 
-  roadForm = this.fb.group({
-    name: ['', Validators.required],
-    subscriptionPriceForOneDay: [0, [Validators.required, Validators.min(0)]]
-  });
+  roadForm: FormGroup;
 
   roadSegments: RoadSegment[] = [];
   roadNodes: RoadNode[] = [];
@@ -23,6 +32,7 @@ export class RoadMapEditorComponent implements OnInit {
   infoWindow: any;
 
   addNodePopupOpen: boolean = false;
+
   nodeInfoOpen: boolean = false;
 
   isAddingNodesModeOn: boolean = false;
@@ -32,16 +42,80 @@ export class RoadMapEditorComponent implements OnInit {
   nodeNameError: boolean = false;
   selectedPosition: any;
 
+  infoWindow: any;
+
   startSegmentNode?: RoadNode
   endSegmentNode?: RoadNode
 
-  constructor(private fb: FormBuilder) {
+  isRoadEdit: boolean = false;
+  roadEditId: string = '';
+  loadedRoad?: Road;
+  isRoadLoading = false;
+
+  subscription = new Subscription();
+
+  constructor(private fb: FormBuilder,
+              private route: ActivatedRoute,
+              private roadsService: RoadsService,
+              private messageService: MessageService) {
+    const roadId = this.route.snapshot.queryParamMap.get('roadId');
+
+    if (roadId !== null) {
+      this.isRoadEdit = true;
+      this.roadEditId = roadId;
+      this.isRoadLoading = true;
+      this.loadRoadToEdit();
+    }
+
+    this.roadForm = this.fb.group({
+      name: [this.isRoadEdit ? this.loadedRoad?.name! : '', Validators.required],
+      subscriptionPriceForOneDay: [this.isRoadEdit ? this.loadedRoad?.subscriptionPriceForOneDay! : null,
+        [Validators.required, Validators.min(0)]]
+    });
+  }
+
+  private loadRoadToEdit() {
+    this.subscription.add(
+      this.roadsService.getRoad(Number(this.roadEditId)).subscribe(
+        {
+          next: value => {
+            this.loadedRoad = value;
+            this.isRoadLoading = false;
+            this.addLoadedMarkersAndLines();
+          },
+          error: err => {
+            this.messageService.add({severity: 'error', summary: 'Server Error', detail: 'Road edit loading error'});
+          }
+        }));
+  }
+
+  private addLoadedMarkersAndLines() {
+    const markers = segmentsToGoogleMarkersArr(this.loadedRoad?.segments!, {});
+    const lines = segmentsToGooglePolylineArr(this.loadedRoad?.segments!, {
+      color: '#FFF000',
+      opacity: 0.8,
+      weight: 2
+    });
+
+    this.mapOverlays.push(markers);
+    this.mapOverlays.push(lines);
+
+    this.mapOptions = {
+      restrictions: {
+        latLngBounds: getFitBounds(markers),
+        strictBounds: false,
+      }
+    }
+
   }
 
   ngOnInit(): void {
-    this.mapOptions = {
-      center: new google.maps.LatLng(52.237049, 21.017532),
-      zoom: 6.3
+
+    if (!this.isRoadEdit) {
+      this.mapOptions = {
+        center: new google.maps.LatLng(52.237049, 21.017532),
+        zoom: 6.3
+      }
     }
 
     this.infoWindow = new google.maps.InfoWindow();
