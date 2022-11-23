@@ -53,6 +53,15 @@ export class RoadMapComponent implements OnInit {
       ));
   }
 
+  ngOnInit(): void {
+    this.mapOptions = {
+      center: new google.maps.LatLng(36.86251, 30.7442),
+      zoom: 12
+    }
+    this.mapOverlays = []
+    this.infoWindow = new google.maps.InfoWindow();
+  }
+
   private setOverlays(road: Road, map: any) {
     this.clearOverlays();
     const segments = road.segments;
@@ -81,16 +90,6 @@ export class RoadMapComponent implements OnInit {
     map.fitBounds(getFitBounds(markers));
   }
 
-
-  ngOnInit(): void {
-    this.mapOptions = {
-      center: new google.maps.LatLng(36.86251, 30.7442),
-      zoom: 12
-    }
-    this.mapOverlays = []
-    this.infoWindow = new google.maps.InfoWindow();
-  }
-
   handleOverlayClick(event: any) {
     let isMarker = event.overlay.getTitle != undefined;
 
@@ -107,7 +106,6 @@ export class RoadMapComponent implements OnInit {
       this.setOverlays(this.selectedRoad, map);
     }
   }
-
 
   onAddRoad() {
     this.router.navigate(['map/roadMapEditor']);

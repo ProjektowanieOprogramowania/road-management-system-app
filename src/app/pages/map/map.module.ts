@@ -16,6 +16,11 @@ import {InputNumberModule} from "primeng/inputnumber";
 import { RoadMapDeleteModalComponent } from './road-map-delete-modal/road-map-delete-modal.component';
 import {DialogModule} from "primeng/dialog";
 import {SubscriptionsModule} from "../subscriptions/subscriptions.module";
+import {DividerModule} from "primeng/divider";
+import {RippleModule} from "primeng/ripple";
+import {DockModule} from "primeng/dock";
+import {CheckboxModule} from "primeng/checkbox";
+import {ToggleButtonModule} from "primeng/togglebutton";
 
 export const routes: Routes = [
   {
@@ -49,7 +54,12 @@ export const routes: Routes = [
     InputNumberModule,
     ButtonModule,
     DialogModule,
-    SubscriptionsModule
+    SubscriptionsModule,
+    DividerModule,
+    RippleModule,
+    DockModule,
+    CheckboxModule,
+    ToggleButtonModule
   ]
 })
 export class MapModule {
