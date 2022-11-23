@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {RoadNode, RoadSegment} from "../../../services/generated";
-import {roadNodeParsed} from "../../../common/utils/mapLocalization";
+import {positionToLocalization, roadNodeParsed, segmentToPolyline} from "../../../common/utils/mapLocalization";
 
 @Component({
   selector: 'app-road-map-editor',
@@ -16,22 +16,21 @@ export class RoadMapEditorComponent implements OnInit {
   });
 
   roadSegments: RoadSegment[] = [];
+  roadNodes: RoadNode[] = [];
 
   mapOptions: any;
   mapOverlays: any[] = [];
+  infoWindow: any;
 
   addNodePopupOpen: boolean = false;
-
   nodeInfoOpen: boolean = false;
 
   isAddingNodesModeOn: boolean = false;
   isAddingSegmentsModeOn: boolean = false;
 
-  nodeName: string | null = null;
-
+  nodeName: string = '';
+  nodeNameError: boolean = false;
   selectedPosition: any;
-
-  infoWindow: any;
 
   startSegmentNode?: RoadNode
   endSegmentNode?: RoadNode
@@ -132,7 +131,31 @@ export class RoadMapEditorComponent implements OnInit {
     }
   }
 
+  handleOverlayDragEnd(event: any) {
+    let isMarker = event.overlay.getTitle != undefined;
+
+    if (isMarker) {
+      let title = event.overlay.getTitle();
+      let position = event.overlay.getPosition();
+
+      let nodeId = this.roadNodes.findIndex(x => x.name === title);
+      if (nodeId !== -1) {
+        this.roadNodes[nodeId].localization = positionToLocalization(position);
+
+        this.roadSegments.map(x => {
+
+          }
+        );
+      }
+    }
+  }
+
   addMarker() {
+    if (!this.nodeName) {
+      this.nodeNameError = true;
+      return;
+    }
+
     this.mapOverlays.push(new google.maps.Marker({
       position: {
         lat: this.selectedPosition.lat(),
@@ -141,26 +164,34 @@ export class RoadMapEditorComponent implements OnInit {
       title: this.nodeName,
       draggable: true,
     }));
-    this.nodeName = null;
+
+    this.roadNodes.push({
+      name: this.nodeName!,
+      localization: {
+        latitude: this.selectedPosition.lat(),
+        longitude: this.selectedPosition.lng()
+      }
+    });
+
+    this.nodeName = '';
     this.addNodePopupOpen = false;
     this.closeNodeInfo();
   }
 
   addSegment() {
-    const start = roadNodeParsed(this.startSegmentNode!);
-    const end = roadNodeParsed(this.endSegmentNode!);
+    if (!this.startSegmentNode || !this.endSegmentNode) {
+      return;
+    }
+
+    const segment = {
+      startNode: this.startSegmentNode,
+      endNode: this.endSegmentNode
+    };
+
+    this.roadSegments.push(segment);
 
     this.mapOverlays.push(
-      new google.maps.Polyline({
-        path: [{
-          lat: start.lat,
-          lng: start.lng
-        }, {lat: end.lat, lng: end.lng}],
-        geodesic: true,
-        strokeColor: '#FF0000',
-        strokeOpacity: 0.5,
-        strokeWeight: 2
-      })
+      segmentToPolyline(segment)
     );
 
     this.startSegmentNode = undefined;
@@ -170,6 +201,12 @@ export class RoadMapEditorComponent implements OnInit {
   closeNodeInfo() {
     this.infoWindow.close();
     this.nodeInfoOpen = false;
+  }
+
+  onAddNodePopupHide() {
+    this.nodeName = '';
+    this.selectedPosition = undefined;
+    this.nodeNameError = false;
   }
 
   scroll(el: HTMLElement) {

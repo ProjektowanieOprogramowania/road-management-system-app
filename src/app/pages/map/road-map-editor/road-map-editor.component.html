@@ -56,6 +56,7 @@
       <!--      <p-button label="Zapisz" styleClass="p-button-sm" icon="pi pi-arrow-down" iconPos="right"-->
       <!--                (click)="scroll(save)"></p-button>-->
     </div>
+    <p *ngIf="isAddingNodesModeOn" class="font-semibold">Kliknij na mapę, aby dodać nowy węzeł.</p>
     <ng-container *ngIf="isAddingSegmentsModeOn">
       <p *ngIf="!startSegmentNode" class="font-semibold">Zaznacz węzeł początkowy</p>
       <p *ngIf="startSegmentNode" class="font-semibold mb-0">
@@ -72,6 +73,7 @@
             [overlays]="mapOverlays"
             (onMapClick)="handleMapClick($event)"
             (onOverlayClick)="handleOverlayClick($event)"
+            (onOverlayDragEnd)="handleOverlayDragEnd($event)"
     >
     </p-gmap>
   </div>
@@ -85,10 +87,13 @@
   </div>
 </div>
 
-<p-dialog showEffect="fade" [(visible)]="addNodePopupOpen" header="Nowy węzeł drogowy" [style]="{width: '400px'}">
+<p-dialog showEffect="fade" [(visible)]="addNodePopupOpen" header="Nowy węzeł drogowy" [style]="{width: '400px'}"
+          (onHide)="onAddNodePopupHide()">
   <div class="grid p-fluid" *ngIf="selectedPosition">
     <div class="col-2 align-self-center"><label for="node-name">Nazwa</label></div>
     <div class="col-10"><input type="text" pInputText id="node-name" [(ngModel)]="nodeName"></div>
+    <div class="col-2"></div>
+    <small *ngIf="!nodeName && nodeNameError" class="p-error block col-10">Nazwa jest wymagana.</small>
   </div>
   <ng-template pTemplate="footer">
     <div>
