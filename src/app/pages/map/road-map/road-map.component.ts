@@ -112,18 +112,12 @@ export class RoadMapComponent implements OnInit {
   }
 
   onEditRoad(id: number) {
-    //TODO: b.kopysc dodaj edycje
-
     if(id !== undefined){
-      alert(`edit road: ${id}`);
+      this.router.navigate(['map/roadMapEditor'], {queryParams: {roadId: id}});
     }
   }
 
   onDeleteRoad(road: Road) {
-    //TODO: b.kopysc dodaj usuwanie
-
-    console.log('wtf?');
-
     if(road !== undefined){
       console.log('delete');
       this.selectedRoad = road;
