@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {RoadNode} from "../../../services/generated";
+import {RoadNode, RoadSegment} from "../../../services/generated";
 import {roadNodeParsed} from "../../../common/utils/mapLocalization";
 
 @Component({
@@ -14,6 +14,8 @@ export class RoadMapEditorComponent implements OnInit {
     name: ['', Validators.required],
     subscriptionPriceForOneDay: [0, [Validators.required, Validators.min(0)]]
   });
+
+  roadSegments: RoadSegment[] = [];
 
   mapOptions: any;
   mapOverlays: any[] = [];
@@ -61,7 +63,7 @@ export class RoadMapEditorComponent implements OnInit {
   switchAddingNodesMode() {
     if (!this.isAddingNodesModeOn) {
       this.isAddingNodesModeOn = true;
-      this.isAddingSegmentsModeOn = false;
+      if (this.isAddingSegmentsModeOn) this.turnOffAddingSegmentsMode();
       return;
     }
 
@@ -75,7 +77,13 @@ export class RoadMapEditorComponent implements OnInit {
       return;
     }
 
+    this.turnOffAddingSegmentsMode()
+  }
+
+  turnOffAddingSegmentsMode() {
     this.isAddingSegmentsModeOn = false;
+    this.startSegmentNode = undefined;
+    this.endSegmentNode = undefined;
   }
 
   handleMapClick(event: any) {
@@ -102,8 +110,6 @@ export class RoadMapEditorComponent implements OnInit {
       this.infoWindow.open(event.map, event.overlay);
       this.nodeInfoOpen = true;
 
-      console.log(event.overlay)
-
       if (this.isAddingSegmentsModeOn) {
         if (!this.startSegmentNode) {
           this.startSegmentNode = {
@@ -123,7 +129,6 @@ export class RoadMapEditorComponent implements OnInit {
           };
         }
       }
-
     }
   }
 

@@ -53,16 +53,26 @@
       </p-toggleButton>
       <button pButton pRipple type="button" icon="pi pi-arrow-down" class="p-button-rounded" (click)="scroll(save)">
       </button>
-<!--      <p-button label="Zapisz" styleClass="p-button-sm" icon="pi pi-arrow-down" iconPos="right"-->
-<!--                (click)="scroll(save)"></p-button>-->
+      <!--      <p-button label="Zapisz" styleClass="p-button-sm" icon="pi pi-arrow-down" iconPos="right"-->
+      <!--                (click)="scroll(save)"></p-button>-->
     </div>
-    <p *ngIf="isAddingSegmentsModeOn">Zaznacz dwa węzły</p>
-    <button *ngIf="endSegmentNode && startSegmentNode" (click)="addSegment()">Dodaj odcinek</button>
+    <ng-container *ngIf="isAddingSegmentsModeOn">
+      <p *ngIf="!startSegmentNode" class="font-semibold">Zaznacz węzeł początkowy</p>
+      <p *ngIf="startSegmentNode" class="font-semibold mb-0">
+        <span class="font-normal">Węzeł początkowy:</span> {{this.startSegmentNode.name}}</p>
+      <p *ngIf="startSegmentNode && !endSegmentNode" class="font-semibold">Zaznacz węzeł końcowy</p>
+      <p *ngIf="endSegmentNode" class="font-semibold">
+        <span class="font-normal">Węzeł końcowy:</span> {{this.endSegmentNode.name}}</p>
+      <button pButton type="button" *ngIf="endSegmentNode && startSegmentNode" label="Dodaj odcinek" icon="pi pi-plus"
+              class="mb-4" (click)="addSegment()">
+      </button>
+    </ng-container>
     <p-gmap [options]="mapOptions" class="w-full h-full"
+            [style]="{'width':'100%','height':'100%'}"
             [overlays]="mapOverlays"
             (onMapClick)="handleMapClick($event)"
             (onOverlayClick)="handleOverlayClick($event)"
-            [style]="{'width':'100%','height':'100%'}">
+    >
     </p-gmap>
   </div>
 
