@@ -32,6 +32,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/map/map.module').then(m => m.MapModule)
   },
   {
+    path: 'sensor',
+    loadChildren: () => import('./pages/sensors/sensors.module').then(m => m.SensorsModule)
+  },
+  {
     path: '**',
     pathMatch: 'full',
     component: PageNotFoundComponent

@@ -79,7 +79,17 @@ export class NavbarComponent implements OnInit {
             icon: 'pi pi-fw pi-map',
           },
         ]
-      }
+      },
+      {
+        label: 'Czujniki',
+        items: [
+          {
+            label: 'Zarejestruj czujnik',
+            routerLink: ['/sensor/register'],
+            icon: 'pi pi-fw pi-plus',
+          },
+        ]
+      },
     ];
 
     this.rightItems = [{
