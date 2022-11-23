@@ -99,7 +99,7 @@
     <div class="col-2 align-self-center"><label for="node-name">Nazwa</label></div>
     <div class="col-10"><input type="text" pInputText id="node-name" [(ngModel)]="nodeName"></div>
     <div class="col-2"></div>
-    <small *ngIf="!nodeName && nodeNameError" class="p-error block col-10">Nazwa jest wymagana.</small>
+    <small *ngIf="nodeNameError" class="p-error block col-10">{{nodeNameError}}</small>
   </div>
   <ng-template pTemplate="footer">
     <div>

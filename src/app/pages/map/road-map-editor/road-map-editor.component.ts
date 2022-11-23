@@ -37,7 +37,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   isAddingSegmentsModeOn: boolean = false;
 
   nodeName: string = '';
-  nodeNameError: boolean = false;
+  nodeNameError?: string;
   selectedPosition: any;
 
   startSegmentNode?: RoadNode
@@ -67,7 +67,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
 
     this.roadForm = this.fb.group({
       name: ['', Validators.required],
-      subscriptionPriceForOneDay: [ null, [Validators.required, Validators.min(0)]]
+      subscriptionPriceForOneDay: [null, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -193,6 +193,13 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
             }
           };
         } else if (this.startSegmentNode && !this.endSegmentNode) {
+          if (this.startSegmentNode.name === title) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Węzeł końcowy nie może być taki sam jak początkowy!'
+            });
+            return;
+          }
           this.endSegmentNode = {
             name: title,
             localization: {
@@ -210,10 +217,10 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   }
 
   handleOverlayDragEnd(event: any) {
-   this.onNodePositionChange(event);
+    this.onNodePositionChange(event);
   }
 
-  onNodePositionChange(event: any){
+  onNodePositionChange(event: any) {
     let isMarker = event.overlay.getTitle != undefined;
 
     if (isMarker) {
@@ -241,8 +248,22 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   }
 
   addMarker() {
+    this.nodeNameError = '';
+
     if (!this.nodeName) {
-      this.nodeNameError = true;
+      this.nodeNameError = "Nazwa jest wymagana.";
+      return;
+    }
+
+    this.roadNodes.every(x => {
+      if (x.name === this.nodeName) {
+        this.nodeNameError = "Węzeł o takiej nazwie już istnieje."
+        return false;
+      }
+      return true;
+    });
+
+    if (this.nodeNameError) {
       return;
     }
 
@@ -266,14 +287,34 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.nodeName = '';
     this.addNodePopupOpen = false;
     this.closeNodeInfo();
+
+    this.messageService.add({severity: 'success', summary: 'Pomyślnie dodano nowy węzeł!'});
   }
 
   addSegment() {
+    console.log(this.roadSegments.length)
     if (!this.startSegmentNode || !this.endSegmentNode) {
       return;
     }
 
-    const segment = {
+    let exists = false;
+    this.roadSegments.every(x => {
+      if ((x.startNode.name === this.startSegmentNode!.name && x.endNode.name === this.endSegmentNode!.name)
+        || (x.startNode.name === this.endSegmentNode!.name && x.endNode.name === this.startSegmentNode!.name)) {
+        this.messageService.add({severity: 'error', summary: 'Odcinek o takich węzłach już istnieje!'});
+        exists = true;
+        return false;
+      }
+      return true;
+    });
+
+    if (exists) {
+      this.startSegmentNode = undefined;
+      this.endSegmentNode = undefined;
+      return;
+    }
+
+    const segment: RoadSegment = {
       startNode: this.startSegmentNode,
       endNode: this.endSegmentNode
     };
@@ -286,6 +327,8 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
 
     this.startSegmentNode = undefined;
     this.endSegmentNode = undefined;
+
+    this.messageService.add({severity: 'success', summary: 'Pomyślnie dodano nowy odcinek!'});
   }
 
   closeNodeInfo() {
@@ -296,12 +339,10 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   onAddNodePopupHide() {
     this.nodeName = '';
     this.selectedPosition = undefined;
-    this.nodeNameError = false;
+    this.nodeNameError = undefined;
   }
 
   scroll(el: HTMLElement) {
     el.scrollIntoView();
   }
-
-
 }
