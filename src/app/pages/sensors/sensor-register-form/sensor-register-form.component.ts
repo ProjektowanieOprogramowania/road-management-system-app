@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
-import {Sensor, SensorsService} from "../../../services/generated";
-import {coordParsed} from "../../../common/utils/mapLocalization";
+import {Sensor, SensorsService, SensorType, Voivodeship} from "../../../services/generated";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sensor-register-form',
@@ -13,13 +13,13 @@ export class SensorRegisterFormComponent implements OnInit {
 
   name: string = "";
   serialNumber: string = "";
-  selectedSensorType: string = ""
+  selectedSensorType: SensorType | undefined
   active: boolean = true;
   localizationString: string = ""
 
   sensorNameValid: boolean = true;
   serialNumberValid: boolean = true;
-  sensorTypes: string[]
+  sensorTypes: SensorType[]
 
   selectedOptions: any;
   selectedPosition: any;
@@ -28,8 +28,8 @@ export class SensorRegisterFormComponent implements OnInit {
   disabled: boolean = true;
   subscriptions: Subscription = new Subscription();
 
-  constructor(private sensorService: SensorsService, private http: HttpClient) {
-    this.sensorTypes = ["A", "B"]
+  constructor(private sensorService: SensorsService, private http: HttpClient, private router: Router) {
+    this.sensorTypes = [SensorType.Traffic]
   }
 
   ngOnInit(): void {
@@ -83,25 +83,71 @@ export class SensorRegisterFormComponent implements OnInit {
           for (let i = 0; i < letters.length; ++i) {
             result = result.replace(letters[i], replacement[i]).replace("-","");
           }
-          this.localizationString = result.toUpperCase()
+          this.localizationString = result
         }
       );
       this.subscriptions.add(sub);
   }
 
-  submit(){
-    // const sensor: Sensor = {
-    //   name: this.name,
-    //   localization: this.selectedLocation[0].position,
-    //   voivodeship: "",
-    //   serialNumber: this.serialNumber,
-    //   sensorType: this.selectedSensorType,
-    //   enabled: this.active,
-    // }
-    // this.validateForm()
-    // if(this.sensorNameValid&&this.serialNumberValid&&this.selectedLocation.length === 1) {
+  findVoivodeship(string: String) {
+    if (this.localizationString === "dolnoslaskie"){
+      return Voivodeship.Dolnoslaskie
+    } else if (this.localizationString === "kujawskopomorskie"){
+      return Voivodeship.Kujawskopomorskie
+    } else if (this.localizationString === "lodzkie"){
+      return Voivodeship.Lodzkie
+    } else if (this.localizationString === "lubuskie"){
+      return Voivodeship.Lubuskie
+    } else if (this.localizationString === "malopolskie"){
+      return Voivodeship.Malopolskie
+    } else if (this.localizationString === "mazowieckie"){
+      return Voivodeship.Mazowieckie
+    } else if (this.localizationString === "opolskie"){
+      return Voivodeship.Opolskie
+    } else if (this.localizationString === "podkarpackie"){
+      return Voivodeship.Podkarpackie
+    } else if (this.localizationString === "podlaskie"){
+      return Voivodeship.Podlaskie
+    } else if (this.localizationString === "slaskie"){
+      return Voivodeship.Slaskie
+    } else if (this.localizationString === "swietokrzyskie"){
+      return Voivodeship.Swietokrzyskie
+    } else if (this.localizationString === "warminskomazurskie"){
+      return Voivodeship.Warminskomazurskie
+    } else if (this.localizationString === "wielkopolskie"){
+      return Voivodeship.Wielkopolskie
+    } else if (this.localizationString === "zachodniopomorskie"){
+      return Voivodeship.Zachodniopomorskie
+    } else if (this.localizationString === "lubelskie"){
+      return Voivodeship.Lubelskie
+    } else {
+      return Voivodeship.Pomorskie
+    }
+  }
 
-    // }
+  findSensorType(){
+
+  }
+
+  submit(){
+    this.validateForm()
+    if(this.sensorNameValid&&this.serialNumberValid&&this.selectedLocation.length === 1 && this.selectedSensorType) {
+    const sensor: Sensor = {
+      name: this.name,
+      localization: {'latitude': this.selectedLocation[0].position.lat(), 'longitude': this.selectedLocation[0].position.lng()},
+      voivodeship: this.findVoivodeship(this.localizationString),
+      serialNumber: this.serialNumber,
+      sensorType: this.selectedSensorType,
+      enabled: this.active,
+    }
+    const sub = this.sensorService.addSensor(sensor)
+      .subscribe(data => {
+        console.log("Added", data)
+        this.router.navigate(['/']);
+      }
+    );
+    this.subscriptions.add(sub);
+   }
   }
 
 }
