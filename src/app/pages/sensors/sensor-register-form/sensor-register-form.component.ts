@@ -28,6 +28,8 @@ export class SensorRegisterFormComponent implements OnInit {
   serialNumberValid: boolean = true;
   sensorTypes: string[]
 
+  selectedOption: any;
+
   constructor() {
     this.sensorTypes = [
       "A", "B", "C"
@@ -35,6 +37,10 @@ export class SensorRegisterFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedOption = {
+      center: new google.maps.LatLng(52.1645673, 19.9203192),
+      zoom: 7.3
+    }
   }
 
   validateForm() {
