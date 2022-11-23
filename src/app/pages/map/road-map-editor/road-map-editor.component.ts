@@ -197,7 +197,15 @@ export class RoadMapEditorComponent implements OnInit {
     }
   }
 
+  handleOverlayDrag(event: any) {
+    this.onNodePositionChange(event);
+  }
+
   handleOverlayDragEnd(event: any) {
+   this.onNodePositionChange(event);
+  }
+
+  onNodePositionChange(event: any){
     let isMarker = event.overlay.getTitle != undefined;
 
     if (isMarker) {
@@ -208,10 +216,18 @@ export class RoadMapEditorComponent implements OnInit {
       if (nodeId !== -1) {
         this.roadNodes[nodeId].localization = positionToLocalization(position);
 
-        this.roadSegments.map(x => {
-
+        this.roadSegments = this.roadSegments.map(x => {
+            if (x.startNode.name === title) {
+              x.startNode.localization = positionToLocalization(position);
+            } else if (x.endNode.name === title) {
+              x.endNode.localization = positionToLocalization(position);
+            }
+            return x;
           }
         );
+
+        this.mapOverlays = this.mapOverlays.filter(x => x.getTitle != undefined);
+        this.mapOverlays.push(...segmentsToGooglePolylineArr(this.roadSegments));
       }
     }
   }

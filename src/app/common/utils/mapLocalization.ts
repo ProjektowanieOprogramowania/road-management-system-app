@@ -11,17 +11,29 @@ interface MarkerOptions {
 
 }
 
-export function segmentsToGooglePolylineArr(segments: RoadSegment[], strokeOptions: StrokeOptions) {
+const preStrokeOptions: StrokeOptions = {
+  color: '#FF0011',
+  opacity: 0.8,
+  weight: 3
+}
 
+export function segmentsToGooglePolylineArr(segments: RoadSegment[], strokeOptions?: StrokeOptions) {
   const arr: any[] = [];
+
+  if (!strokeOptions) {
+    strokeOptions = {...preStrokeOptions};
+  }
 
   segments.forEach(segment => {
     const start = roadNodeParsed(segment.startNode);
     const end = roadNodeParsed(segment.endNode);
 
     arr.push(new google.maps.Polyline({
-      path: [{lat: start.lat, lng: start.lng}, {lat: end.lat, lng: end.lng}], geodesic: true,
-      strokeColor: strokeOptions.color, strokeOpacity: strokeOptions.opacity, strokeWeight: strokeOptions.weight
+      path: [{lat: start.lat, lng: start.lng}, {lat: end.lat, lng: end.lng}],
+      geodesic: true,
+      strokeColor: strokeOptions!.color,
+      strokeOpacity: strokeOptions!.opacity,
+      strokeWeight: strokeOptions!.weight
     }))
   });
 
@@ -84,8 +96,8 @@ export function segmentToPolyline(segment: RoadSegment) {
   return new google.maps.Polyline({
     path: [{lat: start.lat, lng: start.lng}, {lat: end.lat, lng: end.lng}],
     geodesic: true,
-    strokeColor: '#FF0011',
-    strokeOpacity: 0.8,
-    strokeWeight: 3
+    strokeColor: preStrokeOptions.color,
+    strokeOpacity: preStrokeOptions.opacity,
+    strokeWeight: preStrokeOptions.weight
   })
 }
