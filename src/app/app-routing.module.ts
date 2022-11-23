@@ -32,6 +32,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/map/map.module').then(m => m.MapModule)
   },
   {
+    path: 'cameras',
+    loadChildren: () => import('./pages/cameras/cameras.module').then(m => m.CamerasModule)
+  },
+  {
     path: '**',
     pathMatch: 'full',
     component: PageNotFoundComponent

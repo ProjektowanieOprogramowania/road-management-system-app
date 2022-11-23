@@ -79,6 +79,16 @@ export class NavbarComponent implements OnInit {
             icon: 'pi pi-fw pi-map',
           },
         ]
+      },
+      {
+        label: 'Monitoring',
+        items: [
+          {
+            label: 'Wyświetl obraz z kamery',
+            routerLink: ['/cameras/view-camera'],
+            icon: 'pi pi-fw pi-camera',
+          }
+        ]
       }
     ];
 
