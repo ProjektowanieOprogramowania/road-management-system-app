@@ -7,7 +7,9 @@
 <p-toast></p-toast>
 
 <div #form class="flex flex-column align-items-center m-3">
-  <p class="mt-5 mb-2 text-2xl">Dodaj drogę</p>
+  <p class="mt-5 mb-2 text-2xl">
+    {{isRoadEdit === true ? "Edytuj drogę" : "Dodaj drogę"}}
+  </p>
   <p-divider class="w-full py-0 my-0 px-8"></p-divider>
   <p class="mb-5 mt-2 text-xl">Uzupełnij dane</p>
   <form [formGroup]="roadForm" (ngSubmit)="onSubmit()" class="mb-5 ">

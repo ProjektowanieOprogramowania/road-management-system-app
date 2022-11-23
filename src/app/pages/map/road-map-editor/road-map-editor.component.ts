@@ -80,7 +80,6 @@ export class RoadMapEditorComponent implements OnInit {
           },
           error: err => {
             this.messageService.add({severity: 'error', summary: 'Server Error', detail: 'Road edit loading error'});
-            this.isRoadEdit = false;
           }
         }));
   }
