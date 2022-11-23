@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Road, RoadNode, RoadSegment, RoadsService} from "../../../services/generated";
 import {
@@ -18,7 +18,7 @@ import {MessageService} from "primeng/api";
   styleUrls: ['./road-map-editor.component.scss'],
   providers: [MessageService]
 })
-export class RoadMapEditorComponent implements OnInit {
+export class RoadMapEditorComponent implements OnInit, AfterViewInit {
 
   roadForm: FormGroup;
 
@@ -47,8 +47,11 @@ export class RoadMapEditorComponent implements OnInit {
   roadEditId: string = '';
   loadedRoad?: Road;
   isRoadLoading = false;
+  //loadedMarkers: any = [];
 
   subscription = new Subscription();
+
+  @ViewChild('gMap') gMap: any;
 
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
@@ -60,13 +63,11 @@ export class RoadMapEditorComponent implements OnInit {
       this.isRoadEdit = true;
       this.roadEditId = roadId;
       this.isRoadLoading = true;
-      this.loadRoadToEdit();
     }
 
     this.roadForm = this.fb.group({
-      name: [this.isRoadEdit ? this.loadedRoad?.name! : '', Validators.required],
-      subscriptionPriceForOneDay: [this.isRoadEdit ? this.loadedRoad?.subscriptionPriceForOneDay! : null,
-        [Validators.required, Validators.min(0)]]
+      name: ['', Validators.required],
+      subscriptionPriceForOneDay: [ null, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -75,8 +76,11 @@ export class RoadMapEditorComponent implements OnInit {
       center: new google.maps.LatLng(52.237049, 21.017532),
       zoom: 6.3
     }
-
     this.infoWindow = new google.maps.InfoWindow();
+  }
+
+  ngAfterViewInit(): void {
+    this.loadRoadToEdit();
   }
 
   private loadRoadToEdit() {
@@ -86,6 +90,8 @@ export class RoadMapEditorComponent implements OnInit {
           next: value => {
             this.loadedRoad = value;
             this.isRoadLoading = false;
+            this.roadForm.get('name')?.setValue(this.loadedRoad.name);
+            this.roadForm.get('subscriptionPriceForOneDay')?.setValue(this.loadedRoad.subscriptionPriceForOneDay);
             this.addLoadedMarkersAndLines();
           },
           error: err => {
@@ -104,7 +110,9 @@ export class RoadMapEditorComponent implements OnInit {
 
     this.mapOverlays.push(...markers);
     this.mapOverlays.push(...lines);
+    this.gMap.getMap().fitBounds(getFitBounds(markers));
 
+    //this.loadedMarkers = markers;
     // this.mapOptions = {
     //   restrictions: {
     //     latLngBounds: getFitBounds(markers),
@@ -278,4 +286,6 @@ export class RoadMapEditorComponent implements OnInit {
   scroll(el: HTMLElement) {
     el.scrollIntoView();
   }
+
+
 }

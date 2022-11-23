@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Road, RoadsService} from "../../../services/generated";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
@@ -17,7 +17,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./road-map.component.scss'],
   providers: [MessageService]
 })
-export class RoadMapComponent implements OnInit {
+export class RoadMapComponent implements OnInit, AfterViewInit {
 
   roads: Road[] = [];
   selectedRoad?: Road;
@@ -30,6 +30,8 @@ export class RoadMapComponent implements OnInit {
   displayRoadDeleteModal =  false;
 
   subscription = new Subscription();
+
+  @ViewChild('gMap') gMap: any;
 
   constructor(private roadsService: RoadsService,
               private messageService: MessageService,
@@ -55,11 +57,15 @@ export class RoadMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.mapOptions = {
-      center: new google.maps.LatLng(36.86251, 30.7442),
-      zoom: 12
+      center: new google.maps.LatLng(52.237049, 20.017532),
+      zoom: 6.3
     }
     this.mapOverlays = []
     this.infoWindow = new google.maps.InfoWindow();
+
+  }
+
+  ngAfterViewInit() {
   }
 
   private setOverlays(road: Road, map: any) {
@@ -230,4 +236,5 @@ export class RoadMapComponent implements OnInit {
       }
     ]
   }
+
 }
