@@ -25,11 +25,11 @@ export function segmentsToGooglePolylineArr(segments: RoadSegment[], strokeOptio
   }
 
   segments.forEach(segment => {
-    const start = roadNodeParsed(segment.startNode);
-    const end = roadNodeParsed(segment.endNode);
+    const start = segment.startNode.localization;
+    const end = segment.endNode.localization;
 
     arr.push(new google.maps.Polyline({
-      path: [{lat: start.lat, lng: start.lng}, {lat: end.lat, lng: end.lng}],
+      path: [{lat: start.latitude, lng: start.longitude}, {lat: end.latitude, lng: end.longitude}],
       geodesic: true,
       strokeColor: strokeOptions!.color,
       strokeOpacity: strokeOptions!.opacity,
@@ -40,33 +40,42 @@ export function segmentsToGooglePolylineArr(segments: RoadSegment[], strokeOptio
   return arr;
 }
 
-export function roadNodeParsed(node: RoadNode) {
-  return {
-    lat: parseFloat(node.localization.latitude),
-    lng: parseFloat(node.localization.longitude)
-    // lat: node.localization.latitude,
-    // lng: node.localization.longitude
-  }
-}
+// export function roadNodeParsed(node: RoadNode) {
+//   return {
+//     lat: parseFloat(node.localization.latitude),
+//     lng: parseFloat(node.localization.longitude)
+//     // lat: node.localization.latitude,
+//     // lng: node.localization.longitude
+//   }
+// }
 
+export function segmentsToRoadNodes(segments: RoadSegment[]) {
+  let roadNodesArr: RoadNode[] = [];
+  segments.forEach(segments => {
+    if (roadNodesArr.findIndex(o => o.name === segments.startNode.name) === -1) {
+      roadNodesArr.push(segments.startNode);
+    }
+
+    if (roadNodesArr.findIndex(o => o.name === segments.endNode.name) === -1) {
+      roadNodesArr.push(segments.endNode);
+    }
+  });
+
+  return roadNodesArr;
+}
 
 export function segmentsToGoogleMarkersArr(segments: RoadSegment[], markerOptions: MarkerOptions) {
 
   const arr: any[] = [];
 
-  const roadNodes: Set<RoadNode> = new Set<RoadNode>();
-
-  segments.forEach(seg => {
-    roadNodes.add(seg.endNode);
-    roadNodes.add(seg.startNode);
-  });
-
+  const roadNodes = segmentsToRoadNodes(segments);
 
   roadNodes.forEach(roadNode => {
-    const point = roadNodeParsed(roadNode);
+    const point = roadNode.localization;
     arr.push(new google.maps.Marker({
-      position: {lat: point.lat, lng: point.lng},
-      title: roadNode.name
+      position: {lat: point.latitude, lng: point.longitude},
+      title: roadNode.name,
+      ...markerOptions
     }));
   });
 
@@ -84,17 +93,17 @@ export function getFitBounds(markers: google.maps.Marker[]) {
 
 export function positionToLocalization(position: google.maps.LatLng): Localization {
   return {
-    latitude: position.lat().toString(),
-    longitude: position.lng().toString()
+    latitude: position.lat(),
+    longitude: position.lng()
   }
 }
 
 export function segmentToPolyline(segment: RoadSegment) {
-  const start = roadNodeParsed(segment.startNode);
-  const end = roadNodeParsed(segment.endNode);
+  const start = segment.startNode.localization;
+  const end = segment.endNode.localization;
 
   return new google.maps.Polyline({
-    path: [{lat: start.lat, lng: start.lng}, {lat: end.lat, lng: end.lng}],
+    path: [{lat: start.latitude, lng: start.longitude}, {lat: end.latitude, lng: end.longitude}],
     geodesic: true,
     strokeColor: preStrokeOptions.color,
     strokeOpacity: preStrokeOptions.opacity,

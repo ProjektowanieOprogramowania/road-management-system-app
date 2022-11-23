@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Road, RoadNode, RoadSegment, RoadsService} from "../../../services/generated";
+import {Road, RoadNode, RoadSegment, RoadsService, Tariff, TariffsService} from "../../../services/generated";
 import {
   getFitBounds,
   positionToLocalization,
   segmentsToGoogleMarkersArr,
-  segmentsToGooglePolylineArr,
+  segmentsToGooglePolylineArr, segmentsToRoadNodes,
   segmentToPolyline
 } from "../../../common/utils/mapLocalization";
 import {ActivatedRoute} from "@angular/router";
@@ -49,6 +49,8 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   isRoadLoading = false;
   //loadedMarkers: any = [];
 
+  tariffs: Tariff[] = [];
+
   subscription = new Subscription();
 
   @ViewChild('gMap') gMap: any;
@@ -56,6 +58,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
               private roadsService: RoadsService,
+              private tariffsService: TariffsService,
               private messageService: MessageService) {
     const roadId = this.route.snapshot.queryParamMap.get('roadId');
 
@@ -80,7 +83,9 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.loadRoadToEdit();
+    if (this.isRoadEdit) {
+      this.loadRoadToEdit();
+    }
   }
 
   private loadRoadToEdit() {
@@ -101,12 +106,15 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   }
 
   private addLoadedMarkersAndLines() {
-    const markers = segmentsToGoogleMarkersArr(this.loadedRoad?.segments!, {});
-    const lines = segmentsToGooglePolylineArr(this.loadedRoad?.segments!, {
-      color: '#FFF000',
-      opacity: 0.8,
-      weight: 2
-    });
+    if (!this.loadedRoad || !this.loadedRoad.segments) {
+      return;
+    }
+
+    const markers = segmentsToGoogleMarkersArr(this.loadedRoad.segments, {draggable: true});
+    const lines = segmentsToGooglePolylineArr(this.loadedRoad.segments);
+
+    this.roadNodes = segmentsToRoadNodes(this.loadedRoad.segments);
+    this.roadSegments = this.loadedRoad.segments;
 
     this.mapOverlays.push(...markers);
     this.mapOverlays.push(...lines);
@@ -292,7 +300,6 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   }
 
   addSegment() {
-    console.log(this.roadSegments.length)
     if (!this.startSegmentNode || !this.endSegmentNode) {
       return;
     }

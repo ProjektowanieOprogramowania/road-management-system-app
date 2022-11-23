@@ -48,8 +48,8 @@ export class RoadMapComponent implements OnInit, AfterViewInit {
           error: err => {
             this.messageService.add({severity: 'error', summary: 'Server Error', detail: 'Failed to get roads'});
             this.roadLoading=false;
-            this.roads.push(this.simpleMock);
-            this.roads.push(this.simpleMock2);
+            // this.roads.push(this.simpleMock);
+            // this.roads.push(this.simpleMock2);
           }
         }
       ));
@@ -143,98 +143,95 @@ export class RoadMapComponent implements OnInit, AfterViewInit {
     this.messageService.add({severity: 'success', summary: 'Sukces!', detail: 'Pomyślnie usunięto drogę'});
   }
 
-
-
-  simpleMock: Road = {
-    id: 1,
-    name: 'Autostrada',
-    subscriptionPriceForOneDay: 123,
-    segments: [
-      {
-        id: 1,
-        endNode: {
-          id: 1,
-          name: 'jeden',
-          localization: {
-            id: 1,
-            latitude: '36.86149',
-            longitude: '30.63743'
-          }},
-        startNode: {
-          id: 2,
-          name: 'dwa',
-          localization: {
-            id: 2,
-            latitude: '36.86341',
-            longitude: '30.72463'
-          }}
-      },
-      {
-        id: 1,
-        endNode: {
-          id: 1,
-          name: 'jeden',
-          localization: {
-            id: 1,
-            latitude: '36.86341',
-            longitude: '30.72463'
-          }},
-        startNode: {
-          id: 2,
-          name: 'dwa',
-          localization: {
-            id: 2,
-            latitude: '36.86241',
-            longitude: '30.88663'
-          }}
-      }
-    ]
-  };
-
-  simpleMock2: Road = {
-    id: 2,
-    name: 'Droga polna',
-    subscriptionPriceForOneDay: 123,
-    segments: [
-      {
-        id: 1,
-        endNode: {
-          id: 1,
-          name: 'jeden',
-          localization: {
-            id: 1,
-            latitude: '36.96149',
-            longitude: '30.23743'
-          }},
-        startNode: {
-          id: 2,
-          name: 'dwa',
-          localization: {
-            id: 2,
-            latitude: '36.96341',
-            longitude: '30.32463'
-          }}
-      },
-      {
-        id: 1,
-        endNode: {
-          id: 1,
-          name: 'jeden',
-          localization: {
-            id: 1,
-            latitude: '36.96341',
-            longitude: '30.32463'
-          }},
-        startNode: {
-          id: 2,
-          name: 'dwa',
-          localization: {
-            id: 2,
-            latitude: '36.13241',
-            longitude: '30.08663'
-          }}
-      }
-    ]
-  }
-
+  // simpleMock: Road = {
+  //   id: 1,
+  //   name: 'Autostrada',
+  //   subscriptionPriceForOneDay: 123,
+  //   segments: [
+  //     {
+  //       id: 1,
+  //       endNode: {
+  //         id: 1,
+  //         name: 'jeden',
+  //         localization: {
+  //           id: 1,
+  //           latitude: '36.86149',
+  //           longitude: '30.63743'
+  //         }},
+  //       startNode: {
+  //         id: 2,
+  //         name: 'dwa',
+  //         localization: {
+  //           id: 2,
+  //           latitude: '36.86341',
+  //           longitude: '30.72463'
+  //         }}
+  //     },
+  //     {
+  //       id: 1,
+  //       endNode: {
+  //         id: 1,
+  //         name: 'jeden',
+  //         localization: {
+  //           id: 1,
+  //           latitude: '36.86341',
+  //           longitude: '30.72463'
+  //         }},
+  //       startNode: {
+  //         id: 2,
+  //         name: 'dwa',
+  //         localization: {
+  //           id: 2,
+  //           latitude: '36.86241',
+  //           longitude: '30.88663'
+  //         }}
+  //     }
+  //   ]
+  // };
+  //
+  // simpleMock2: Road = {
+  //   id: 2,
+  //   name: 'Droga polna',
+  //   subscriptionPriceForOneDay: 123,
+  //   segments: [
+  //     {
+  //       id: 1,
+  //       endNode: {
+  //         id: 1,
+  //         name: 'jeden',
+  //         localization: {
+  //           id: 1,
+  //           latitude: '36.96149',
+  //           longitude: '30.23743'
+  //         }},
+  //       startNode: {
+  //         id: 2,
+  //         name: 'dwa',
+  //         localization: {
+  //           id: 2,
+  //           latitude: '36.96341',
+  //           longitude: '30.32463'
+  //         }}
+  //     },
+  //     {
+  //       id: 1,
+  //       endNode: {
+  //         id: 1,
+  //         name: 'jeden',
+  //         localization: {
+  //           id: 1,
+  //           latitude: '36.96341',
+  //           longitude: '30.32463'
+  //         }},
+  //       startNode: {
+  //         id: 2,
+  //         name: 'dwa',
+  //         localization: {
+  //           id: 2,
+  //           latitude: '36.13241',
+  //           longitude: '30.08663'
+  //         }}
+  //     }
+  //   ]
+  // }
 }
