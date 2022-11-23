@@ -1,5 +1,5 @@
 import {RoadNode, RoadSegment} from "../../services/generated";
-
+const convert = require('geo-coordinates-parser');
 
 interface StrokeOptions{
   color: string,
@@ -29,11 +29,18 @@ export function segmentsToGooglePolylineArr(segments: RoadSegment[], strokeOptio
 }
 
 export function roadNodeParsed(node: RoadNode){
+  const converted = convert([node.localization.latitude, node.localization.longitude].toString())
   return {
-    lat: parseFloat(node.localization.latitude),
-    lng: parseFloat(node.localization.longitude)
-    // lat: node.localization.latitude,
-    // lng: node.localization.longitude
+    lat: converted.decimalLatitude,
+    lng: converted.decimalLongitude
+  }
+}
+
+export function coordParsed(coords: any){
+  const converted = convert([coords.localization.latitude, coords.localization.longitude].toString())
+  return {
+    lat: converted.decimalLatitude,
+    lng: converted.decimalLongitude
   }
 }
 

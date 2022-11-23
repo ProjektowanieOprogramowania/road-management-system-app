@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Sensor, SensorsService} from "../../../services/generated";
+import {coordParsed} from "../../../common/utils/mapLocalization";
 
 @Component({
   selector: 'app-sensor-register-form',
@@ -25,6 +26,7 @@ export class SensorRegisterFormComponent implements OnInit {
   selectedLocation: any[] = [];
   isAddingNodesModeOn: boolean = false;
   disabled: boolean = true;
+  subscriptions: Subscription = new Subscription();
 
   constructor(private sensorService: SensorsService, private http: HttpClient) {
     this.sensorTypes = ["A", "B"]
@@ -38,7 +40,7 @@ export class SensorRegisterFormComponent implements OnInit {
   }
 
   setAddingNodesMode() {
-    this.isAddingNodesModeOn = true   
+    this.isAddingNodesModeOn = true
   }
 
   handleMapClick(event: any) {
@@ -58,7 +60,6 @@ export class SensorRegisterFormComponent implements OnInit {
     }))];
     this.isAddingNodesModeOn = false;
     this.getVoivodeship(this.selectedLocation[0].position.lat(), this.selectedLocation[0].position.lng())
-    this.removePolish()
   }
 
   validateForm() {
@@ -72,26 +73,20 @@ export class SensorRegisterFormComponent implements OnInit {
   getReverseGeoCode(lat: number, lon: number): Observable<any> {
     return this.http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&sensor=false&key=AIzaSyDU3n7u3bjvvzAZBvZgGuGv9L_872q4fHo&language=pl-PL")
     }
-    
+
   getVoivodeship(lat: number, lon: number) {
-  this.getReverseGeoCode(lat, lon)
-    .subscribe(
-    products => {
-      this.localizationString = products.results[Object.keys(products.results).length - 2].formatted_address.split(",")[0];
-    });
-  }
-
-  removePolish(){
-    const letters     = ['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż'];
-    const replacement = ['a', 'c', 'e', 'l', 'n', 'o', 's', 'z', 'z'];
-
-    let result = this.localizationString;
-    console.log(this.localizationString)
-    for (let i = 0; i < letters.length; ++i) {
-        result = result.replace(letters[i], replacement[i]).replace("-","");
-    }
-    
-    this.localizationString = result
+    const sub = this.getReverseGeoCode(lat, lon)
+      .subscribe(data => {
+          const letters     = ['ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż'];
+          const replacement = ['a', 'c', 'e', 'l', 'n', 'o', 's', 'z', 'z'];
+          let result = data.results[Object.keys(data.results).length - 2].formatted_address.split(",")[0].toLowerCase();
+          for (let i = 0; i < letters.length; ++i) {
+            result = result.replace(letters[i], replacement[i]).replace("-","");
+          }
+          this.localizationString = result.toUpperCase()
+        }
+      );
+      this.subscriptions.add(sub);
   }
 
   submit(){
