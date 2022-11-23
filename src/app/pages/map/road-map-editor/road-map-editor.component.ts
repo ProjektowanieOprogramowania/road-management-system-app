@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {RoadNode, RoadSegment} from "../../../services/generated";
-import {positionToLocalization, roadNodeParsed, segmentToPolyline} from "../../../common/utils/mapLocalization";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Road, RoadNode, RoadSegment, RoadsService} from "../../../services/generated";
 import {
   getFitBounds,
-  roadNodeParsed,
+  positionToLocalization,
   segmentsToGoogleMarkersArr,
-  segmentsToGooglePolylineArr
+  segmentsToGooglePolylineArr,
+  segmentToPolyline
 } from "../../../common/utils/mapLocalization";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -42,8 +40,6 @@ export class RoadMapEditorComponent implements OnInit {
   nodeNameError: boolean = false;
   selectedPosition: any;
 
-  infoWindow: any;
-
   startSegmentNode?: RoadNode
   endSegmentNode?: RoadNode
 
@@ -74,6 +70,15 @@ export class RoadMapEditorComponent implements OnInit {
     });
   }
 
+  ngOnInit(): void {
+    this.mapOptions = {
+      center: new google.maps.LatLng(52.237049, 21.017532),
+      zoom: 6.3
+    }
+
+    this.infoWindow = new google.maps.InfoWindow();
+  }
+
   private loadRoadToEdit() {
     this.subscription.add(
       this.roadsService.getRoad(Number(this.roadEditId)).subscribe(
@@ -97,28 +102,15 @@ export class RoadMapEditorComponent implements OnInit {
       weight: 2
     });
 
-    this.mapOverlays.push(markers);
-    this.mapOverlays.push(lines);
+    this.mapOverlays.push(...markers);
+    this.mapOverlays.push(...lines);
 
-    this.mapOptions = {
-      restrictions: {
-        latLngBounds: getFitBounds(markers),
-        strictBounds: false,
-      }
-    }
-
-  }
-
-  ngOnInit(): void {
-
-    if (!this.isRoadEdit) {
-      this.mapOptions = {
-        center: new google.maps.LatLng(52.237049, 21.017532),
-        zoom: 6.3
-      }
-    }
-
-    this.infoWindow = new google.maps.InfoWindow();
+    // this.mapOptions = {
+    //   restrictions: {
+    //     latLngBounds: getFitBounds(markers),
+    //     strictBounds: false,
+    //   }
+    // }
   }
 
   onSubmit() {
