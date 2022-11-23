@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SensorRegisterFormComponent implements OnInit {
 
-//   export interface Sensor { 
+//   export interface Sensor {
 //     id?: number;
 //     name: string;                    done
 //     localization: Localization;
@@ -17,12 +17,13 @@ export class SensorRegisterFormComponent implements OnInit {
 //     enabled: boolean;                done
 //     webhookUrl?: string;
 // }
-  
+
   name: string = "";
   serialNumber: string = "";
   selectedSensorType: string = ""
   active: boolean = true;
   webhookUrl: string = "";
+  selectedOption: any;
 
   sensorNameValid: boolean = true;
   serialNumberValid: boolean = true;
@@ -35,6 +36,10 @@ export class SensorRegisterFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedOption = {
+      center: new google.maps.LatLng(52.1645673, 19.9203192),
+      zoom: 7.3
+    }
   }
 
   validateForm() {
