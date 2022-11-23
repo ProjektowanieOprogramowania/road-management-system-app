@@ -1,0 +1,38 @@
+//.test {
+//  background-color: red;
+//  width: 100%;
+//  height: 100% !important;;
+//  min-height: 100% !important;
+//  max-height: 100% !important;;
+//  min-width: 100%;
+//  display: flex;
+//}
+//
+//.test2 {
+//  height: 100%;
+//  width: 100%;
+//}
+//
+//.ng-star-inserted {
+//  height: 100%;
+//}
+
+.view-camera-container {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  gap: 50px;
+  height: 85vh;
+}
+
+.header {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-size: 1.5em;
+  margin-left: auto;
+  margin-right: auto;
+  width: min-content;
+}
+
+.test {
+  width: 100%;
+}

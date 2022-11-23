@@ -1,0 +1,17 @@
+<!--<div class="test2">-->
+<!--  <p-gmap [options]="mapOptions" class="test"-->
+<!--          [style]="{'width':'100%', 'height':'100%'}">-->
+<!--  </p-gmap>-->
+<!--</div>-->
+
+<div>
+  <p class="header">Taryfikatory</p>
+  <p-dropdown [options]="mapOptions" [(ngModel)]="selectedOption"  optionLabel="name" (ngModelChange)="onVoivodeSelect(gMap.getMap())"></p-dropdown>
+  <div class="view-camera-container">
+    <ng-container>
+      <p-gmap [options]="selectedOption" class="test" #gMap
+              [style]="{'max-width':'100hv', 'min-width':'300px', 'width':'100hv', 'height':'100%'}">
+      </p-gmap>
+    </ng-container>
+  </div>
+</div>
