@@ -1,23 +1,4 @@
-//.test {
-//  background-color: red;
-//  width: 100%;
-//  height: 100% !important;;
-//  min-height: 100% !important;
-//  max-height: 100% !important;;
-//  min-width: 100%;
-//  display: flex;
-//}
-//
-//.test2 {
-//  height: 100%;
-//  width: 100%;
-//}
-//
-//.ng-star-inserted {
-//  height: 100%;
-//}
-
-.view-camera-container {
+.view-camera-map-container {
   display: flex;
   position: relative;
   justify-content: center;
@@ -33,6 +14,47 @@
   width: min-content;
 }
 
-.test {
+.view-camera-map {
   width: 100%;
+}
+
+.view-camera-dropdown-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 5px;
+  padding: 10px;
+  position: absolute;
+  top: 158px;
+  left: 200px;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+}
+
+.camera-iframe {
+  width: 100%;
+  height: 100%;
+}
+.please-go-away-spinner {
+  width: min-content;
+  margin: auto;
+}
+
+.please-go-away-video {
+  width: 100%;
+  height: 100%;
+}
+
+.camera-iframe-disabled {
+  display: none;
+}
+
+.video-spinner {
+  margin: auto;
+}
+
+.p-dialog-content {
+  display: flex;
+  justify-content: center;
 }
