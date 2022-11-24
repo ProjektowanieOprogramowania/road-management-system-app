@@ -69,6 +69,12 @@ export class NavbarComponent implements OnInit {
         label: 'Mapy',
         items: [
           {
+            label: 'Mapa dróg - edycja',
+            routerLink: ['/map/roadMap'],
+            queryParams: {'edit': true},
+            icon: 'pi pi-fw pi-map',
+          },
+          {
             label: 'Mapa dróg',
             routerLink: ['/map/roadMap'],
             icon: 'pi pi-fw pi-map',

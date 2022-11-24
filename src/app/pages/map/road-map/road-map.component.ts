@@ -7,7 +7,7 @@ import {
   segmentsToGoogleMarkersArr,
   segmentsToGooglePolylineArr
 } from "../../../common/utils/mapLocalization";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 // declare var google: any; //new added line
 
@@ -33,9 +33,12 @@ export class RoadMapComponent implements OnInit, AfterViewInit {
 
   @ViewChild('gMap') gMap: any;
 
+  editMode = false;
+
   constructor(private roadsService: RoadsService,
               private messageService: MessageService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
 
     this.roadLoading = true;
     this.subscription.add(this.roadsService.getAllRoads()
@@ -53,6 +56,14 @@ export class RoadMapComponent implements OnInit, AfterViewInit {
           }
         }
       ));
+
+    const editCheck = this.route.snapshot.queryParamMap.get('edit');
+
+    alert(editCheck);
+
+    if(editCheck !== null && Boolean(editCheck)){
+      this.editMode = true;
+    }
   }
 
   ngOnInit(): void {

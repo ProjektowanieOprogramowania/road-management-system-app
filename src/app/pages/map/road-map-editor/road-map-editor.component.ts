@@ -488,9 +488,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.roadSegments = this.roadSegments.filter(seg => seg.endNode.name !== name && seg.startNode.name !== name);
 
     this.mapOverlays = this.mapOverlays.filter(x => x.title && x.title != name);
-    console.log(this.mapOverlays)
     this.mapOverlays.push(...segmentsToGooglePolylineArr(this.roadSegments));
-    console.log(this.mapOverlays)
 
     // this.deleteNodeFromOverlay(name);
   }
@@ -536,7 +534,11 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     //nie usuwa sie z mapki :c
 
     this.roadSegments = this.roadSegments.filter(segment => segment.id !== id);
-    this.overlayRefresh();
+
+    this.mapOverlays = this.mapOverlays.filter(x => x.title);
+    this.mapOverlays.push(...segmentsToGooglePolylineArr(this.roadSegments));
+
+    // this.overlayRefresh();
   }
 
   onEditSegment(segment: RoadSegment) {
