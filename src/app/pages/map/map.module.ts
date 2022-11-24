@@ -21,6 +21,7 @@ import {RippleModule} from "primeng/ripple";
 import {DockModule} from "primeng/dock";
 import {CheckboxModule} from "primeng/checkbox";
 import {ToggleButtonModule} from "primeng/togglebutton";
+import {DropdownModule} from "primeng/dropdown";
 
 export const routes: Routes = [
   {
@@ -39,28 +40,29 @@ export const routes: Routes = [
     RoadMapEditorComponent,
     RoadMapDeleteModalComponent
   ],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    ListboxModule,
-    FormsModule,
-    ToastModule,
-    GMapModule,
-    ButtonModule,
-    SpinnerModule,
-    ProgressSpinnerModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    InputNumberModule,
-    ButtonModule,
-    DialogModule,
-    SubscriptionsModule,
-    DividerModule,
-    RippleModule,
-    DockModule,
-    CheckboxModule,
-    ToggleButtonModule
-  ]
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        ListboxModule,
+        FormsModule,
+        ToastModule,
+        GMapModule,
+        ButtonModule,
+        SpinnerModule,
+        ProgressSpinnerModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        InputNumberModule,
+        ButtonModule,
+        DialogModule,
+        SubscriptionsModule,
+        DividerModule,
+        RippleModule,
+        DockModule,
+        CheckboxModule,
+        ToggleButtonModule,
+        DropdownModule
+    ]
 })
 export class MapModule {
 }

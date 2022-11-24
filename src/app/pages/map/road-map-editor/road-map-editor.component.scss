@@ -8,3 +8,16 @@
 .p-dock-list-container {
   width: 200px;
 }
+
+.table-select-div{
+  width: 40%;
+  margin-right: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+:host ::ng-deep .p-dropdown {
+  width: 100%;
+}

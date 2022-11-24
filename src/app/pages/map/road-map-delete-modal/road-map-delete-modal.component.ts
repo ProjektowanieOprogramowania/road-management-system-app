@@ -35,7 +35,7 @@ export class RoadMapDeleteModalComponent implements OnInit {
 
     this.subscription.add(
       //TODO zmienic na deleteRoads!
-      this.roadService.getAllRoads()
+      this.roadService.deleteRoad(this.roadData?.id!)
         .subscribe(
           {
             next: value => {

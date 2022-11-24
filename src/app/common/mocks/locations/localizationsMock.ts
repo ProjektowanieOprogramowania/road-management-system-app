@@ -1,4 +1,4 @@
-import {Localization} from "../../models/localization";
+import {Localization} from "../../../services/generated";
 
 export const LocalizationsMock: Localization[] = [
   {
