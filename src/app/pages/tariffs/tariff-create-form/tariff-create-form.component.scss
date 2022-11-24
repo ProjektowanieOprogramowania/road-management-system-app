@@ -2,4 +2,17 @@
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
     font-size: 1.5em;
   }
-  
+
+.prices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.price-name {
+  font-size: 1em;
+  margin: auto 0;
+  margin-right: 0;
+  width: 5em;
+  text-align: right;
+}

@@ -4,61 +4,38 @@
     <input type="text" pInputText [(ngModel)]="name" placeholder="Nazwa taryfikatora" [class]="tariffNameValid ? '' : 'ng-invalid ng-dirty'">
     <p-checkbox label="Aktywny po stworzeniu" [(ngModel)]="active" [binary]="true"></p-checkbox>
 
-    <div>
-      <p class="header">Warianty cenowe</p>
+<!--    <div>-->
+<!--      <p class="header">Warianty cenowe</p>-->
+<!--      <div [style]="{display: 'flex', gap: '20px'}">-->
+<!--        <input type="text" pInputText [(ngModel)]="addPriceName" [class]="nameFieldValid ? '' : 'ng-invalid ng-dirty'"-->
+<!--               placeholder="Nazwa">-->
+<!--        <p-inputNumber [(ngModel)]="addPriceValue" [class]="priceFieldValid ? '' : 'ng-invalid ng-dirty'"-->
+<!--                       placeholder="Cena" mode="currency" currency="PLN" locale="pl-PL"></p-inputNumber>-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <div class="prices-container">
       <div [style]="{display: 'flex', gap: '20px'}">
-        <input type="text" pInputText [(ngModel)]="addPriceName" [class]="nameFieldValid ? '' : 'ng-invalid ng-dirty'"
-               placeholder="Nazwa">
-        <p-inputNumber [(ngModel)]="addPriceValue" [class]="priceFieldValid ? '' : 'ng-invalid ng-dirty'"
+        <p class="price-name">car</p>
+        <p-inputNumber [(ngModel)]="priceCar" [class]="priceCarValid ? '' : 'ng-invalid ng-dirty'"
                        placeholder="Cena" mode="currency" currency="PLN" locale="pl-PL"></p-inputNumber>
-        <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Dodaj'"
-                (click)="newRow()"></button>
+      </div>
+      <div [style]="{display: 'flex', gap: '20px'}">
+        <p class="price-name">motorcycle</p>
+        <p-inputNumber [(ngModel)]="priceMotorcycle" [class]="priceMotorcycledValid ? '' : 'ng-invalid ng-dirty'"
+                       placeholder="Cena" mode="currency" currency="PLN" locale="pl-PL"></p-inputNumber>
+      </div>
+      <div [style]="{display: 'flex', gap: '20px'}">
+        <p class="price-name">truck</p>
+        <p-inputNumber [(ngModel)]="priceTruck" [class]="priceTruckValid ? '' : 'ng-invalid ng-dirty'"
+                       placeholder="Cena" mode="currency" currency="PLN" locale="pl-PL"></p-inputNumber>
+      </div>
+      <div [style]="{display: 'flex', gap: '20px'}">
+        <p class="price-name">other</p>
+        <p-inputNumber [(ngModel)]="priceOther" [class]="priceOtherValid ? '' : 'ng-invalid ng-dirty'"
+                       placeholder="Cena" mode="currency" currency="PLN" locale="pl-PL"></p-inputNumber>
       </div>
     </div>
-
-    <p-table [value]="getArray(prices)" *ngIf="getArray(prices).length > 0; else noTariffs">
-      <ng-template pTemplate="header">
-        <tr>
-          <th pSortableColumn="name">
-            Nazwa
-            <p-sortIcon field="name"></p-sortIcon>
-          </th>
-          <th pSortableColumn="customer">
-            Cena
-          </th>
-          <th style="width: 3rem"></th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-price>
-        <tr>
-          <td>{{price.name}}</td>
-          <td>{{price.value + " zł"}}</td>
-          <td [style]="{display: 'flex'}">
-            <button type="button" pButton class="p-button-text p-button-rounded p-button-danger" icon="pi pi-trash"
-            (click) = "deletePrice(price.name)"></button>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <ng-template #noTariffs>
-      <p-table [value]="[0]">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>
-              Nazwa
-            </th>
-            <th>
-              Cena
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body">
-          <tr>
-            <td colspan="2">Brak dodanych taryfikatorów</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </ng-template>
   </div>
   <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Stwórz'"
           [style]="{marginTop: '20px', marginLeft: 'auto', marginRight: '0', display: 'flex', width: '10em' }"

@@ -15,14 +15,19 @@ export class TariffCreateFormComponent implements OnInit {
   active : boolean = true;
   name: string = "";
   prices: Record<string, number> = {};
-  addPriceName: string = ""
-  addPriceValue: number | undefined
-  nameFieldValid: boolean = true;
-  priceFieldValid: boolean = true;
 
   tariffNameValid: boolean = true;
-  tariffPricesValid: boolean = true;
   subscriptions: Subscription = new Subscription();
+
+  priceMotorcycle: number | undefined
+  priceCar: number | undefined
+  priceTruck: number | undefined
+  priceOther: number | undefined
+  priceCarValid = true;
+  priceMotorcycledValid = true;
+  priceTruckValid = true;
+  priceOtherValid = true;
+
 
   constructor(private tariffService: TariffsService, private router: Router, private messageService: MessageService) { }
 
@@ -37,23 +42,18 @@ export class TariffCreateFormComponent implements OnInit {
     return newArray
   }
 
-  validateInput() {
-    if(this.addPriceName === null || this.addPriceName.length === 0) {
-      this.nameFieldValid = false
-    } else {
-      this.nameFieldValid = true
-    }
-    if(!this.addPriceValue) {
-      this.priceFieldValid = false
-    } else {
-      this.priceFieldValid = true;
-    }
-  }
-
   newRow() {
-    this.validateInput()
-    if(this.nameFieldValid && this.priceFieldValid && this.addPriceValue) {
-      this.prices[this.addPriceName] = this.addPriceValue
+    if (this.priceCar) {
+      this.prices["car"] = this.priceCar
+    }
+    if (this.priceMotorcycle) {
+      this.prices["motorcycle"] = this.priceMotorcycle
+    }
+    if (this.priceTruck) {
+      this.prices["truck"] = this.priceTruck
+    }
+    if (this.priceOther) {
+      this.prices["other"] = this.priceOther
     }
   }
 
@@ -62,20 +62,46 @@ export class TariffCreateFormComponent implements OnInit {
   }
 
   validateForm() {
-    if(!this.prices || this.getArray(this.prices).length === 0) {
-      this.tariffPricesValid = false;
-      this.messageService.add({key: 'tl', severity:'error', summary: 'Błąd', detail: 'Taryfikator musi zawierać prznajmniej wariant cenowy'});
-    } else {
-      this.tariffPricesValid = true;
+    let result = true
+    if(this.priceCar) {
+      this.priceCarValid = true
+    }
+    else {
+      this.priceCarValid = false
+      result = false;
+    }
+    if(this.priceMotorcycle) {
+      this.priceMotorcycledValid = true
+    }
+    else {
+      this.priceMotorcycledValid = false
+      result = false;
+    }
+    if(this.priceTruck) {
+      this.priceTruckValid = true
+    }
+    else {
+      this.priceTruckValid = false
+      result = false;
+    }
+    if(this.priceOther) {
+      this.priceOtherValid = true
+    }
+    else {
+      this.priceOtherValid = false
+      result = false;
     }
     if(!this.name || this.name.length === 0) {
       this.tariffNameValid = false;
+      result = false;
     } else {
       this.tariffNameValid = true;
     }
+    return result
   }
 
   createSubmit(){
+    this.newRow()
     const tariff: Tariff = {
       id: 0,
       active: this.active,
@@ -83,7 +109,7 @@ export class TariffCreateFormComponent implements OnInit {
       prices: this.prices,
     }
     this.validateForm()
-    if(this.tariffPricesValid && this.tariffNameValid) {
+    if(this.validateForm() && this.tariffNameValid) {
       const sub = this.tariffService.addTariff(tariff)
         .subscribe(data => {
             console.log("Added", data)
