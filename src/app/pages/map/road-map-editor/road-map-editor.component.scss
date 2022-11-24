@@ -13,3 +13,7 @@
   width: 60%;
   margin-right: 40px;
 }
+
+:host ::ng-deep .p-dropdown {
+  width: 100%;
+}

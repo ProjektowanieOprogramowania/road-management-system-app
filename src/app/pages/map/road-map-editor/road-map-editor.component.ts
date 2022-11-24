@@ -1,6 +1,14 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Road, RoadNode, RoadSegment, RoadsService, Tariff, TariffsService} from "../../../services/generated";
+import {
+  Road,
+  RoadNode,
+  RoadSegment,
+  RoadsService,
+  Tariff,
+  TariffSimplified,
+  TariffsService
+} from "../../../services/generated";
 import {
   getFitBounds,
   positionToLocalization,
@@ -49,7 +57,8 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   isRoadLoading = false;
   //loadedMarkers: any = [];
 
-  tariffs: Tariff[] = [];
+  tariffs: TariffSimplified[] = [{name: "Brak taryfikatora - przejazd darmowy", active: false}]
+  selectedTariff?: TariffSimplified;
 
   subscription = new Subscription();
 
@@ -80,12 +89,18 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
       zoom: 6.3
     }
     this.infoWindow = new google.maps.InfoWindow();
+
+    this.loadTariffs();
   }
 
   ngAfterViewInit(): void {
     if (this.isRoadEdit) {
       this.loadRoadToEdit();
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   private loadRoadToEdit() {
@@ -105,6 +120,15 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
         }));
   }
 
+  private loadTariffs() {
+    this.subscription.add(
+      this.tariffsService.getAllTariffs().subscribe({
+        next: data => {
+          this.tariffs.push(...data.filter(t => t.active));
+        }
+      }));
+  }
+
   private addLoadedMarkersAndLines() {
     if (!this.loadedRoad || !this.loadedRoad.segments) {
       return;
@@ -119,14 +143,6 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.mapOverlays.push(...markers);
     this.mapOverlays.push(...lines);
     this.gMap.getMap().fitBounds(getFitBounds(markers));
-
-    //this.loadedMarkers = markers;
-    // this.mapOptions = {
-    //   restrictions: {
-    //     latLngBounds: getFitBounds(markers),
-    //     strictBounds: false,
-    //   }
-    // }
   }
 
   onSubmit() {
@@ -321,11 +337,28 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const segment: RoadSegment = {
-      startNode: this.startSegmentNode,
-      endNode: this.endSegmentNode
-    };
+    if (this.selectedTariff?.id) {
+      this.subscription.add(
+        this.tariffsService.getTariff(this.selectedTariff.id).subscribe({
+          next: data => {
+            const segment: RoadSegment = {
+              startNode: this.startSegmentNode!,
+              endNode: this.endSegmentNode!,
+              tariff: data
+            };
+            this.submitSegment(segment);
+          }
+        }));
+    } else {
+      const segment: RoadSegment = {
+        startNode: this.startSegmentNode,
+        endNode: this.endSegmentNode,
+      };
+      this.submitSegment(segment);
+    }
+  }
 
+  submitSegment(segment: RoadSegment) {
     this.roadSegments.push(segment);
 
     this.mapOverlays.push(
