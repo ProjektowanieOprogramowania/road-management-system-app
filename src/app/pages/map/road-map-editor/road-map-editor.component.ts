@@ -1,19 +1,12 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {
-  Road,
-  RoadNode,
-  RoadSegment,
-  RoadsService,
-  Tariff,
-  TariffSimplified,
-  TariffsService
-} from "../../../services/generated";
+import {Road, RoadNode, RoadSegment, RoadsService, TariffSimplified, TariffsService} from "../../../services/generated";
 import {
   getFitBounds,
   positionToLocalization,
   segmentsToGoogleMarkersArr,
-  segmentsToGooglePolylineArr, segmentsToRoadNodes,
+  segmentsToGooglePolylineArr,
+  segmentsToRoadNodes,
   segmentToPolyline
 } from "../../../common/utils/mapLocalization";
 import {ActivatedRoute} from "@angular/router";
@@ -62,11 +55,10 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
 
   tariffs: TariffSimplified[] = [{name: "Brak taryfikatora - przejazd darmowy", active: false}]
   selectedTariff?: TariffSimplified;
+
   nodeEditing = new Set<string>();
   nodeNameControl = '';
   nodeNameErrors = '';
-
-  tariffs: Tariff[] = [];
 
   subscription = new Subscription();
 
@@ -350,7 +342,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
         this.tariffsService.getTariff(this.selectedTariff.id).subscribe({
           next: data => {
             const segment: RoadSegment = {
-              id: Math.floor(Math.random()*10000000), //forList
+              id: Math.floor(Math.random() * 10000000), //forList
               startNode: this.startSegmentNode!,
               endNode: this.endSegmentNode!,
               tariff: data
@@ -360,7 +352,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
         }));
     } else {
       const segment: RoadSegment = {
-        id: Math.floor(Math.random()*10000000), //forList
+        id: Math.floor(Math.random() * 10000000), //forList
         startNode: this.startSegmentNode,
         endNode: this.endSegmentNode,
       };
@@ -396,8 +388,8 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     el.scrollIntoView();
   }
 
-  onEditNode(name: string){
-    if(this.nodeEditing.size > 0){
+  onEditNode(name: string) {
+    if (this.nodeEditing.size > 0) {
       this.nodeEditing.clear();
     }
 
@@ -405,14 +397,14 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.nodeEditing.add(name);
   }
 
-  onOkNode(name: string){
-    if(this.nodeNameControl.length === 0){
+  onOkNode(name: string) {
+    if (this.nodeNameControl.length === 0) {
       this.nodeNameErrors = 'Nie może byc puste!'
       this.messageService.add({severity: 'error', summary: this.nodeNameErrors});
       return;
     }
 
-    if(this.roadNodes.findIndex(node => node.name == this.nodeNameControl && node.name != name) !== -1){
+    if (this.roadNodes.findIndex(node => node.name == this.nodeNameControl && node.name != name) !== -1) {
       this.nodeNameErrors = 'Taka nazwa już istnieje!'
       this.messageService.add({severity: 'error', summary: this.nodeNameErrors});
       return;
@@ -421,7 +413,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.roadNodes.find(node => node.name === name)!.name = this.nodeNameControl;
     this.nodeEditing.clear();
     this.mapOverlays = this.mapOverlays.map(elem => {
-      if(elem.title){
+      if (elem.title) {
         elem.title = this.nodeNameControl;
       }
       return elem;
@@ -434,11 +426,11 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.deleteNodeFromOverlay(name);
   }
 
-  private deleteNodeFromOverlay(name: string){
+  private deleteNodeFromOverlay(name: string) {
     let newOverlays: any = [];
 
     this.mapOverlays.forEach(elem => {
-      if(elem.title && elem.title != name){
+      if (elem.title && elem.title != name) {
         newOverlays.push(elem);
       }
     });
@@ -462,7 +454,8 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
             lng: node.localization.longitude
           },
           title: node.name,
-          draggable: true});
+          draggable: true
+        });
       })
     );
 
