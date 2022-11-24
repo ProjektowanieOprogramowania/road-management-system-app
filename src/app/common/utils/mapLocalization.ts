@@ -98,6 +98,10 @@ export function positionToLocalization(position: google.maps.LatLng): Localizati
   }
 }
 
+export function localizationToPosition(localization: Localization) {
+  return {lat: localization.latitude, lng: localization.longitude}
+}
+
 export function segmentToPolyline(segment: RoadSegment) {
   const start = segment.startNode.localization;
   const end = segment.endNode.localization;

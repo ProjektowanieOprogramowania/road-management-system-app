@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
 import {CameraStream, CameraStreamService, Voivodeship} from "../../../services/generated";
-import {coordParsed} from "../../../common/utils/mapLocalization";
+import {localizationToPosition} from "../../../common/utils/mapLocalization";
 
 @Component({
   selector: 'app-view-camera',
@@ -128,8 +128,8 @@ export class ViewCameraComponent implements OnInit {
     this.overlays = []
     const sub = this.cameraStreamService.getCameraStreamsByVoivodeship(this.selectedOption.value.toUpperCase())
       .subscribe(data => {
-          data.forEach((camera: any) => {
-            let marker = new google.maps.Marker({position: coordParsed(camera), title: camera.name})
+          data.forEach((camera) => {
+            let marker = new google.maps.Marker({position: localizationToPosition(camera.localization), title: camera.name})
             marker.setValues({type: "point", id: camera.id});
             this.overlays.push(marker)
           })
