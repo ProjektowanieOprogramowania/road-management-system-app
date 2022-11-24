@@ -12,6 +12,7 @@ import {
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
+import {SegmentMarker} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
 
 @Component({
   selector: 'app-road-map-editor',
@@ -60,6 +61,10 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   nodeEditing = new Set<string>();
   nodeNameControl = '';
   nodeNameErrors = '';
+
+  segmentNodeSelect = new Set<string>();
+  segmentNodeControl?: RoadNode;
+  segmentNodeErrors = '';
 
   selectedEditTariff?: TariffSimplified;
 
@@ -531,7 +536,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     //nie usuwa sie z mapki :c
 
     this.roadSegments = this.roadSegments.filter(segment => segment.id !== id);
-    //this.overlayRefresh();
+    this.overlayRefresh();
   }
 
   onEditSegment(segment: RoadSegment) {
@@ -585,5 +590,33 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.messageService.add({severity: 'success', summary: 'Pomyślnie zaktualizowano odcinek!'});
 
     this.turnOffEditingSegment();
+  }
+
+  onSegmentNodeEdit(node: RoadNode){
+    if(this.segmentNodeSelect.size > 0){
+      this.segmentNodeSelect.clear();
+    }
+
+    this.segmentNodeSelect.add(node.name);
+    this.segmentNodeControl = node;
+  }
+
+  onSegmentOkEdit(nodeType: 'start' | 'end'){
+    this.segmentNodeSelect.clear();
+
+    if(nodeType === 'start'){
+      if(this.segmentToEdit!.endNode.name == this.segmentNodeControl?.name){
+        this.messageService.add({severity: 'error', summary: 'Nie mozna zmienic odcinka na istniejący!'});
+        return;
+      }
+      this.segmentToEdit!.startNode = this.segmentNodeControl!;
+    }
+    else {
+      if(this.segmentToEdit!.startNode.name == this.segmentNodeControl?.name){
+        this.messageService.add({severity: 'error', summary: 'Nie mozna zmienic odcinka na istniejący!'});
+        return;
+      }
+      this.segmentToEdit!.endNode = this.segmentNodeControl!;
+    }
   }
 }

@@ -120,12 +120,47 @@
       <div *ngIf="segmentToEdit" class="mt-4">
         <p class="text-center text-xl mt-0">Edytuj Odcinek</p>
         <div class="p-listbox px-3 py-1 flex flex-column">
-          <p class="font-semibold">
-            <span class="font-normal">Węzeł początkowy:</span> {{this.segmentToEdit.startNode.name}}
-          </p>
-          <p class="font-semibold">
-            <span class="font-normal">Węzeł końcowy:</span> {{this.segmentToEdit.endNode.name}}
-          </p>
+          <div class="w-full flex align-items-center">
+            <p class="font-semibold"
+               *ngIf="!segmentNodeSelect.has(this.segmentToEdit.startNode.name); else segment_node_edit_drop">
+              <span class="font-normal">Węzeł początkowy:</span> {{this.segmentToEdit.startNode.name}}
+            </p>
+            <ng-template #segment_node_edit_drop>
+              <p-dropdown [options]="roadNodes" [(ngModel)]="segmentNodeControl" optionLabel="name" class="node-dropdown"></p-dropdown>
+            </ng-template>
+
+            <div class="ml-auto">
+              <button pButton *ngIf="!segmentNodeSelect.has(this.segmentToEdit.startNode.name); else segment_node_edit"
+                      class="p-button-secondary p-button-sm"
+                      (click)="onSegmentNodeEdit(this.segmentToEdit.startNode)">Zmień
+              </button>
+              <ng-template #segment_node_edit>
+                <button pButton class="p-button-success p-button-sm" (click)="onSegmentOkEdit('start')">Ok</button>
+              </ng-template>
+            </div>
+          </div>
+
+          <div class="w-full flex align-items-center">
+            <p class="font-semibold"
+               *ngIf="!segmentNodeSelect.has(this.segmentToEdit.endNode.name); else segment_node_edit_drop2">
+              <span class="font-normal">Węzeł końcowy:</span> {{this.segmentToEdit.endNode.name}}
+            </p>
+            <ng-template #segment_node_edit_drop2>
+              <p-dropdown [options]="roadNodes" [(ngModel)]="segmentNodeControl" optionLabel="name" class="node-dropdown"></p-dropdown>
+            </ng-template>
+
+            <div class="ml-auto">
+              <button pButton *ngIf="!segmentNodeSelect.has(this.segmentToEdit.endNode.name); else segment_node_edit2"
+                      class="p-button-secondary p-button-sm"
+                      (click)="onSegmentNodeEdit(this.segmentToEdit.endNode)">Zmień
+              </button>
+              <ng-template #segment_node_edit2>
+                <button pButton class="p-button-success p-button-sm" (click)="onSegmentOkEdit('end')">Ok</button>
+              </ng-template>
+            </div>
+          </div>
+
+
           <p class="font-semibold">Wybierz taryfikator</p>
           <p-dropdown [options]="tariffs" [(ngModel)]="selectedEditTariff" optionLabel="name">
           </p-dropdown>
