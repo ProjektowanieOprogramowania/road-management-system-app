@@ -28,6 +28,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
 
   selectedNode?: RoadNode;
   selectedSegment?: RoadSegment;
+  segmentToEdit?: RoadSegment;
 
   mapOptions: any;
   mapOverlays: any[] = [];
@@ -59,6 +60,8 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   nodeEditing = new Set<string>();
   nodeNameControl = '';
   nodeNameErrors = '';
+
+  selectedEditTariff?: TariffSimplified;
 
   subscription = new Subscription();
 
@@ -388,7 +391,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
         this.tariffsService.getTariff(this.selectedTariff.id).subscribe({
           next: data => {
             const segment: RoadSegment = {
-              // id: Math.floor(Math.random() * 10000000), //forList
+              // id: Math.floor(Math.random() * 10000000), //forList ahtung error
               startNode: this.startSegmentNode!,
               endNode: this.endSegmentNode!,
               tariff: data
@@ -398,7 +401,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
         }));
     } else {
       const segment: RoadSegment = {
-        // id: Math.floor(Math.random() * 10000000), //forList
+        // id: Math.floor(Math.random() * 10000000), //forList error
         startNode: this.startSegmentNode,
         endNode: this.endSegmentNode,
       };
@@ -478,7 +481,13 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   onDeleteNode(name: string) {
     this.roadNodes = this.roadNodes.filter(node => node.name !== name);
     this.roadSegments = this.roadSegments.filter(seg => seg.endNode.name !== name && seg.startNode.name !== name);
-    this.deleteNodeFromOverlay(name);
+
+    this.mapOverlays = this.mapOverlays.filter(x => x.title && x.title != name);
+    console.log(this.mapOverlays)
+    this.mapOverlays.push(...segmentsToGooglePolylineArr(this.roadSegments));
+    console.log(this.mapOverlays)
+
+    // this.deleteNodeFromOverlay(name);
   }
 
   private deleteNodeFromOverlay(name: string) {
@@ -523,5 +532,58 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
 
     this.roadSegments = this.roadSegments.filter(segment => segment.id !== id);
     //this.overlayRefresh();
+  }
+
+  onEditSegment(segment: RoadSegment) {
+    console.log(segment)
+    this.segmentToEdit = segment;
+    this.selectedEditTariff = segment.tariff;
+    console.log(this.selectedEditTariff)
+  }
+
+  turnOffEditingSegment() {
+    this.segmentToEdit = undefined;
+    this.selectedEditTariff = undefined;
+  }
+
+  editSegment() {
+    if (this.selectedEditTariff?.id && this.selectedEditTariff.id !== this.segmentToEdit?.tariff?.id) {
+      this.subscription.add(
+        this.tariffsService.getTariff(this.selectedEditTariff.id).subscribe({
+          next: data => {
+            const segment: RoadSegment = {
+              ...this.segmentToEdit,
+              startNode: this.segmentToEdit!.startNode,
+              endNode: this.segmentToEdit!.endNode,
+              tariff: data
+            };
+            this.submitEditSegment(segment);
+          }
+        }));
+    } else {
+      const segment: RoadSegment = {
+        ...this.segmentToEdit,
+        startNode: this.segmentToEdit!.startNode,
+        endNode: this.segmentToEdit!.endNode,
+      };
+      this.submitEditSegment(segment);
+    }
+  }
+
+  private submitEditSegment(segment: RoadSegment) {
+    console.log(segment)
+
+    const id = this.roadSegments.findIndex(x => x.startNode.name === this.segmentToEdit?.startNode.name
+      && x.endNode.name === this.segmentToEdit.endNode.name);
+
+    this.roadSegments[id].tariff = segment.tariff;
+
+    const removed = this.roadSegments.splice(id);
+
+    this.roadSegments = [...this.roadSegments, removed[0]];
+
+    this.messageService.add({severity: 'success', summary: 'Pomyślnie zaktualizowano odcinek!'});
+
+    this.turnOffEditingSegment();
   }
 }

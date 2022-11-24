@@ -109,13 +109,37 @@
                 class="flex align-items-center overflow-auto">{{segment.startNode.name + " -> " + segment.endNode.name}}</span>
 
               <div class="flex gap-2 ml-auto z-3">
-                <button pButton class="p-button-secondary p-button-sm">Edytuj</button>
+                <button pButton class="p-button-secondary p-button-sm" (click)="onEditSegment(segment)">Edytuj</button>
                 <button pButton class="p-button-danger p-button-sm" (click)="onDeleteSegment(segment.id)">Usuń</button>
               </div>
             </div>
           </ng-template>
         </p-listbox>
       </div>
+
+      <div *ngIf="segmentToEdit" class="mt-4">
+        <p class="text-center text-xl mt-0">Edytuj Odcinek</p>
+        <div class="p-listbox px-3 py-1 flex flex-column">
+          <p class="font-semibold">
+            <span class="font-normal">Węzeł początkowy:</span> {{this.segmentToEdit.startNode.name}}
+          </p>
+          <p class="font-semibold">
+            <span class="font-normal">Węzeł końcowy:</span> {{this.segmentToEdit.endNode.name}}
+          </p>
+          <p class="font-semibold">Wybierz taryfikator</p>
+          <p-dropdown [options]="tariffs" [(ngModel)]="selectedEditTariff" optionLabel="name">
+          </p-dropdown>
+          <div class="mb-4 mt-4">
+            <button pButton type="button" label="Zapisz"
+                    class="p-button-sm mr-2" (click)="editSegment()">
+            </button>
+            <button pButton type="button" label="Anuluj"
+                    class="p-button-danger p-button-sm" (click)="turnOffEditingSegment()">
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div #map [style]="{'height':'100vh'}" class="w-full flex flex-column align-items-center">
