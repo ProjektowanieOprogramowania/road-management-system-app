@@ -10,8 +10,12 @@
 }
 
 .table-select-div{
-  width: 60%;
+  width: 40%;
   margin-right: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
 }
 
 :host ::ng-deep .p-dropdown {

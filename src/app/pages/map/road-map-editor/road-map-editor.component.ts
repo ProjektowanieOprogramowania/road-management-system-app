@@ -33,6 +33,9 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   roadSegments: RoadSegment[] = [];
   roadNodes: RoadNode[] = [];
 
+  selectedNode?: RoadNode;
+  selectedSegment?: RoadSegment;
+
   mapOptions: any;
   mapOverlays: any[] = [];
   infoWindow: any;
@@ -59,6 +62,11 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
 
   tariffs: TariffSimplified[] = [{name: "Brak taryfikatora - przejazd darmowy", active: false}]
   selectedTariff?: TariffSimplified;
+  nodeEditing = new Set<string>();
+  nodeNameControl = '';
+  nodeNameErrors = '';
+
+  tariffs: Tariff[] = [];
 
   subscription = new Subscription();
 
@@ -300,13 +308,13 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
       draggable: true,
     }));
 
-    this.roadNodes.push({
+    this.roadNodes = [...this.roadNodes, {
       name: this.nodeName!,
       localization: {
         latitude: this.selectedPosition.lat(),
         longitude: this.selectedPosition.lng()
       }
-    });
+    }];
 
     this.nodeName = '';
     this.addNodePopupOpen = false;
@@ -342,6 +350,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
         this.tariffsService.getTariff(this.selectedTariff.id).subscribe({
           next: data => {
             const segment: RoadSegment = {
+              id: Math.floor(Math.random()*10000000), //forList
               startNode: this.startSegmentNode!,
               endNode: this.endSegmentNode!,
               tariff: data
@@ -351,6 +360,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
         }));
     } else {
       const segment: RoadSegment = {
+        id: Math.floor(Math.random()*10000000), //forList
         startNode: this.startSegmentNode,
         endNode: this.endSegmentNode,
       };
@@ -359,7 +369,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   }
 
   submitSegment(segment: RoadSegment) {
-    this.roadSegments.push(segment);
+    this.roadSegments = [...this.roadSegments, segment];
 
     this.mapOverlays.push(
       segmentToPolyline(segment)
@@ -384,5 +394,86 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
 
   scroll(el: HTMLElement) {
     el.scrollIntoView();
+  }
+
+  onEditNode(name: string){
+    if(this.nodeEditing.size > 0){
+      this.nodeEditing.clear();
+    }
+
+    this.nodeNameControl = name;
+    this.nodeEditing.add(name);
+  }
+
+  onOkNode(name: string){
+    if(this.nodeNameControl.length === 0){
+      this.nodeNameErrors = 'Nie może byc puste!'
+      this.messageService.add({severity: 'error', summary: this.nodeNameErrors});
+      return;
+    }
+
+    if(this.roadNodes.findIndex(node => node.name == this.nodeNameControl && node.name != name) !== -1){
+      this.nodeNameErrors = 'Taka nazwa już istnieje!'
+      this.messageService.add({severity: 'error', summary: this.nodeNameErrors});
+      return;
+    }
+
+    this.roadNodes.find(node => node.name === name)!.name = this.nodeNameControl;
+    this.nodeEditing.clear();
+    this.mapOverlays = this.mapOverlays.map(elem => {
+      if(elem.title){
+        elem.title = this.nodeNameControl;
+      }
+      return elem;
+    });
+  }
+
+  onDeleteNode(name: string) {
+    this.roadNodes = this.roadNodes.filter(node => node.name !== name);
+    this.roadSegments = this.roadSegments.filter(seg => seg.endNode.name !== name && seg.startNode.name !== name);
+    this.deleteNodeFromOverlay(name);
+  }
+
+  private deleteNodeFromOverlay(name: string){
+    let newOverlays: any = [];
+
+    this.mapOverlays.forEach(elem => {
+      if(elem.title && elem.title != name){
+        newOverlays.push(elem);
+      }
+    });
+
+    this.mapOverlays = newOverlays;
+  }
+
+  onCancelEditNode() {
+    this.nodeEditing.clear();
+  }
+
+  overlayRefresh() {
+    //nie wiem czy to dobrze działa...
+    const newOverlays: any = [];
+
+    newOverlays.push(
+      ...this.roadNodes.map(node => {
+        return new google.maps.Marker({
+          position: {
+            lat: node.localization.latitude,
+            lng: node.localization.longitude
+          },
+          title: node.name,
+          draggable: true});
+      })
+    );
+
+    newOverlays.push(segmentsToGooglePolylineArr(this.roadSegments));
+    this.mapOverlays = newOverlays;
+  }
+
+  onDeleteSegment(id: number) {
+    //nie usuwa sie z mapki :c
+
+    this.roadSegments = this.roadSegments.filter(segment => segment.id !== id);
+    //this.overlayRefresh();
   }
 }
