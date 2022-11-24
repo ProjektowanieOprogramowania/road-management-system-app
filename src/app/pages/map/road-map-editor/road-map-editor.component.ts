@@ -9,7 +9,7 @@ import {
   segmentsToRoadNodes,
   segmentToPolyline
 } from "../../../common/utils/mapLocalization";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
 
@@ -65,6 +65,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
   @ViewChild('gMap') gMap: any;
 
   constructor(private fb: FormBuilder,
+              private router: Router,
               private route: ActivatedRoute,
               private roadsService: RoadsService,
               private tariffsService: TariffsService,
@@ -145,8 +146,53 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.gMap.getMap().fitBounds(getFitBounds(markers));
   }
 
-  onSubmit() {
+  onSubmit(el: HTMLElement) {
     this.roadForm.markAllAsTouched()
+
+    if (this.roadForm.invalid) {
+      this.scroll(el);
+      return;
+    }
+
+    const road: Road = {
+      name: this.name?.value,
+      subscriptionPriceForOneDay: this.subscriptionPriceForOneDay?.value,
+      segments: this.roadSegments
+    }
+
+    if (!this.roadEditId) {
+      this.onAddRoad(road);
+    } else {
+      this.onUpdateRoad(road);
+    }
+  }
+
+  onAddRoad(road: Road) {
+    this.subscription.add(
+      this.roadsService.addRoad(road).subscribe({
+        next: () => {
+          this.messageService.add({severity: 'success', summary: 'Pomyślnie dodano nową drogę!'});
+          setTimeout(() => {
+            this.router.navigate(['/map/roadMap']);
+          }, 750)
+        }
+      }));
+  }
+
+  onUpdateRoad(road: Road) {
+    this.subscription.add(
+      this.roadsService.updateRoad(parseInt(this.roadEditId), road).subscribe({
+        next: () => {
+          this.messageService.add({severity: 'success', summary: 'Pomyślnie zaktualizowano drogę!'});
+          setTimeout(() => {
+            this.router.navigate(['/map/roadMap']);
+          }, 750)
+        }
+      }));
+  }
+
+  scroll(el: HTMLElement) {
+    el.scrollIntoView();
   }
 
   get name() {
@@ -342,7 +388,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
         this.tariffsService.getTariff(this.selectedTariff.id).subscribe({
           next: data => {
             const segment: RoadSegment = {
-              id: Math.floor(Math.random() * 10000000), //forList
+              // id: Math.floor(Math.random() * 10000000), //forList
               startNode: this.startSegmentNode!,
               endNode: this.endSegmentNode!,
               tariff: data
@@ -352,7 +398,7 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
         }));
     } else {
       const segment: RoadSegment = {
-        id: Math.floor(Math.random() * 10000000), //forList
+        // id: Math.floor(Math.random() * 10000000), //forList
         startNode: this.startSegmentNode,
         endNode: this.endSegmentNode,
       };
@@ -384,10 +430,6 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.nodeNameError = undefined;
   }
 
-  scroll(el: HTMLElement) {
-    el.scrollIntoView();
-  }
-
   onEditNode(name: string) {
     if (this.nodeEditing.size > 0) {
       this.nodeEditing.clear();
@@ -413,11 +455,24 @@ export class RoadMapEditorComponent implements OnInit, AfterViewInit {
     this.roadNodes.find(node => node.name === name)!.name = this.nodeNameControl;
     this.nodeEditing.clear();
     this.mapOverlays = this.mapOverlays.map(elem => {
-      if (elem.title) {
+      if (elem.title && elem.title === name) {
         elem.title = this.nodeNameControl;
       }
       return elem;
     });
+
+    this.roadSegments = this.roadSegments.map(x => {
+        if (x.startNode.name === name) {
+          x.startNode.name = this.nodeNameControl
+        } else if (x.endNode.name === name) {
+          x.endNode.name = this.nodeNameControl
+        }
+        return x;
+      }
+    );
+
+    this.mapOverlays = this.mapOverlays.filter(x => x.getTitle != undefined);
+    this.mapOverlays.push(...segmentsToGooglePolylineArr(this.roadSegments));
   }
 
   onDeleteNode(name: string) {

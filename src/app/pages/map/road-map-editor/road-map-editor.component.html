@@ -1,18 +1,12 @@
-<!--<p-dock [model]="dockItems" position="left" class="my-dock w-1rem">-->
-<!--  <ng-template pTemplate="item" let-item>-->
-<!--    <p onClick="" class="cursor-pointer text-left w-full">{{item.label}}</p>-->
-<!--  </ng-template>-->
-<!--</p-dock>-->
-
 <p-toast></p-toast>
 
-<div #form class="flex flex-column align-items-center m-3">
-  <p class="mt-5 mb-2 text-2xl">
+<div #form class="flex flex-column align-items-center m-3 mx-4">
+  <p class="mt-5 mb-2 text-3xl">
     {{isRoadEdit === true ? "Edytuj drogę" : "Dodaj drogę"}}
   </p>
-  <p-divider class="w-full py-0 my-0 px-8"></p-divider>
-  <p class="mb-5 mt-2 text-xl">Uzupełnij dane</p>
-  <form [formGroup]="roadForm" (ngSubmit)="onSubmit()" class="mb-5 ">
+  <p-divider class="w-full py-0 my-0 "></p-divider>
+  <p class="mb-5 mt-2 text-2xl">Uzupełnij dane</p>
+  <form [formGroup]="roadForm" (ngSubmit)="onSubmit(form)" class="mb-5 ">
     <div class="field">
       <label for="name" class="block">Nazwa</label>
       <input id="name" type="text"
@@ -37,17 +31,43 @@
           nie może być ujemna.</small>
       </ng-container>
     </div>
-    <div class="w-full flex justify-content-center mt-5">
-      <button pButton pRipple type="button" icon="pi pi-arrow-down" class="p-button-rounded" (click)="scroll(map)">
-      </button>
-    </div>
   </form>
 
-  <p-divider class="w-full py-0 my-0 px-8"></p-divider>
+  <p-divider class="w-full py-0 my-0"></p-divider>
+  <p class="mb-5 mt-2 text-2xl">Dodaj węzły i odcinki</p>
+
+
   <div class="w-full flex">
     <div class="table-select-div">
-      <div>
-        <p class="text-center text-xl">Punkty:</p>
+
+      <div *ngIf="startSegmentNode" class="mt-4">
+        <p class="text-center text-xl mt-0">Nowy Odcinek</p>
+        <div class="p-listbox px-3 py-1 flex flex-column">
+          <p *ngIf="startSegmentNode" class="font-semibold">
+            <span class="font-normal">Węzeł początkowy:</span> {{this.startSegmentNode.name}}
+          </p>
+          <p *ngIf="endSegmentNode" class="font-semibold">
+            <span class="font-normal">Węzeł końcowy:</span> {{this.endSegmentNode.name}}
+          </p>
+          <ng-container *ngIf="endSegmentNode && startSegmentNode">
+            <p class="font-semibold">Wybierz taryfikator</p>
+            <p-dropdown [options]="tariffs" [(ngModel)]="selectedTariff" optionLabel="name"
+                        class="">
+            </p-dropdown>
+            <div class="mb-4 mt-4">
+              <button pButton type="button" label="Dodaj odcinek" icon="pi pi-plus"
+                      class="p-button-sm w-5 mr-2" (click)="addSegment()">
+              </button>
+              <button pButton type="button" label="Anuluj"
+                      class="p-button-danger p-button-sm" (click)="turnOffAddingSegmentsMode()">
+              </button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="my-4">
+        <p class="text-center text-xl mt-0">Punkty:</p>
         <p-listbox [options]="roadNodes" [(ngModel)]="selectedNode"
                    optionLabel="name" [listStyle]="{'height':'350px'}">
           <ng-template let-roadNode pTemplate="item">
@@ -66,8 +86,10 @@
                   <button pButton class="p-button-danger p-button-sm" (click)="onCancelEditNode()">Anuluj</button>
                 </ng-container>
                 <ng-template #node_edit_btn>
-                  <button pButton class="p-button-secondary p-button-sm" (click)="onEditNode(roadNode.name)">Edytuj</button>
-                  <button pButton class="p-button-danger p-button-sm" (click)="onDeleteNode(roadNode.name)">Usuń</button>
+                  <button pButton class="p-button-secondary p-button-sm" (click)="onEditNode(roadNode.name)">Edytuj
+                  </button>
+                  <button pButton class="p-button-danger p-button-sm" (click)="onDeleteNode(roadNode.name)">Usuń
+                  </button>
                 </ng-template>
 
               </div>
@@ -83,20 +105,20 @@
           <ng-template let-segment pTemplate="item">
             <div class="flex w-full">
 
-              <span class="flex align-items-center overflow-auto">{{segment.startNode.name +  " -> " + segment.endNode.name}}</span>
+              <span
+                class="flex align-items-center overflow-auto">{{segment.startNode.name + " -> " + segment.endNode.name}}</span>
 
               <div class="flex gap-2 ml-auto z-3">
-                <button pButton class="p-button-secondary p-button-sm" >Edytuj</button>
+                <button pButton class="p-button-secondary p-button-sm">Edytuj</button>
                 <button pButton class="p-button-danger p-button-sm" (click)="onDeleteSegment(segment.id)">Usuń</button>
               </div>
             </div>
           </ng-template>
         </p-listbox>
       </div>
-
     </div>
-    <div #map [style]="{'height':'95vh'}" class="w-full flex flex-column align-items-center">
-      <p class="mb-5 mt-2 text-xl">Dodaj węzły i odcinki</p>
+
+    <div #map [style]="{'height':'100vh'}" class="w-full flex flex-column align-items-center">
       <div class="flex mb-4 align-items-center">
         <p-toggleButton [ngModel]="isAddingNodesModeOn" onLabel="Dodaj węzły" offLabel="Dodaj węzły"
                         (onChange)="switchAddingNodesMode()"
@@ -106,25 +128,11 @@
                         (onChange)="switchAddingSegmentsMode()"
                         styleClass="p-button-sm mr-3">
         </p-toggleButton>
-        <button pButton pRipple type="button" icon="pi pi-arrow-down" class="p-button-rounded" (click)="scroll(save)">
-        </button>
       </div>
-      <p *ngIf="isAddingNodesModeOn" class="font-semibold">Kliknij na mapę, aby dodać nowy węzeł.</p>
+      <p *ngIf="isAddingNodesModeOn" class="font-semibold mt-0">Kliknij na mapę, aby dodać nowy węzeł.</p>
       <ng-container *ngIf="isAddingSegmentsModeOn">
-        <p *ngIf="!startSegmentNode" class="font-semibold">Zaznacz węzeł początkowy</p>
-        <p *ngIf="startSegmentNode" class="font-semibold mb-0">
-          <span class="font-normal">Węzeł początkowy:</span> {{this.startSegmentNode.name}}</p>
-        <p *ngIf="startSegmentNode && !endSegmentNode" class="font-semibold">Zaznacz węzeł końcowy</p>
-        <p *ngIf="endSegmentNode" class="font-semibold">
-          <span class="font-normal">Węzeł końcowy:</span> {{this.endSegmentNode.name}}
-        </p>
-        <ng-container *ngIf="endSegmentNode && startSegmentNode">
-          <p class="font-semibold">Wybierz taryfikator</p>
-          <p-dropdown [options]="tariffs" [(ngModel)]="selectedTariff" optionLabel="name" class="mb-3 w-8"></p-dropdown>
-          <button pButton type="button" label="Dodaj odcinek" icon="pi pi-plus"
-                  class="mb-4" (click)="addSegment()">
-          </button>
-        </ng-container>
+        <p *ngIf="!startSegmentNode" class="font-semibold mt-0">Zaznacz węzeł początkowy</p>
+        <p *ngIf="startSegmentNode && !endSegmentNode" class="font-semibold mt-0">Zaznacz węzeł końcowy</p>
       </ng-container>
       <p-gmap [options]="mapOptions" class="w-full h-full"
               [style]="{'width':'100%','height':'100%'}"
@@ -139,10 +147,11 @@
     </div>
   </div>
 
-  <p-divider class="w-full py-0 my-0 px-8"></p-divider>
+  <p-divider class="w-full py-0 my-0"></p-divider>
+
   <div #save class=" flex flex-column align-items-center">
     <p class="mb-5 mt-2 text-xl">Zapisz drogę</p>
-    <p-button styleClass="mb-8">Zapisz</p-button>
+    <p-button styleClass="mb-8" (onClick)="onSubmit(form)">Zapisz</p-button>
     <button pButton pRipple type="button" icon="pi pi-arrow-up" class="p-button-rounded mb-5" (click)="scroll(form)">
     </button>
   </div>
