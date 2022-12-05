@@ -2,6 +2,8 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { AuctionOfferService } from './api/auctionOffer.service';
+import { AuctionsService } from './api/auctions.service';
 import { CameraStreamService } from './api/cameraStream.service';
 import { ChargesService } from './api/charges.service';
 import { PassingChargesService } from './api/passingCharges.service';

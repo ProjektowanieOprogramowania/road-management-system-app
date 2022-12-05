@@ -2,6 +2,8 @@
 README.md
 api.module.ts
 api/api.ts
+api/auctionOffer.service.ts
+api/auctions.service.ts
 api/cameraStream.service.ts
 api/charges.service.ts
 api/passingCharges.service.ts
@@ -16,10 +18,13 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/auction.ts
+model/auctionOffer.ts
 model/cameraStream.ts
 model/cameraStreamProtocol.ts
 model/charge.ts
 model/chargeType.ts
+model/currency.ts
 model/localization.ts
 model/models.ts
 model/passing.ts

@@ -1,3 +1,7 @@
+export * from './auctionOffer.service';
+import { AuctionOfferService } from './auctionOffer.service';
+export * from './auctions.service';
+import { AuctionsService } from './auctions.service';
 export * from './cameraStream.service';
 import { CameraStreamService } from './cameraStream.service';
 export * from './charges.service';
@@ -18,4 +22,4 @@ export * from './subscriptions.service';
 import { SubscriptionsService } from './subscriptions.service';
 export * from './tariffs.service';
 import { TariffsService } from './tariffs.service';
-export const APIS = [CameraStreamService, ChargesService, PassingChargesService, PenaltiesService, RoadNodesService, RoadSegmentsService, RoadsService, SensorsService, SubscriptionsService, TariffsService];
+export const APIS = [AuctionOfferService, AuctionsService, CameraStreamService, ChargesService, PassingChargesService, PenaltiesService, RoadNodesService, RoadSegmentsService, RoadsService, SensorsService, SubscriptionsService, TariffsService];
