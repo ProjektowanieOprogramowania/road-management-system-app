@@ -40,6 +40,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/cameras/cameras.module').then(m => m.CamerasModule)
   },
   {
+    path: 'auctions',
+    loadChildren: () => import('./pages/auctions/auctions.module').then(m => m.AuctionsModule)
+  },
+  {
     path: '**',
     pathMatch: 'full',
     component: PageNotFoundComponent

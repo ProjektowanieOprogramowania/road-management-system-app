@@ -105,6 +105,16 @@ export class NavbarComponent implements OnInit {
             icon: 'pi pi-fw pi-camera',
           }
         ]
+      },
+      {
+        label: 'Przetargi',
+        items: [
+          {
+            label: 'Wyświetl listę',
+            routerLink: ['/auctions'],
+            icon: 'pi pi-fw pi-list',
+          }
+        ]
       }
     ];
 
