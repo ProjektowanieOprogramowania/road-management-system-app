@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Router} from "@angular/router";
 import {PassingChargeModel} from "../../../../common/models/passingCharge.model";
 import {PaymentMethod} from "../../../../services/generated";
-import {PaymentMethodModel, PaymentMethodModels} from "../../../../common/models/paymentMethod";
+import {PaymentMethodModel, PaymentMethodModels} from "../../../../common/models/paymentMethod.model";
 
 @Component({
   selector: 'app-pay-passing-charge-modal',
@@ -23,7 +22,7 @@ export class PayPassingChargeModalComponent implements OnInit {
 
   displayUnselectedPaymentMethodError = false;
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
   ngOnInit(): void {

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {PenaltyModel} from "../common/models/penalty.model";
 import {Observable} from "rxjs";
+import {PenaltyCharge} from "./generated";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,7 @@ export class Old_penaltiesService {
   }
 
   getPenaltiesHistory(): Observable<any> {
-    return this.http.get<PenaltyModel[]>
+    return this.http.get<PenaltyCharge[]>
     (`${this.API_URL}/penalties.json`);
   }
-
 }

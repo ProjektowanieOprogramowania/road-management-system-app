@@ -1,4 +1,4 @@
-import {Vehicle} from "../../models/vehicle";
+import {Vehicle} from "../../../services/generated";
 
 export const VehiclesMock: Vehicle[] = [
   {

@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Router} from "@angular/router";
 import {PaymentMethod} from "../../../services/generated";
-import {PaymentMethodModel, PaymentMethodModels} from "../../../common/models/paymentMethod";
+import {PaymentMethodModel, PaymentMethodModels} from "../../../common/models/paymentMethod.model";
 import {SubscriptionModel} from "../../../common/models/subscription.model";
 
 @Component({
@@ -27,7 +26,7 @@ export class SubscriptionModalComponent implements OnInit {
 
   isPaymentWaiting = true;
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
   ngOnInit(): void {

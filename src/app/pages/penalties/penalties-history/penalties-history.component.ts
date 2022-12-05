@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {PenaltyModel} from "../../../common/models/penalty.model";
+import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {PenaltiesService, PenaltyCharge} from "../../../services/generated";
 import {UserProfileService} from "../../../services/user-profile.service";
