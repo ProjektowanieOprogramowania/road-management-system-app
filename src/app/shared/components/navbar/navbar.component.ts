@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem} from "primeng/api";
+import {UserProfileService} from "../../../services/user-profile.service";
+import {Role} from "../../../common/models/role.model";
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +15,17 @@ export class NavbarComponent implements OnInit {
 
   displayProfileSelectionModal = false;
 
+  userRole!: Role;
+
+  username: string = '';
+
+  constructor(private userService: UserProfileService) {
+  }
+
   ngOnInit() {
+    this.userRole = this.userService.getUserRole();
+    this.username = this.userRole === Role.User ? 'Jan Kowalski' : 'Pracownik';
+
     this.items = [
       {
         label: 'Taryfikator',
@@ -129,6 +141,10 @@ export class NavbarComponent implements OnInit {
           command: event => this.onProfileClick()
         },
         {
+          label: this.userRole === Role.User ? 'Pracownik' : 'Jan Kowalski',
+          command: event => this.onProfileChange(),
+        },
+        {
           label: 'Wyloguj'
         }
       ]
@@ -147,4 +163,11 @@ export class NavbarComponent implements OnInit {
     this.displayProfileSelectionModal = false;
   }
 
+  onProfileChange() {
+    const roleToSwitch = this.userRole === Role.User ? Role.Worker : Role.User;
+    this.userService.setUserRole(roleToSwitch);
+    this.userRole = this.userService.getUserRole();
+    this.username = this.userRole === Role.User ? 'Jan Kowalski' : 'Pracownik';
+    this.rightItems[0].items![2].label = this.userRole === Role.User ? 'Pracownik' : 'Jan Kowalski';
+  }
 }
