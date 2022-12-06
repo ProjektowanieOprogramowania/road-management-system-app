@@ -98,4 +98,8 @@ export class AuctionManagementComponent implements OnInit {
   viewOffers(auction: Auction) {
     this.router.navigate([`auctions/${auction.id ?? 0}/offers`]);
   }
+
+  viewResults(auction: Auction) {
+
+  }
 }

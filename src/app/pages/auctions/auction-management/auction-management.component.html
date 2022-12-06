@@ -32,8 +32,13 @@
             <td>
               <div class="flex gap-3 justify-content-end">
                 <button pButton type="button" (click)="viewDetails(auction)" label="Szczegóły"></button>
-                <button pButton type="button" (click)="viewOffers(auction)" class="p-button-secondary"
-                        label="Oferty"></button>
+                <button pButton type="button" (click)="viewOffers(auction)" class="p-button-secondary w-3"
+                        label="Oferty" *ngIf="auction.isOpen; else results_btn"></button>
+                <ng-template #results_btn>
+                  <button pButton type="button" (click)="viewResults(auction)" label="Wyniki"
+                          class="p-button-secondary w-3"></button>
+                </ng-template>
+
                 <ng-container *ngIf="editModeFlag">
                   <button pButton type="button" class="bg-yellow-600" [disabled]="!auction.isOpen"
                           (click)="editAuction(auction)"  label="Edytuj">
