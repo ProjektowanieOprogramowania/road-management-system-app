@@ -125,7 +125,12 @@ export class NavbarComponent implements OnInit {
             label: 'Wyświetl listę',
             routerLink: ['/auctions'],
             icon: 'pi pi-fw pi-list',
-          }
+          },
+          {
+            label: 'Dodaj',
+            routerLink: ['/auctions/modify'],
+            icon: 'pi pi-fw pi-plus',
+          },
         ]
       }
     ];
@@ -138,11 +143,11 @@ export class NavbarComponent implements OnInit {
         },
         {
           label: 'UUID',
-          command: event => this.onProfileClick()
+          command: () => this.onProfileClick()
         },
         {
           label: this.userRole === Role.User ? 'Pracownik' : 'Jan Kowalski',
-          command: event => this.onProfileChange(),
+          command: () => this.onProfileChange(),
         },
         {
           label: 'Wyloguj'

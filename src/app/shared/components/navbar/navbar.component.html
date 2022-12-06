@@ -3,7 +3,7 @@
     <button pButton class="p-button-text home-span" [routerLink]="['/']">RoadMngSystem</button>
   </ng-template>
   <ng-template pTemplate="end">
-    <p-button type="button" icon="pi pi-user" label="Jan Kowalski"
+    <p-button type="button" icon="pi pi-user" label="{{this.username}}"
       (click)="menu.toggle($event)">
     </p-button>
     <p-menu #menu [popup]="true" [model]="rightItems"></p-menu>

@@ -12,7 +12,6 @@ import {
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
-import {SegmentMarker} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
 
 @Component({
   selector: 'app-road-map-editor',
