@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Road, RoadsService} from "../../../services/generated";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
@@ -32,8 +32,8 @@ export class RoadMapComponent implements OnInit, AfterViewInit {
   subscription = new Subscription();
 
   @ViewChild('gMap') gMap: any;
+  @Input() editMode: boolean = true;
 
-  editMode = false;
 
   constructor(private roadsService: RoadsService,
               private messageService: MessageService,
@@ -56,14 +56,6 @@ export class RoadMapComponent implements OnInit, AfterViewInit {
           }
         }
       ));
-
-    const editCheck = this.route.snapshot.queryParamMap.get('edit');
-
-    alert(editCheck);
-
-    if(editCheck !== null && Boolean(editCheck)){
-      this.editMode = true;
-    }
   }
 
   ngOnInit(): void {

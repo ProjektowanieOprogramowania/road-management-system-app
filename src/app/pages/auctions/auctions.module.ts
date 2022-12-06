@@ -4,11 +4,18 @@ import {AuctionManagementComponent} from './auction-management/auction-managemen
 import {RouterModule, Routes} from "@angular/router";
 import {AuctionModifyComponent} from './auction-modify/auction-modify.component';
 import {ToastModule} from "primeng/toast";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {InputNumberModule} from "primeng/inputnumber";
 import {CalendarModule} from "primeng/calendar";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {TableModule} from "primeng/table";
+import {CheckboxModule} from "primeng/checkbox";
+import {SpinnerModule} from "primeng/spinner";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {DialogModule} from "primeng/dialog";
+import {OffersPageComponent} from "../offers/offers-page/offers-page.component";
+import {OffersModule} from "../offers/offers.module";
 
 export const routes: Routes = [
   {
@@ -18,6 +25,10 @@ export const routes: Routes = [
   {
     path: 'modify',
     component: AuctionModifyComponent
+  },
+  {
+    path: ':id/offers',
+    component: OffersPageComponent
   }
 ];
 
@@ -27,6 +38,7 @@ export const routes: Routes = [
     AuctionModifyComponent
   ],
   imports: [
+    OffersModule,
     RouterModule.forChild(routes),
     CommonModule,
     ToastModule,
@@ -35,6 +47,12 @@ export const routes: Routes = [
     InputNumberModule,
     CalendarModule,
     InputTextareaModule,
+    TableModule,
+    CheckboxModule,
+    FormsModule,
+    SpinnerModule,
+    ProgressSpinnerModule,
+    DialogModule,
   ]
 })
 export class AuctionsModule {

@@ -1,0 +1,70 @@
+<p-toast></p-toast>
+
+<p-dialog [(visible)]="detailsModalVisiblle" [modal]="true" header="Szczegóły przetargu" (onHide)="onModalHide()">
+  <div *ngIf="selectedOffer !== undefined">
+    <div class="detail-row">
+      <span>Id:</span>
+      <span class="font-bold">{{selectedOffer.id}}</span>
+    </div>
+    <div class="detail-row">
+      <span>UserId:</span>
+      <span class="font-bold">{{selectedOffer.userId}}</span>
+    </div>
+    <div class="detail-row">
+      <span>Kwota:</span>
+      <span class="font-bold">{{selectedOffer.amount}}</span>
+    </div>
+    <div class="detail-row">
+      <span>Waluta:</span>
+      <span class="font-bold">{{selectedOffer.currency}}</span>
+    </div>
+    <div class="mt-5">
+      <span class="font-bold mb-2">Ocena:</span>
+      <p-rating [(ngModel)]="rating" [cancel]="false" [stars]="10" [readonly]="false"></p-rating>
+    </div>
+    <button pButton class="mt-5 w-full text-center" [loading]="ratingLoading"
+            label="Wystaw ocenę" (click)="onOfferSubmit()"></button>
+  </div>
+</p-dialog>
+
+<div class="flex flex-column justify-content-center align-items-center main-div">
+
+  <button pButton class="back-button p-button-outlined" label="Wróć do przetargów" (click)="backToAuctions()"></button>
+  <h2>Oferty</h2>
+
+  <p-progressSpinner [style]="{width: '50px', height: '50px'}"
+                     *ngIf="isLoading; else table_div"></p-progressSpinner>
+
+  <ng-template #table_div>
+    <div class="w-8 mt-5">
+
+      <h3>{{auction?.name}}</h3>
+
+      <p-table [value]="auctionOfferList" [rows]="10" class="w-full">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Id</th>
+            <th>Kwota</th>
+            <th>Waluta</th>
+            <th>Ocena</th>
+            <th [style]="'text-align: right'"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-offer>
+          <tr>
+            <td>{{offer.id}}</td>
+            <td>{{offer.amount}}</td>
+            <td>{{offer.currency}}</td>
+            <td>{{'0'}}</td>
+            <td>
+              <div class="flex gap-3 justify-content-end">
+                <button pButton type="button" (click)="viewDetails(offer)" label="Szczegóły i ocena"></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+
+</div>

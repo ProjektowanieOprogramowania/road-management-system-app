@@ -22,11 +22,16 @@ import {DockModule} from "primeng/dock";
 import {CheckboxModule} from "primeng/checkbox";
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {DropdownModule} from "primeng/dropdown";
+import {RoadMapViewerComponent} from "./road-map-viewer/road-map-viewer.component";
 
 export const routes: Routes = [
   {
     path: 'roadMap',
     component: RoadMapComponent
+  },
+  {
+    path: 'roadMapViewer',
+    component: RoadMapViewerComponent
   },
   {
     path: 'roadMapEditor',
@@ -38,7 +43,8 @@ export const routes: Routes = [
   declarations: [
     RoadMapComponent,
     RoadMapEditorComponent,
-    RoadMapDeleteModalComponent
+    RoadMapDeleteModalComponent,
+    RoadMapViewerComponent
   ],
     imports: [
         RouterModule.forChild(routes),
