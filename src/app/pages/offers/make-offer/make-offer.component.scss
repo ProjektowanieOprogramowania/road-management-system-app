@@ -3,14 +3,32 @@
     flex-direction: row;
     gap: 5px;
   }
-  
+
   .main-div{
     position: relative;
   }
-  
+
   .back-button{
     position: absolute;
     left: 10px;
     top: 10px;
   }
-  
+
+
+.make-offer-price-input {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.make-offer-body {
+  gap: 20px
+}
+
+.make-offer-dropdown {
+  margin-left: 20px;
+}
+
+.make-offer-submit {
+  margin-left: 20px;
+}

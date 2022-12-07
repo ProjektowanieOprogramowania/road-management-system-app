@@ -12,6 +12,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { MakeOfferComponent } from './make-offer/make-offer.component';
 import {InputNumberModule} from "primeng/inputnumber";
 import {DropdownModule} from "primeng/dropdown";
+import {InputTextModule} from 'primeng/inputtext';
+
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import {DropdownModule} from "primeng/dropdown";
     FormsModule,
     InputNumberModule,
     ReactiveFormsModule,
-    DropdownModule
+    DropdownModule,
+    InputTextModule
   ]
 })
 export class OffersModule { }

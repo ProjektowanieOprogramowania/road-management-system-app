@@ -9,21 +9,22 @@
                      *ngIf="isLoading; else table_div"></p-progressSpinner>
   <ng-template #table_div>
     <div class="w-8 mt-5">
-
       <h3 class="text-center">{{auction?.name ?? "null"}}</h3>
+      <div class="make-offer-body">
+        <div class="make-offer-price-input">
+          <p-inputNumber [(ngModel)]="price" [min]=staringPrice id="price" mode="currency"
+                         [currency]="selectedCurrency" class="w-full" styleClass="w-full"
+                         decrementButtonClass="{{price === null || price <= 0 ? 'hidden' : ''}}">
+          </p-inputNumber>
+          <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrency" class="w-3 make-offer-dropdown"
+                      (onChange)="setCurrency($event)"></p-dropdown>
+        </div>
+        <input type="text" pInputText [(ngModel)]="companyName" placeholder="Nazwa firmy"
+               [class]="isCompanyNameValid ? '' : 'ng-invalid ng-dirty'">
 
-      <p-inputNumber [(ngModel)]="price" [min]=staringPrice id="price" mode="currency"
-                           [currency]="selectedCurrency" class="w-full" styleClass="w-full"
-                           decrementButtonClass="{{price === null || price <= 0 ? 'hidden' : ''}}">
-            </p-inputNumber>
-
-            <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrency" class="w-3" 
-            (onChange)="setCurrency($event)"></p-dropdown>
-
-
-            <button type="submit" pButton label="Dodaj" icon="pi pi-plus"></button>
-
-    
+        <button type="submit" pButton label="Dodaj" icon="pi pi-plus" class="make-offer-submit"
+                (click)="onSubmit()"></button>
+      </div>
     </div>
   </ng-template>
 

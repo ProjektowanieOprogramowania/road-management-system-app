@@ -14,7 +14,6 @@ import {AuctionModel, convertToAuctionModel, convertToAuctionModels} from "../..
 export class AuctionManagementComponent implements OnInit {
 
   selectedAuction!: Auction;
-  auctionDetailsModel!: AuctionModel
 
   editModeFlag = false;
   isLoading = true; //flag for auctions loading
@@ -101,6 +100,10 @@ export class AuctionManagementComponent implements OnInit {
     this.showDetailsDialog = true;
     this.selectedAuction = auction;
     this.auctionDetailsModel = convertToAuctionModel(auction);
+  }
+
+  goToMakeOffer(auction: Auction) {
+    this.router.navigate([`auctions/${auction.id ?? 0}/makeoffer`]);
   }
 
   viewOffers(auction: Auction) {

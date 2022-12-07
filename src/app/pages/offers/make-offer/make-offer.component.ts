@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Auction, AuctionOffer, AuctionOfferService, AuctionsService} from "../../../services/generated";
 import {MessageService} from "primeng/api";
 import {Subscription} from "rxjs";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, TitleStrategy} from "@angular/router";
+import { registerLocaleData } from '@angular/common';
 
 @Component({
   selector: 'app-make-offer',
@@ -19,17 +20,21 @@ export class MakeOfferComponent implements OnInit {
   isPriceValid: boolean = false
   price: number = 0
 
+  isCompanyNameValid: boolean = false
+  companyName: string | undefined
+
   isLoading = true;
   myOffer: AuctionOffer | undefined;
 
   ratingLoading = false;
 
-  currencies = ['PLN', 'EUR', 'USD'];
-  selectedCurrency: string = 'PLN'
+  currencies = ['pln', 'eur', 'usd'];
+  selectedCurrency: string = 'pln'
 
   subscription = new Subscription();
 
   constructor(private auctionService: AuctionsService,
+              private auctionOfferService: AuctionOfferService,
               private router: Router,
               private route: ActivatedRoute,
               private messageService: MessageService) {
@@ -44,11 +49,10 @@ export class MakeOfferComponent implements OnInit {
       this.subscription.add(this.auctionService.getAuctionById(this.auctionId).subscribe({
         next: value => {
           this.auction = value;
-          console.log(value)
-          console.log("----------------------------------------------------------")
           if (value.staringPrice) {
             this.staringPrice = value.staringPrice
             this.price = value.staringPrice
+            this.isLoading = false
           }
         },
         error: err => {
@@ -67,32 +71,30 @@ export class MakeOfferComponent implements OnInit {
   }
 
   onSubmit() {
-
-    console.log(this.selectedCurrency);
-    
-    if (this.price < this.staringPrice) {
+    if (this.price < this.staringPrice || this.companyName == null || this.companyName == "") {
       this.messageService.add({severity: 'error', summary: 'Wprowadzono nieprawidłowe dane!'});
       return;
     }
 
-    // const auction: Auction = {
-    //   name: this.auctionName.value,
-    //   staringPrice: this.auctionStartingPrice.value,
-    //   dueDate: this.auctionDueDate.value.getTime(),
-    //   description: this.auctionDescription.value,
-    //   isOpen: true
-    // }
+    const offer: AuctionOffer = { 
+      userId: "2e92a123-f4b8-33a1-0ea9-a00592fac476",
+      companyName: this.companyName,
+      auctionId: this.auctionId,
+      amount: this.price,
+      currency: this.selectedCurrency,
+    }
 
-    // this.subscription.add(
-    //   this.auctionsService.createAuction(auction).subscribe({
-    //     next: () => {
-    //       this.messageService.add({severity: 'success', summary: 'Pomyślnie utworzono nowy przetarg!'});
-    //       setTimeout(() => {
-    //         this.router.navigate(['auctions']);
-    //       }, 1000);
-    //     }
-    //   })
-    // );
+    console.log(offer)
+    console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+
+    this.subscription.add(
+      this.auctionOfferService.createOffer(offer).subscribe({
+        next: () => {
+          this.messageService.add({severity: 'success', summary: 'Pomyślnie utworzono nowy przetarg!'});
+            this.router.navigate(['auctions']);
+        }
+      })
+    );
   }
 
   backToAuctions() {
