@@ -34,16 +34,18 @@ export class NavbarComponent implements OnInit {
             label: 'Dodaj',
             routerLink: ['/tariffs/create'],
             icon: 'pi pi-fw pi-plus',
+            visible: this.userRole === Role.Worker
           },
           {
             label: 'Wyświetl listę',
             routerLink: ['/tariffs'],
-            icon: 'pi pi-fw pi-list'
+            icon: 'pi pi-fw pi-list',
           },
         ]
       },
       {
         label: 'Finanse',
+        visible: this.userRole === Role.User,
         items: [
           {
             label: 'Opłać przejazd',
@@ -69,6 +71,7 @@ export class NavbarComponent implements OnInit {
       },
       {
         label: 'Kary',
+        visible: this.userRole === Role.User,
         items: [
           {
             label: 'Historia kar',
@@ -81,24 +84,28 @@ export class NavbarComponent implements OnInit {
         label: 'Mapy',
         items: [
           {
-            label: 'Mapa dróg - edycja',
+            label: 'Mapa dróg',
             routerLink: ['/map/roadMap'],
             icon: 'pi pi-fw pi-map',
+            visible: this.userRole === Role.Worker
           },
           {
             label: 'Mapa dróg',
             routerLink: ['/map/roadMapViewer'],
             icon: 'pi pi-fw pi-map',
+            visible: this.userRole === Role.User,
           },
           {
             label: 'Dodaj drogę',
             routerLink: ['/map/roadMapEditor'],
             icon: 'pi pi-fw pi-plus',
+            visible: this.userRole === Role.Worker,
           },
         ]
       },
       {
         label: 'Czujniki',
+        visible: this.userRole === Role.Worker,
         items: [
           {
             label: 'Zarejestruj czujnik',
@@ -109,11 +116,12 @@ export class NavbarComponent implements OnInit {
       },
       {
         label: 'Monitoring',
+        visible: this.userRole === Role.Worker,
         items: [
           {
             label: 'Wyświetl obraz z kamery',
             routerLink: ['/cameras/view-camera'],
-            icon: 'pi pi-fw pi-camera',
+            icon: 'pi pi-fw pi-camera'
           }
         ]
       },
@@ -129,6 +137,7 @@ export class NavbarComponent implements OnInit {
             label: 'Dodaj',
             routerLink: ['/auctions/modify'],
             icon: 'pi pi-fw pi-plus',
+            visible: this.userRole === Role.Worker
           },
         ]
       }
