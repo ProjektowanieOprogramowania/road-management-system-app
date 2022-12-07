@@ -43,7 +43,8 @@
       <p-table [value]="auctionOfferList" [rows]="10" class="w-full">
         <ng-template pTemplate="header">
           <tr>
-            <th>Id</th>
+            <th>Numer</th>
+            <th>Firma</th>
             <th>Kwota</th>
             <th>Waluta</th>
             <th>Ocena</th>
@@ -53,6 +54,7 @@
         <ng-template pTemplate="body" let-offer>
           <tr>
             <td>{{offer.id}}</td>
+            <td>{{offer.companyName}}</td>
             <td>{{offer.amount}}</td>
             <td>{{offer.currency}}</td>
             <td>{{offer.score}}
