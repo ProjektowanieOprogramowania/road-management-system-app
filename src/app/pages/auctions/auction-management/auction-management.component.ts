@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Auction, AuctionsService} from "../../../services/generated";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
   selector: 'app-auction-management',
   templateUrl: './auction-management.component.html',
   styleUrls: ['./auction-management.component.scss'],
-  providers:[MessageService]
+  providers: [MessageService]
 })
 export class AuctionManagementComponent implements OnInit {
 
@@ -28,18 +28,19 @@ export class AuctionManagementComponent implements OnInit {
   constructor(private auctionService: AuctionsService,
               private messageService: MessageService,
               private router: Router
-              ) {
+  ) {
     this.getAuctions();
   }
 
-  private getAuctions(){
+  private getAuctions() {
     this.subscription.add(
       this.auctionService.getAllAuctions().subscribe({
         next: value => {
           this.auctionList = value;
+          console.log(value)
           this.isLoading = false;
         },
-        error: err => {
+        error: () => {
           this.messageService.add({severity: 'error', summary: 'Server Error', detail: 'Auctions loading error'});
           this.isLoading = false;
         }
@@ -50,27 +51,29 @@ export class AuctionManagementComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-
   updateEditMode(event: any) {
     this.editModeFlag = event;
   }
 
+  addAuction() {
+    this.router.navigate(['auctions/modify']);
+  }
+
   editAuction(auction: Auction) {
-// TODO: Implement edit auction logic
+    this.router.navigate(['auctions/modify'], {queryParams: {id: auction.id}});
   }
 
   closeAuction(auction: Auction) {
 // TODO: Implement rate auction logic
-    if(!auction.isOpen){
+    if (!auction.isOpen) {
       return;
     }
 
     this.showLoadingDialog = true;
 
-    const closedAuction = Object.assign({},this.auctionList.find(a => a.id === auction.id));
+    const closedAuction = Object.assign({}, this.auctionList.find(a => a.id === auction.id));
 
-    if(closedAuction === undefined){
+    if (closedAuction === undefined) {
       this.messageService.add({severity: 'error', summary: 'Site Error', detail: 'Auction without id'});
       return;
     }
@@ -85,7 +88,8 @@ export class AuctionManagementComponent implements OnInit {
       },
       error: err => {
         this.showLoadingDialog = false;
-        this.messageService.add({severity: 'error', summary: 'Błąd Serwera', detail: 'Błąd podczas zamykania przetargu'});
+        this.messageService.add(
+          {severity: 'error', summary: 'Błąd Serwera', detail: 'Błąd podczas zamykania przetargu'});
       }
     }))
   }

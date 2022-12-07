@@ -9,8 +9,6 @@ import {
 } from "../../../common/utils/mapLocalization";
 import {ActivatedRoute, Router} from "@angular/router";
 
-// declare var google: any; //new added line
-
 @Component({
   selector: 'app-road-map',
   templateUrl: './road-map.component.html',
@@ -51,8 +49,6 @@ export class RoadMapComponent implements OnInit, AfterViewInit {
           error: err => {
             this.messageService.add({severity: 'error', summary: 'Server Error', detail: 'Failed to get roads'});
             this.roadLoading=false;
-            // this.roads.push(this.simpleMock);
-            // this.roads.push(this.simpleMock2);
           }
         }
       ));
@@ -65,7 +61,6 @@ export class RoadMapComponent implements OnInit, AfterViewInit {
     }
     this.mapOverlays = []
     this.infoWindow = new google.maps.InfoWindow();
-
   }
 
   ngAfterViewInit() {
@@ -88,7 +83,6 @@ export class RoadMapComponent implements OnInit, AfterViewInit {
       this.mapOverlays.push(...markers);
       this.setBounds(markers, map);
     }
-
   }
 
   private clearOverlays(){
