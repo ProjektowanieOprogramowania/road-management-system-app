@@ -4,6 +4,35 @@
     <p-progressSpinner [style]="{width: '50px', height: '50px',  display: 'block',margin: 'auto'}"></p-progressSpinner>
 </p-dialog>
 
+<p-dialog [(visible)]="showResultsDialog" [modal]="true" [closable]="true" (onHide)="onResultsHide()"
+          header="Wyniki przetargu">
+  <p-progressSpinner [style]="{width: '50px', height: '50px',  display: 'block',margin: 'auto'}"
+                     *ngIf="loadingResults; else results_loaded"></p-progressSpinner>
+  <ng-template #results_loaded>
+    <h3>Przetarg: {{selectedAuction ? selectedAuction.name : 'null'}}</h3>
+    <div>
+      Results
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="showDetailsDialog" [modal]="true" [closable]="true" header="Szczegóły przetargu"
+          [style]="{minWidth: '400px', maxWidth: '600px'}">
+  <div *ngIf="selectedAuction">
+    <p><strong>Numer:</strong> {{selectedAuction.number}}</p>
+    <p><strong>Nazwa:</strong> {{selectedAuction.name}}</p>
+    <p><strong>Cena startowa:</strong> {{selectedAuction.staringPrice}}</p>
+    <p><strong>Otwarty:</strong> {{selectedAuction.isOpen ? "Tak" : "Nie"}}</p>
+    <p><strong>Opis:</strong> {{selectedAuction.description}}</p>
+    <p><strong>Data zakończenia:</strong> {{selectedAuction.dueDate | date: 'dd.MM.yyyy'}}</p>
+    <p><strong>Lokalizacja:</strong> {{selectedAuction.localization!.longitude}},{{selectedAuction.localization!.latitude}}</p>
+  </div>
+  <p-footer>
+    <button pButton type="button" label="Ok" (click)="showDetailsDialog = false"></button>
+  </p-footer>
+</p-dialog>
+
+
 <div class="flex flex-column justify-content-center align-items-center">
 
   <h2>Przetargi</h2>
@@ -23,6 +52,7 @@
       <p-table [value]="auctionList" [rows]="10" class="w-full">
         <ng-template pTemplate="header">
           <tr>
+            <th>Numer</th>
             <th>Nazwa</th>
             <th>Cena startowa</th>
             <th>Otwarty</th>
@@ -31,17 +61,20 @@
         </ng-template>
         <ng-template pTemplate="body" let-auction>
           <tr>
+            <td>{{auction.number}}</td>
             <td>{{auction.name}}</td>
             <td>{{auction.staringPrice}}</td>
             <td>{{auction.isOpen ? 'Tak' : 'Nie'}}</td>
             <td>
               <div class="flex gap-3 justify-content-end">
                 <button pButton type="button" (click)="viewDetails(auction)" label="Szczegóły"></button>
-                <button pButton type="button" (click)="viewOffers(auction)" class="p-button-secondary w-3"
+                <button pButton type="button" (click)="viewOffers(auction)" class="p-button-secondary"
+                        [style]="{width: '100px'}"
                         label="Oferty" *ngIf="auction.isOpen; else results_btn"></button>
                 <ng-template #results_btn>
                   <button pButton type="button" (click)="viewResults(auction)" label="Wyniki"
-                          class="p-button-secondary w-3"></button>
+                          [style]="{width: '100px'}"
+                          class="p-button-secondary"></button>
                 </ng-template>
 
                 <ng-container *ngIf="editModeFlag">
