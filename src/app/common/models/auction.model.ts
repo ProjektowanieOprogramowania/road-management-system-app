@@ -1,8 +1,10 @@
 import {Auction} from "../../services/generated";
+import {convertToModel, CurrencyModel} from "./currency.model";
 
 export interface AuctionModel extends Omit<Auction, 'dueDate'> {
   dueDate?: Date,
-  startingPrice?: number
+  startingPrice?: number,
+  startingPriceCurrency?: CurrencyModel
 }
 
 export function convertToAuctionModel(auction: Auction): AuctionModel {
@@ -12,7 +14,8 @@ export function convertToAuctionModel(auction: Auction): AuctionModel {
   return {
     ...auction,
     dueDate: dueDate,
-    startingPrice: auction.staringPrice
+    startingPrice: auction.staringPrice,
+    startingPriceCurrency: auction.staringPriceCurrency ? convertToModel(auction.staringPriceCurrency) : undefined
   };
 }
 
@@ -23,7 +26,8 @@ export function convertToAuctionModels(auctions: Auction[]): AuctionModel[] {
     return {
       ...auction,
       dueDate: dueDate,
-      startingPrice: auction.staringPrice
+      startingPrice: auction.staringPrice,
+      startingPriceCurrency: auction.staringPriceCurrency ? convertToModel(auction.staringPriceCurrency) : undefined
     }
   })
 }
