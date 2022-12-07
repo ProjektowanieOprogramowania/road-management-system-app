@@ -8,13 +8,16 @@ import {TableModule} from "primeng/table";
 import {ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
 import {RatingModule} from "primeng/rating";
-import {FormsModule} from "@angular/forms";
-
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { MakeOfferComponent } from './make-offer/make-offer.component';
+import {InputNumberModule} from "primeng/inputnumber";
+import {DropdownModule} from "primeng/dropdown";
 
 
 @NgModule({
   declarations: [
-    OffersPageComponent
+    OffersPageComponent,
+    MakeOfferComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +28,10 @@ import {FormsModule} from "@angular/forms";
     ButtonModule,
     DialogModule,
     RatingModule,
-    FormsModule
+    FormsModule,
+    InputNumberModule,
+    ReactiveFormsModule,
+    DropdownModule
   ]
 })
 export class OffersModule { }

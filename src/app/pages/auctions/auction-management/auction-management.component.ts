@@ -122,6 +122,10 @@ export class AuctionManagementComponent implements OnInit {
       this.subscription.add(this.auctionOfferService.getWinningOffer(auction.id).subscribe({
         next: value => {
           this.winningOffer = value;
+          if(!value) {
+            this.messageService.add(
+              {severity: 'error', summary: 'Brak ofert', detail: 'Nie można wybrać zwycięzcy'});
+          }
           this.loadingResults = false;
         },
         error: err => {

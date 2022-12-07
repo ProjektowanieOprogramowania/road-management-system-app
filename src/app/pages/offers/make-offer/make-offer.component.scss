@@ -1,0 +1,16 @@
+.detail-row{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
+  
+  .main-div{
+    position: relative;
+  }
+  
+  .back-button{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+  }
+  
