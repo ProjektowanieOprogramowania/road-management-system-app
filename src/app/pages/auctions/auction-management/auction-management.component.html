@@ -86,6 +86,9 @@
                 <button pButton type="button" (click)="viewOffers(auction)" class="p-button-secondary"
                         [style]="{width: '100px'}"
                         label="Oferty" *ngIf="auction.isOpen && role === 'worker'"></button>
+                <button pButton type="button" (click)="goToMakeOffer(auction)" class="p-button-secondary"
+                        [style]="{width: '100px'}"
+                        label="Złóż ofertę" *ngIf="auction.isOpen && role !== 'worker'"></button>
                 <button pButton type="button" (click)="viewResults(auction)" label="Wyniki"
                         [style]="{width: '100px'}"
                         *ngIf="!auction.isOpen"

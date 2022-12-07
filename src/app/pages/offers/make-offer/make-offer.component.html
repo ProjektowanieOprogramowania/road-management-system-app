@@ -17,11 +17,15 @@
                            decrementButtonClass="{{price === null || price <= 0 ? 'hidden' : ''}}">
             </p-inputNumber>
 
+            <input type="text" pInputText [(ngModel)]="companyName" placeholder="Nazwa firmy" [class]="isCompanyNameValid ? '' : 'ng-invalid ng-dirty'">
+    
+
             <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrency" class="w-3" 
             (onChange)="setCurrency($event)"></p-dropdown>
 
 
-            <button type="submit" pButton label="Dodaj" icon="pi pi-plus"></button>
+            <button type="submit" pButton label="Dodaj" icon="pi pi-plus"
+            (click)="onSubmit()"></button>
 
     
     </div>

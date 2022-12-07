@@ -108,6 +108,9 @@ export class AuctionManagementComponent implements OnInit {
     this.selectedAuction = auction;
   }
 
+  goToMakeOffer(auction: Auction) {
+    this.router.navigate([`auctions/${auction.id ?? 0}/makeoffer`]);
+  }
 
   viewOffers(auction: Auction) {
     this.router.navigate([`auctions/${auction.id ?? 0}/offers`]);
