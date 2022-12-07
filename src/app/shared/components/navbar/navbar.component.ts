@@ -173,5 +173,6 @@ export class NavbarComponent implements OnInit {
     this.userRole = this.userService.getUserRole();
     this.username = this.userRole === Role.User ? 'Jan Kowalski' : 'Pracownik';
     this.rightItems[0].items![2].label = this.userRole === Role.User ? 'Pracownik' : 'Jan Kowalski';
+    window.location.reload();
   }
 }

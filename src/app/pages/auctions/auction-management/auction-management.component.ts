@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Auction, AuctionsService} from "../../../services/generated";
+import {Auction, AuctionOfferService, AuctionsService} from "../../../services/generated";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
@@ -22,6 +22,8 @@ export class AuctionManagementComponent implements OnInit {
   loadingResults = false; //flag for loading results
   showDetailsDialog = false; //dialog for details
 
+  role = localStorage.getItem("ROLE")
+
 
   auctionList: Auction[] = [];
 
@@ -29,6 +31,7 @@ export class AuctionManagementComponent implements OnInit {
 
   constructor(private auctionService: AuctionsService,
               private messageService: MessageService,
+              private auctionOfferService: AuctionOfferService,
               private router: Router
   ) {
     this.getAuctions();
@@ -39,6 +42,7 @@ export class AuctionManagementComponent implements OnInit {
       this.auctionService.getAllAuctions().subscribe({
         next: value => {
           this.auctionList = value;
+          // this.auctionList = this.auctionMocks
           console.log(value)
           this.isLoading = false;
         },
@@ -111,7 +115,18 @@ export class AuctionManagementComponent implements OnInit {
     this.selectedAuction = auction;
     this.showResultsDialog = true;
     this.loadingResults = true;
-    //subscription here
+    if(auction.id) {
+      this.subscription.add(this.auctionOfferService.getWinningOffer(auction.id).subscribe({
+        next: value => {
+          this.loadingResults = false;
+        },
+        error: err => {
+          this.loadingResults = false;
+          this.messageService.add(
+            {severity: 'error', summary: 'Błąd Serwera', detail: 'Błąd podczas pobierania oferty wygranej'});
+        }
+      }))
+    }
   }
 
   onResultsHide() {

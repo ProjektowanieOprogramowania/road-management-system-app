@@ -25,7 +25,7 @@
     <p><strong>Otwarty:</strong> {{selectedAuction.isOpen ? "Tak" : "Nie"}}</p>
     <p><strong>Opis:</strong> {{selectedAuction.description}}</p>
     <p><strong>Data zakończenia:</strong> {{selectedAuction.dueDate | date: 'dd.MM.yyyy'}}</p>
-    <p><strong>Lokalizacja:</strong> {{selectedAuction.localization!.longitude}},{{selectedAuction.localization!.latitude}}</p>
+<!--    <p><strong>Lokalizacja:</strong> {{selectedAuction.localization!.longitude}},{{selectedAuction.localization!.latitude}}</p>-->
   </div>
   <p-footer>
     <button pButton type="button" label="Ok" (click)="showDetailsDialog = false"></button>
@@ -44,7 +44,7 @@
     <div class="w-8 mt-5 flex flex-column">
 
       <div class="flex justify-content-between align-items-center mb-5">
-        <p-checkbox [(ngModel)]="editModeFlag" [binary]="true" label="Tryb edycji"></p-checkbox>
+        <p-checkbox *ngIf="role === 'worker'" [(ngModel)]="editModeFlag" [binary]="true" label="Tryb edycji"></p-checkbox>
         <button *ngIf="editModeFlag" pButton type="button" (click)="addAuction()" label="Dodaj przetarg"
                 class="p-button-success align-self-start"></button>
       </div>
@@ -70,12 +70,11 @@
                 <button pButton type="button" (click)="viewDetails(auction)" label="Szczegóły"></button>
                 <button pButton type="button" (click)="viewOffers(auction)" class="p-button-secondary"
                         [style]="{width: '100px'}"
-                        label="Oferty" *ngIf="auction.isOpen; else results_btn"></button>
-                <ng-template #results_btn>
-                  <button pButton type="button" (click)="viewResults(auction)" label="Wyniki"
-                          [style]="{width: '100px'}"
-                          class="p-button-secondary"></button>
-                </ng-template>
+                        label="Oferty" *ngIf="auction.isOpen && role === 'worker'"></button>
+                <button pButton type="button" (click)="viewResults(auction)" label="Wyniki"
+                        [style]="{width: '100px'}"
+                        *ngIf="!auction.isOpen"
+                        class="p-button-secondary"></button>
 
                 <ng-container *ngIf="editModeFlag">
                   <button pButton type="button" class="bg-yellow-600" [disabled]="!auction.isOpen"
