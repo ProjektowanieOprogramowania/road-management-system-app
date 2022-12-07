@@ -1,7 +1,8 @@
 import {Auction} from "../../services/generated";
 
 export interface AuctionModel extends Omit<Auction, 'dueDate'> {
-  dueDate?: Date
+  dueDate?: Date,
+  startingPrice?: number
 }
 
 export function convertToAuctionModel(auction: Auction): AuctionModel {
@@ -10,7 +11,8 @@ export function convertToAuctionModel(auction: Auction): AuctionModel {
 
   return {
     ...auction,
-    dueDate: dueDate
+    dueDate: dueDate,
+    startingPrice: auction.staringPrice
   };
 }
 
@@ -20,7 +22,8 @@ export function convertToAuctionModels(auctions: Auction[]): AuctionModel[] {
     dueDate?.setTime(auction.dueDate ?? 0);
     return {
       ...auction,
-      dueDate: dueDate
+      dueDate: dueDate,
+      startingPrice: auction.staringPrice
     }
   })
 }

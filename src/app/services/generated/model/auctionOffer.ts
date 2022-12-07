@@ -14,6 +14,8 @@
 export interface AuctionOffer { 
     id?: number;
     userId?: string;
+    companyName?: string;
+    auctionId?: number;
     amount?: number;
     currency?: string;
     score?: number;

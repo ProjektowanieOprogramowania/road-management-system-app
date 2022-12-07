@@ -16,14 +16,11 @@ import {CurrencyModels} from "../../../common/models/currency.model";
 export class AuctionModifyComponent implements OnInit, OnDestroy {
 
   auctionForm: FormGroup
-
   subscription = new Subscription();
-
   minDateValue = new Date();
-
   selectedCurrency = CurrencyModels.find(c => c.code === 'PLN')!;
-
   currencies = CurrencyModels;
+  auctionId: number;
 
   constructor(
     private fb: FormBuilder,
@@ -39,15 +36,19 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
       description: ['', Validators.required],
     });
 
-    const auctionId = Number(this.route.snapshot.queryParamMap.get('id')) ?? undefined;
+    this.auctionId = Number(this.route.snapshot.queryParamMap.get('id')) ?? undefined;
 
-    if (auctionId) {
+    if (this.auctionId) {
       this.subscription.add(
-        this.auctionsService.getAuctionById(auctionId).subscribe({
+        this.auctionsService.getAuctionById(this.auctionId).subscribe({
           next: value => {
-            //error staring price
-            console.log({...convertToAuctionModel(value)})
-            this.auctionForm.setValue({...convertToAuctionModel(value)});
+            const auctionToEdit = convertToAuctionModel(value);
+            this.auctionForm.setValue({
+              name: auctionToEdit.name,
+              startingPrice: auctionToEdit.startingPrice,
+              dueDate: auctionToEdit.dueDate,
+              description: auctionToEdit.description
+            });
           },
           error: () => {
             this.messageService.add({severity: 'error', summary: 'Server Error', detail: 'Auction edit loading error'});
@@ -87,14 +88,33 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const auction: Auction = {
+    const baseAuction = {
       name: this.auctionName.value,
       staringPrice: this.auctionStartingPrice.value,
       dueDate: this.auctionDueDate.value.getTime(),
       description: this.auctionDescription.value,
-      isOpen: true
-    }
+      isOpen: true,
+    };
 
+    if (!this.auctionId) {
+      const auction: Auction = {
+        ...baseAuction,
+        localization: {
+          latitude: 1,
+          longitude: 1
+        }
+      }
+      this.onAddAuction(auction);
+    } else {
+      const auction : Auction = {
+        ...baseAuction,
+        id: this.auctionId,
+      }
+      this.onEditAuction(auction);
+    }
+  }
+
+  onAddAuction(auction: Auction) {
     this.subscription.add(
       this.auctionsService.createAuction(auction).subscribe({
         next: () => {
@@ -103,7 +123,20 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
             this.router.navigate(['auctions']);
           }, 1000);
         }
+      }));
+  }
+
+  onEditAuction(auction: Auction) {
+    this.subscription.add(
+      this.auctionsService.updateAuction(auction).subscribe({
+        next: () => {
+          this.messageService.add({severity: 'success', summary: 'Przetarg zaktualizowano pomyślnie!'});
+          setTimeout(() => {
+            this.router.navigate(['auctions']);
+          }, 1000);
+        }
       })
     );
   }
+
 }
