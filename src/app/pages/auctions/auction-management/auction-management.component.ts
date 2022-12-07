@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Auction, AuctionOfferService, AuctionsService} from "../../../services/generated";
+import {Auction, AuctionOffer, AuctionOfferService, AuctionsService} from "../../../services/generated";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
@@ -26,6 +26,8 @@ export class AuctionManagementComponent implements OnInit {
 
 
   auctionList: Auction[] = [];
+
+  winningOffer: AuctionOffer | undefined
 
   subscription = new Subscription();
 
@@ -118,6 +120,7 @@ export class AuctionManagementComponent implements OnInit {
     if(auction.id) {
       this.subscription.add(this.auctionOfferService.getWinningOffer(auction.id).subscribe({
         next: value => {
+          this.winningOffer = value;
           this.loadingResults = false;
         },
         error: err => {
