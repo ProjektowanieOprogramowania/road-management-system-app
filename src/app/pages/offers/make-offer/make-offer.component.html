@@ -12,28 +12,18 @@
 
       <h3 class="text-center">{{auction?.name ?? "null"}}</h3>
 
-      <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" class="mt-5 w-20rem">
-        <div class="field">
-          <label for="price" class="block">Cena</label>
-          <div class="p-inputgroup">
-            <p-inputNumber formControlName="price" [min]=staringPrice id="price" mode="currency"
+      <p-inputNumber [(ngModel)]="price" [min]=staringPrice id="price" mode="currency"
                            [currency]="selectedCurrency" class="w-full" styleClass="w-full"
-                           decrementButtonClass="{{offerPrice.value === null || offerPrice.value <= 0 ? 'hidden' : ''}}">
+                           decrementButtonClass="{{price === null || price <= 0 ? 'hidden' : ''}}">
             </p-inputNumber>
-           
-          </div>
-          <div>
+
             <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrency" class="w-3" 
             (onChange)="setCurrency($event)"></p-dropdown>
-            </div>
-          <ng-container
-            *ngIf="offerPrice.invalid && (offerPrice.dirty || offerPrice.touched)">
-            <small *ngIf="offerPrice.errors?.['required']" class="p-error block">Cena jest wymagana.</small>
-            <small *ngIf="offerPrice.errors?.['min']" class="p-error block">Cena nie może być mniejsza niż minimalna.</small>
-          </ng-container>
-        </div>
-        <button type="submit" pButton label="Dodaj" icon="pi pi-plus"></button>
-      </form>
+
+
+            <button type="submit" pButton label="Dodaj" icon="pi pi-plus"></button>
+
+    
     </div>
   </ng-template>
 
