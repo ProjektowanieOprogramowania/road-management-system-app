@@ -2,7 +2,7 @@
 
 <div class="flex flex-column align-items-center">
   <p class="mt-5 mb-2 text-3xl">
-    {{"Utwórz przetarg"}}
+    {{this.auctionId ? "Edytuj przetarg" : "Utwórz przetarg"}}
   </p>
   <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()" class="mt-5 w-20rem">
     <div class="field">
@@ -21,7 +21,7 @@
                        currency="PLN" class="w-full" styleClass="w-full"
                        decrementButtonClass="{{auctionStartingPrice.value === null || auctionStartingPrice.value <= 0 ? 'hidden' : ''}}">
         </p-inputNumber>
-<!--        <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrency" optionLabel="code" class="w-3"></p-dropdown>-->
+        <!--        <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrency" optionLabel="code" class="w-3"></p-dropdown>-->
       </div>
       <ng-container
         *ngIf="auctionStartingPrice.invalid && (auctionStartingPrice.dirty || auctionStartingPrice.touched)">
@@ -51,6 +51,6 @@
       </ng-container>
     </div>
 
-    <button type="submit" pButton label="Dodaj" icon="pi pi-plus"></button>
+    <button type="submit" pButton label="Zapisz"></button>
   </form>
 </div>

@@ -4,14 +4,29 @@
     <p-progressSpinner [style]="{width: '50px', height: '50px',  display: 'block',margin: 'auto'}"></p-progressSpinner>
 </p-dialog>
 
-<p-dialog [(visible)]="showResultsDialog" [modal]="true" [closable]="true" (onHide)="onResultsHide()"
+<p-dialog *ngIf="winningOffer" [(visible)]="showResultsDialog" [modal]="true" [closable]="true" (onHide)="onResultsHide()"
           header="Wyniki przetargu">
   <p-progressSpinner [style]="{width: '50px', height: '50px',  display: 'block',margin: 'auto'}"
                      *ngIf="loadingResults; else results_loaded"></p-progressSpinner>
   <ng-template #results_loaded>
     <h3>Przetarg: {{selectedAuction ? selectedAuction.name : 'null'}}</h3>
     <div>
-      Results
+      <p-table class="w-full" [value]="[winningOffer]">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Firma</th>
+            <th>Kwota</th>
+            <th>Ocena</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body">
+          <tr>
+            <td>{{winningOffer.companyName}}</td>
+            <td>{{winningOffer.amount}} {{winningOffer.currency}}</td>
+            <td>{{winningOffer.score}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </ng-template>
 </p-dialog>
@@ -19,13 +34,13 @@
 <p-dialog [(visible)]="showDetailsDialog" [modal]="true" [closable]="true" header="Szczegóły przetargu"
           [style]="{minWidth: '400px', maxWidth: '600px'}">
   <div *ngIf="selectedAuction">
-    <p><strong>Numer:</strong> {{selectedAuction.number}}</p>
+    <p><strong>Numer:</strong> {{selectedAuction.id}}</p>
     <p><strong>Nazwa:</strong> {{selectedAuction.name}}</p>
     <p><strong>Cena startowa:</strong> {{selectedAuction.staringPrice}}</p>
     <p><strong>Otwarty:</strong> {{selectedAuction.isOpen ? "Tak" : "Nie"}}</p>
     <p><strong>Opis:</strong> {{selectedAuction.description}}</p>
     <p><strong>Data zakończenia:</strong> {{selectedAuction.dueDate | date: 'dd.MM.yyyy'}}</p>
-    <p><strong>Lokalizacja:</strong> {{selectedAuction.localization!.longitude}},{{selectedAuction.localization!.latitude}}</p>
+<!--    <p><strong>Lokalizacja:</strong> {{selectedAuction.localization!.longitude}},{{selectedAuction.localization!.latitude}}</p>-->
   </div>
   <p-footer>
     <button pButton type="button" label="Ok" (click)="showDetailsDialog = false"></button>
@@ -44,7 +59,7 @@
     <div class="w-8 mt-5 flex flex-column">
 
       <div class="flex justify-content-between align-items-center mb-5">
-        <p-checkbox [(ngModel)]="editModeFlag" [binary]="true" label="Tryb edycji"></p-checkbox>
+        <p-checkbox *ngIf="role === 'worker'" [(ngModel)]="editModeFlag" [binary]="true" label="Tryb edycji"></p-checkbox>
         <button *ngIf="editModeFlag" pButton type="button" (click)="addAuction()" label="Dodaj przetarg"
                 class="p-button-success align-self-start"></button>
       </div>
@@ -61,7 +76,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-auction>
           <tr>
-            <td>{{auction.number}}</td>
+            <td>{{auction.id}}</td>
             <td>{{auction.name}}</td>
             <td>{{auction.staringPrice}}</td>
             <td>{{auction.isOpen ? 'Tak' : 'Nie'}}</td>
@@ -70,12 +85,11 @@
                 <button pButton type="button" (click)="viewDetails(auction)" label="Szczegóły"></button>
                 <button pButton type="button" (click)="viewOffers(auction)" class="p-button-secondary"
                         [style]="{width: '100px'}"
-                        label="Oferty" *ngIf="auction.isOpen; else results_btn"></button>
-                <ng-template #results_btn>
-                  <button pButton type="button" (click)="viewResults(auction)" label="Wyniki"
-                          [style]="{width: '100px'}"
-                          class="p-button-secondary"></button>
-                </ng-template>
+                        label="Oferty" *ngIf="auction.isOpen && role === 'worker'"></button>
+                <button pButton type="button" (click)="viewResults(auction)" label="Wyniki"
+                        [style]="{width: '100px'}"
+                        *ngIf="!auction.isOpen"
+                        class="p-button-secondary"></button>
 
                 <ng-container *ngIf="editModeFlag">
                   <button pButton type="button" class="bg-yellow-600" [disabled]="!auction.isOpen"

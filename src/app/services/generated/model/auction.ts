@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Currency } from './currency';
 import { Localization } from './localization';
 import { AuctionOffer } from './auctionOffer';
 
@@ -17,6 +18,7 @@ export interface Auction {
     id?: number;
     isOpen: boolean;
     staringPrice?: number;
+    staringPriceCurrency?: Currency;
     localization?: Localization;
     name?: string;
     description?: string;
