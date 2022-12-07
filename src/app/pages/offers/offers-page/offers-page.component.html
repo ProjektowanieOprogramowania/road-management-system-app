@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 
-<p-dialog [(visible)]="detailsModalVisiblle" [modal]="true" header="Szczegóły przetargu" (onHide)="onModalHide()" (onShow)="onModalShow()">
+<p-dialog [(visible)]="detailsModalVisible" [modal]="true" header="Szczegóły przetargu" (onHide)="onModalHide()" (onShow)="onModalShow()">
   <div *ngIf="selectedOffer !== undefined">
     <div class="detail-row">
       <span>Id:</span>

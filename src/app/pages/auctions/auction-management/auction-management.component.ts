@@ -3,7 +3,7 @@ import {Auction, AuctionOffer, AuctionOfferService, AuctionsService} from "../..
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
-import {auctionMocks} from "../../../common/mocks/auctions/auctionsMock";
+import {AuctionModel, convertToAuctionModel, convertToAuctionModels} from "../../../common/models/auction.model";
 
 @Component({
   selector: 'app-auction-management',
@@ -14,6 +14,7 @@ import {auctionMocks} from "../../../common/mocks/auctions/auctionsMock";
 export class AuctionManagementComponent implements OnInit {
 
   selectedAuction!: Auction;
+  auctionDetailsModel!: AuctionModel
 
   editModeFlag = false;
   isLoading = true; //flag for auctions loading
@@ -25,8 +26,7 @@ export class AuctionManagementComponent implements OnInit {
 
   role = localStorage.getItem("ROLE")
 
-
-  auctionList: Auction[] = [];
+  auctionList: AuctionModel[] = [];
 
   winningOffer: AuctionOffer | undefined
 
@@ -44,14 +44,11 @@ export class AuctionManagementComponent implements OnInit {
     this.subscription.add(
       this.auctionService.getAllAuctions().subscribe({
         next: value => {
-          this.auctionList = value;
-          // this.auctionList = this.auctionMocks
-          console.log(value)
+          this.auctionList = convertToAuctionModels(value);
           this.isLoading = false;
         },
         error: () => {
           this.messageService.add({severity: 'error', summary: 'Server Error', detail: 'Auctions loading error'});
-          this.auctionList = auctionMocks; //TODO: usunac
           this.isLoading = false;
         }
       })
@@ -59,10 +56,6 @@ export class AuctionManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-
-  updateEditMode(event: any) {
-    this.editModeFlag = event;
   }
 
   addAuction() {
@@ -92,23 +85,23 @@ export class AuctionManagementComponent implements OnInit {
     this.subscription.add(this.auctionService.closeAuction(auction).subscribe({
       next: value => {
         this.showLoadingDialog = false;
-        this.messageService.add({severity: 'success', summary: 'Sukces!', detail: 'Pomyślnie zamknięto przetarg'});
+        this.messageService.add({severity: 'success', summary: 'Sukces!', detail: 'Pomyślnie zamknięto przetarg.'});
         const i = this.auctionList.findIndex(a => a.id === value.id);
-        this.auctionList[i] = value;
+        this.auctionList[i] = convertToAuctionModel(value);
       },
       error: err => {
         this.showLoadingDialog = false;
         this.messageService.add(
-          {severity: 'error', summary: 'Błąd Serwera', detail: 'Błąd podczas zamykania przetargu'});
+          {severity: 'error', summary: 'Błąd Serwera', detail: 'Błąd podczas zamykania przetargu.'});
       }
-    }))
+    }));
   }
 
   viewDetails(auction: Auction) {
     this.showDetailsDialog = true;
     this.selectedAuction = auction;
+    this.auctionDetailsModel = convertToAuctionModel(auction);
   }
-
 
   viewOffers(auction: Auction) {
     this.router.navigate([`auctions/${auction.id ?? 0}/offers`]);

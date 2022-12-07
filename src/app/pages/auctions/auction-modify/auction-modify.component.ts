@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Auction, AuctionsService, Currency} from "../../../services/generated";
+import {Auction, AuctionsService} from "../../../services/generated";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -47,7 +47,7 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
             this.auctionForm.setValue({
               name: auctionToEdit.name,
               startingPrice: auctionToEdit.startingPrice,
-              startingPriceCurrency: auctionToEdit.startingPriceCurrency,
+              startingPriceCurrency: auctionToEdit.startingPriceCurrency ?? this.auctionStartingPriceCurrency,
               dueDate: auctionToEdit.dueDate,
               description: auctionToEdit.description
             });

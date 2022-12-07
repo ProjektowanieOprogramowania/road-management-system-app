@@ -35,12 +35,13 @@
 <p-dialog [(visible)]="showDetailsDialog" [modal]="true" [closable]="true" header="Szczegóły przetargu"
           [style]="{minWidth: '400px', maxWidth: '600px'}">
   <div *ngIf="selectedAuction">
-    <p><strong>Numer:</strong> {{selectedAuction.id}}</p>
-    <p><strong>Nazwa:</strong> {{selectedAuction.name}}</p>
-    <p><strong>Cena startowa:</strong> {{selectedAuction.staringPrice}}</p>
-    <p><strong>Otwarty:</strong> {{selectedAuction.isOpen ? "Tak" : "Nie"}}</p>
-    <p><strong>Opis:</strong> {{selectedAuction.description}}</p>
-    <p><strong>Data zakończenia:</strong> {{selectedAuction.dueDate | date: 'dd.MM.yyyy'}}</p>
+    <p><strong>Numer:</strong> {{auctionDetailsModel.id}}</p>
+    <p><strong>Nazwa:</strong> {{auctionDetailsModel.name}}</p>
+    <p><strong>Cena
+      startowa:</strong> {{auctionDetailsModel.staringPrice}} {{auctionDetailsModel.startingPriceCurrency?.sign}}</p>
+    <p><strong>Otwarty:</strong> {{auctionDetailsModel.isOpen ? "Tak" : "Nie"}}</p>
+    <p><strong>Opis:</strong> {{auctionDetailsModel.description}}</p>
+    <p><strong>Data zakończenia:</strong> {{auctionDetailsModel.dueDate | date: 'dd.MM.yyyy'}}</p>
     <!--    <p><strong>Lokalizacja:</strong> {{selectedAuction.localization!.longitude}},{{selectedAuction.localization!.latitude}}</p>-->
   </div>
   <p-footer>
@@ -80,7 +81,7 @@
           <tr>
             <td>{{auction.id}}</td>
             <td>{{auction.name}}</td>
-            <td>{{auction.staringPrice}}</td>
+            <td>{{auction.startingPrice}} {{auction.startingPriceCurrency?.sign}}</td>
             <td>{{auction.isOpen ? 'Tak' : 'Nie'}}</td>
             <td>
               <div class="flex gap-3 justify-content-end">
