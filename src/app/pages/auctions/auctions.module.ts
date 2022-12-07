@@ -17,6 +17,7 @@ import {DialogModule} from "primeng/dialog";
 import {OffersPageComponent} from "../offers/offers-page/offers-page.component";
 import {OffersModule} from "../offers/offers.module";
 import {DropdownModule} from "primeng/dropdown";
+import { MakeOfferComponent } from "../offers/make-offer/make-offer.component";
 
 export const routes: Routes = [
   {
@@ -26,6 +27,10 @@ export const routes: Routes = [
   {
     path: 'modify',
     component: AuctionModifyComponent
+  },
+  {
+    path: ':id/makeoffer',
+    component: MakeOfferComponent
   },
   {
     path: ':id/offers',
