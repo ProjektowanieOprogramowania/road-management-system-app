@@ -18,7 +18,7 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
   auctionForm: FormGroup
   subscription = new Subscription();
   minDateValue = new Date();
-  selectedCurrency = CurrencyModels.find(c => c.code === 'PLN')!;
+  // selectedCurrency = CurrencyModels.find(c => c.code === 'PLN')!;
   currencies = CurrencyModels;
   auctionId: number;
 
@@ -32,6 +32,7 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
     this.auctionForm = this.fb.group({
       name: ['', Validators.required],
       startingPrice: [0, [Validators.required, Validators.min(0)]],
+      startingPriceCurrency: [CurrencyModels.find(c => c.code === 'PLN'), [Validators.required]],
       dueDate: [new Date(), Validators.required],
       description: ['', Validators.required],
     });
@@ -46,6 +47,7 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
             this.auctionForm.setValue({
               name: auctionToEdit.name,
               startingPrice: auctionToEdit.startingPrice,
+              startingPriceCurrency: auctionToEdit.startingPriceCurrency,
               dueDate: auctionToEdit.dueDate,
               description: auctionToEdit.description
             });
@@ -72,6 +74,10 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
     return this.auctionForm.get('startingPrice')!;
   }
 
+  get auctionStartingPriceCurrency() {
+    return this.auctionForm.get('startingPriceCurrency')!;
+  }
+
   get auctionDueDate() {
     return this.auctionForm.get('dueDate')!;
   }
@@ -91,6 +97,7 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
     const baseAuction = {
       name: this.auctionName.value,
       staringPrice: this.auctionStartingPrice.value,
+      staringPriceCurrency: this.auctionStartingPriceCurrency.value.value,
       dueDate: this.auctionDueDate.value.getTime(),
       description: this.auctionDescription.value,
       isOpen: true,
@@ -139,4 +146,7 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
     );
   }
 
+  onCancel() {
+    this.router.navigate(['auctions']);
+  }
 }

@@ -4,7 +4,7 @@
   <p class="mt-5 mb-2 text-3xl">
     {{this.auctionId ? "Edytuj przetarg" : "Utwórz przetarg"}}
   </p>
-  <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()" class="mt-5 w-20rem">
+  <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()" class="mt-5 w-4">
     <div class="field">
       <label for="name" class="block">Nazwa</label>
       <input pInputText formControlName="name" id="name" type="text"
@@ -16,12 +16,12 @@
 
     <div class="field">
       <label for="startingPrice" class="block">Cena wywoławcza</label>
-      <div class="p-inputgroup">
+      <div class="flex">
         <p-inputNumber formControlName="startingPrice" [min]="0" id="startingPrice" mode="currency"
-                       currency="PLN" class="w-full" styleClass="w-full"
-                       decrementButtonClass="{{auctionStartingPrice.value === null || auctionStartingPrice.value <= 0 ? 'hidden' : ''}}">
+                       currency="{{auctionStartingPriceCurrency.value.code}}" class="w-full" styleClass="w-full">
         </p-inputNumber>
-        <!--        <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrency" optionLabel="code" class="w-3"></p-dropdown>-->
+        <p-dropdown [options]="currencies" formControlName="startingPriceCurrency" optionLabel="code" class="w-auto">
+        </p-dropdown>
       </div>
       <ng-container
         *ngIf="auctionStartingPrice.invalid && (auctionStartingPrice.dirty || auctionStartingPrice.touched)">
@@ -51,6 +51,7 @@
       </ng-container>
     </div>
 
-    <button type="submit" pButton label="Zapisz"></button>
+    <button type="submit" pButton label="Zapisz" class="mr-2"></button>
+    <button pButton label="Anuluj" (click)="onCancel()" class="p-button-secondary"></button>
   </form>
 </div>

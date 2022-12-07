@@ -3,23 +3,27 @@ import {Currency} from "../../services/generated";
 export interface CurrencyModel {
   code: string,
   value: Currency,
-  factorToPln: number
+  sign: string
 }
 
 export const CurrencyModels: CurrencyModel[] =  [
   {
     code: 'PLN',
     value: Currency.Pln,
-    factorToPln: 1
+    sign: 'zł'
   },
   {
     code: 'USD',
     value: Currency.Usd,
-    factorToPln: 4.49
+    sign: '$'
   },
   {
     code: 'EUR',
-    value: Currency.Pln,
-    factorToPln: 4.69
+    value: Currency.Eur,
+    sign: '€'
   },
 ];
+
+export const convertToModel = (currency: Currency) => {
+  return CurrencyModels.find(c => c.value == currency);
+}

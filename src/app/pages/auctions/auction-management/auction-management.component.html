@@ -1,10 +1,11 @@
 <p-toast></p-toast>
 
 <p-dialog [(visible)]="showLoadingDialog" [modal]="true" [closable]="false" header="Zamykanie przetargu">
-    <p-progressSpinner [style]="{width: '50px', height: '50px',  display: 'block',margin: 'auto'}"></p-progressSpinner>
+  <p-progressSpinner [style]="{width: '50px', height: '50px',  display: 'block',margin: 'auto'}"></p-progressSpinner>
 </p-dialog>
 
-<p-dialog *ngIf="winningOffer" [(visible)]="showResultsDialog" [modal]="true" [closable]="true" (onHide)="onResultsHide()"
+<p-dialog *ngIf="winningOffer" [(visible)]="showResultsDialog" [modal]="true" [closable]="true"
+          (onHide)="onResultsHide()"
           header="Wyniki przetargu">
   <p-progressSpinner [style]="{width: '50px', height: '50px',  display: 'block',margin: 'auto'}"
                      *ngIf="loadingResults; else results_loaded"></p-progressSpinner>
@@ -40,7 +41,7 @@
     <p><strong>Otwarty:</strong> {{selectedAuction.isOpen ? "Tak" : "Nie"}}</p>
     <p><strong>Opis:</strong> {{selectedAuction.description}}</p>
     <p><strong>Data zakończenia:</strong> {{selectedAuction.dueDate | date: 'dd.MM.yyyy'}}</p>
-<!--    <p><strong>Lokalizacja:</strong> {{selectedAuction.localization!.longitude}},{{selectedAuction.localization!.latitude}}</p>-->
+    <!--    <p><strong>Lokalizacja:</strong> {{selectedAuction.localization!.longitude}},{{selectedAuction.localization!.latitude}}</p>-->
   </div>
   <p-footer>
     <button pButton type="button" label="Ok" (click)="showDetailsDialog = false"></button>
@@ -48,7 +49,7 @@
 </p-dialog>
 
 
-<div class="flex flex-column justify-content-center align-items-center">
+<div class="flex flex-column justify-content-center align-items-center mb-8">
 
   <h2>Przetargi</h2>
 
@@ -59,7 +60,8 @@
     <div class="w-8 mt-5 flex flex-column">
 
       <div class="flex justify-content-between align-items-center mb-5">
-        <p-checkbox *ngIf="role === 'worker'" [(ngModel)]="editModeFlag" [binary]="true" label="Tryb edycji"></p-checkbox>
+        <p-checkbox *ngIf="role === 'worker'" [(ngModel)]="editModeFlag" [binary]="true"
+                    label="Tryb edycji"></p-checkbox>
         <button *ngIf="editModeFlag" pButton type="button" (click)="addAuction()" label="Dodaj przetarg"
                 class="p-button-success align-self-start"></button>
       </div>
@@ -93,10 +95,10 @@
 
                 <ng-container *ngIf="editModeFlag">
                   <button pButton type="button" class="bg-yellow-600" [disabled]="!auction.isOpen"
-                          (click)="editAuction(auction)"  label="Edytuj">
+                          (click)="editAuction(auction)" label="Edytuj">
                   </button>
                   <button pButton type="button" class="p-button-danger" [disabled]="!auction.isOpen"
-                          (click)="closeAuction(auction)"  label="Zamknij"></button>
+                          (click)="closeAuction(auction)" label="Zamknij"></button>
                 </ng-container>
 
               </div>
