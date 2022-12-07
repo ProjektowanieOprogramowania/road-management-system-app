@@ -34,7 +34,7 @@
 <p-dialog [(visible)]="showDetailsDialog" [modal]="true" [closable]="true" header="Szczegóły przetargu"
           [style]="{minWidth: '400px', maxWidth: '600px'}">
   <div *ngIf="selectedAuction">
-    <p><strong>Numer:</strong> {{selectedAuction.number}}</p>
+    <p><strong>Numer:</strong> {{selectedAuction.id}}</p>
     <p><strong>Nazwa:</strong> {{selectedAuction.name}}</p>
     <p><strong>Cena startowa:</strong> {{selectedAuction.staringPrice}}</p>
     <p><strong>Otwarty:</strong> {{selectedAuction.isOpen ? "Tak" : "Nie"}}</p>
@@ -76,7 +76,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-auction>
           <tr>
-            <td>{{auction.number}}</td>
+            <td>{{auction.id}}</td>
             <td>{{auction.name}}</td>
             <td>{{auction.staringPrice}}</td>
             <td>{{auction.isOpen ? 'Tak' : 'Nie'}}</td>
