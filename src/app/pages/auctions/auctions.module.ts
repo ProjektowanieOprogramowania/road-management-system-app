@@ -16,6 +16,7 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {DialogModule} from "primeng/dialog";
 import {OffersPageComponent} from "../offers/offers-page/offers-page.component";
 import {OffersModule} from "../offers/offers.module";
+import {DropdownModule} from "primeng/dropdown";
 
 export const routes: Routes = [
   {
@@ -37,23 +38,24 @@ export const routes: Routes = [
     AuctionManagementComponent,
     AuctionModifyComponent
   ],
-  imports: [
-    OffersModule,
-    RouterModule.forChild(routes),
-    CommonModule,
-    ToastModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    InputNumberModule,
-    CalendarModule,
-    InputTextareaModule,
-    TableModule,
-    CheckboxModule,
-    FormsModule,
-    SpinnerModule,
-    ProgressSpinnerModule,
-    DialogModule,
-  ]
+    imports: [
+        OffersModule,
+        RouterModule.forChild(routes),
+        CommonModule,
+        ToastModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        InputNumberModule,
+        CalendarModule,
+        InputTextareaModule,
+        TableModule,
+        CheckboxModule,
+        FormsModule,
+        SpinnerModule,
+        ProgressSpinnerModule,
+        DialogModule,
+        DropdownModule,
+    ]
 })
 export class AuctionsModule {
 }

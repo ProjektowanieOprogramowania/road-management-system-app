@@ -45,7 +45,7 @@
                 </ng-template>
 
                 <ng-container *ngIf="editModeFlag">
-                  <button pButton type="button" class="bg-yellow-600" [disabled]="auction.isOpen"
+                  <button pButton type="button" class="bg-yellow-600" [disabled]="!auction.isOpen"
                           (click)="editAuction(auction)"  label="Edytuj">
                   </button>
                   <button pButton type="button" class="p-button-danger" [disabled]="!auction.isOpen"

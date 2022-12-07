@@ -16,10 +16,13 @@
 
     <div class="field">
       <label for="startingPrice" class="block">Cena wywoławcza</label>
-      <p-inputNumber formControlName="startingPrice" [min]="0" id="startingPrice" mode="currency"
-                     currency="PLN" class="w-full" styleClass="w-full"
-                     decrementButtonClass="{{auctionStartingPrice.value === null || auctionStartingPrice.value <= 0 ? 'hidden' : ''}}">
-      </p-inputNumber>
+      <div class="p-inputgroup">
+        <p-inputNumber formControlName="startingPrice" [min]="0" id="startingPrice" mode="currency"
+                       currency="PLN" class="w-full" styleClass="w-full"
+                       decrementButtonClass="{{auctionStartingPrice.value === null || auctionStartingPrice.value <= 0 ? 'hidden' : ''}}">
+        </p-inputNumber>
+<!--        <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrency" optionLabel="code" class="w-3"></p-dropdown>-->
+      </div>
       <ng-container
         *ngIf="auctionStartingPrice.invalid && (auctionStartingPrice.dirty || auctionStartingPrice.touched)">
         <small *ngIf="auctionStartingPrice.errors?.['required']" class="p-error block">Cena wywoławcza jest

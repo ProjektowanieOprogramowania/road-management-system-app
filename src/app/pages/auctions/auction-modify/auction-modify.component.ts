@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Auction, AuctionsService} from "../../../services/generated";
+import {Auction, AuctionsService, Currency} from "../../../services/generated";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
 import {ActivatedRoute, Router} from "@angular/router";
 import {convertToAuctionModel} from "../../../common/models/auction.model";
+import {CurrencyModels} from "../../../common/models/currency.model";
 
 @Component({
   selector: 'app-auction-modify',
@@ -20,7 +21,9 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
 
   minDateValue = new Date();
 
-  auctionId?: number;
+  selectedCurrency = CurrencyModels.find(c => c.code === 'PLN')!;
+
+  currencies = CurrencyModels;
 
   constructor(
     private fb: FormBuilder,
@@ -38,15 +41,19 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
 
     const auctionId = Number(this.route.snapshot.queryParamMap.get('id')) ?? undefined;
 
-    this.subscription.add(
-      this.auctionsService.getAuctionById(auctionId).subscribe({
-        next: value => {
-          //error staring price
-          console.log({...convertToAuctionModel(value)})
-          this.auctionForm.setValue({...convertToAuctionModel(value)});
-        }
-      })
-    );
+    if (auctionId) {
+      this.subscription.add(
+        this.auctionsService.getAuctionById(auctionId).subscribe({
+          next: value => {
+            //error staring price
+            console.log({...convertToAuctionModel(value)})
+            this.auctionForm.setValue({...convertToAuctionModel(value)});
+          },
+          error: () => {
+            this.messageService.add({severity: 'error', summary: 'Server Error', detail: 'Auction edit loading error'});
+          }
+        }));
+    }
   }
 
   ngOnInit(): void {
@@ -85,7 +92,7 @@ export class AuctionModifyComponent implements OnInit, OnDestroy {
       staringPrice: this.auctionStartingPrice.value,
       dueDate: this.auctionDueDate.value.getTime(),
       description: this.auctionDescription.value,
-      isOpen: false
+      isOpen: true
     }
 
     this.subscription.add(
