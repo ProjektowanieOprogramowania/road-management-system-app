@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 
-<p-dialog [(visible)]="detailsModalVisiblle" [modal]="true" header="Szczegóły przetargu" (onHide)="onModalHide()">
+<p-dialog [(visible)]="detailsModalVisiblle" [modal]="true" header="Szczegóły przetargu" (onHide)="onModalHide()" (onShow)="onModalShow()">
   <div *ngIf="selectedOffer !== undefined">
     <div class="detail-row">
       <span>Id:</span>
@@ -19,7 +19,7 @@
       <span class="font-bold">{{selectedOffer.currency}}</span>
     </div>
     <div class="mt-5">
-      <span class="font-bold mb-2">Ocena:</span>
+      <p class="font-bold">Ocena:</p>
       <p-rating [(ngModel)]="rating" [cancel]="false" [stars]="10" [readonly]="false"></p-rating>
     </div>
     <button pButton class="mt-5 w-full text-center" [loading]="ratingLoading"
@@ -56,7 +56,11 @@
             <td>{{offer.id}}</td>
             <td>{{offer.amount}}</td>
             <td>{{offer.currency}}</td>
-            <td>{{'0'}}</td>
+            <td>{{offer.score}}
+              <span class="pi" style="color: orangered">
+                <i class="pi pi-star"></i>
+              </span>
+            </td>
             <td>
               <div class="flex gap-3 justify-content-end">
                 <button pButton type="button" (click)="viewDetails(offer)" label="Szczegóły i ocena"></button>
