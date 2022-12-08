@@ -3,7 +3,12 @@ import {Auction, AuctionOffer, AuctionOfferService, AuctionsService} from "../..
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
-import {AuctionModel, convertToAuctionModel, convertToAuctionModels} from "../../../common/models/auction.model";
+import {
+  AuctionModel,
+  convertToAuction,
+  convertToAuctionModel,
+  convertToAuctionModels
+} from "../../../common/models/auction.model";
 
 @Component({
   selector: 'app-auction-management',
@@ -14,6 +19,7 @@ import {AuctionModel, convertToAuctionModel, convertToAuctionModels} from "../..
 export class AuctionManagementComponent implements OnInit {
 
   selectedAuction!: Auction;
+  auctionDetailsModel!: AuctionModel;
 
   editModeFlag = false;
   isLoading = true; //flag for auctions loading
@@ -65,8 +71,9 @@ export class AuctionManagementComponent implements OnInit {
     this.router.navigate(['auctions/modify'], {queryParams: {id: auction.id}});
   }
 
-  closeAuction(auction: Auction) {
-// TODO: Implement rate auction logic
+  closeAuction(auctionModel: AuctionModel) {
+    const auction: Auction = convertToAuction(auctionModel);
+
     if (!auction.isOpen) {
       return;
     }
@@ -114,11 +121,11 @@ export class AuctionManagementComponent implements OnInit {
     this.selectedAuction = auction;
     this.showResultsDialog = true;
     this.loadingResults = true;
-    if(auction.id) {
+    if (auction.id) {
       this.subscription.add(this.auctionOfferService.getWinningOffer(auction.id).subscribe({
         next: value => {
           this.winningOffer = value;
-          if(!value) {
+          if (!value) {
             this.messageService.add(
               {severity: 'error', summary: 'Brak ofert', detail: 'Nie można wybrać zwycięzcy'});
           }

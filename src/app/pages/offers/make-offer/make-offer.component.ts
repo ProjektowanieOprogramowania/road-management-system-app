@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {Auction, AuctionOffer, AuctionOfferService, AuctionsService} from "../../../services/generated";
+import {Component, OnInit} from '@angular/core';
+import {Auction, AuctionOffer, AuctionOfferService, AuctionsService, Currency} from "../../../services/generated";
 import {MessageService} from "primeng/api";
 import {Subscription} from "rxjs";
-import {ActivatedRoute, Router, TitleStrategy} from "@angular/router";
-import { registerLocaleData } from '@angular/common';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-make-offer',
@@ -29,7 +28,7 @@ export class MakeOfferComponent implements OnInit {
   ratingLoading = false;
 
   currencies = ['pln', 'eur', 'usd'];
-  selectedCurrency: string = 'pln'
+  selectedCurrency: Currency = 'pln'
 
   subscription = new Subscription();
 
@@ -44,21 +43,23 @@ export class MakeOfferComponent implements OnInit {
     // this.currencies
   }
 
-  private getAuction(){
-    if(this.auctionId !== undefined){
+  private getAuction() {
+    if (this.auctionId !== undefined) {
       this.subscription.add(this.auctionService.getAuctionById(this.auctionId).subscribe({
         next: value => {
           this.auction = value;
-          if (value.staringPrice) {
+          if (value.staringPrice !== undefined) {
             this.staringPrice = value.staringPrice
             this.price = value.staringPrice
+            this.selectedCurrency = value.staringPriceCurrency ?? this.selectedCurrency;
             this.isLoading = false
           }
         },
         error: err => {
           this.isLoading = false; //TODO: usunac
           this.messageService.add({severity: 'error', summary: 'Server Error!', detail: 'Error while getting Auction'});
-        }}))
+        }
+      }))
     }
   }
 
@@ -76,7 +77,7 @@ export class MakeOfferComponent implements OnInit {
       return;
     }
 
-    const offer: AuctionOffer = { 
+    const offer: AuctionOffer = {
       userId: "2e92a123-f4b8-33a1-0ea9-a00592fac476",
       companyName: this.companyName,
       auctionId: this.auctionId,
@@ -91,7 +92,7 @@ export class MakeOfferComponent implements OnInit {
       this.auctionOfferService.createOffer(offer).subscribe({
         next: () => {
           this.messageService.add({severity: 'success', summary: 'Pomyślnie utworzono nowy przetarg!'});
-            this.router.navigate(['auctions']);
+          this.router.navigate(['auctions']);
         }
       })
     );

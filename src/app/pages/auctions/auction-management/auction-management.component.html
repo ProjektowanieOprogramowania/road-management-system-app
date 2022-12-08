@@ -34,7 +34,7 @@
 
 <p-dialog [(visible)]="showDetailsDialog" [modal]="true" [closable]="true" header="Szczegóły przetargu"
           [style]="{minWidth: '400px', maxWidth: '600px'}">
-  <div *ngIf="selectedAuction">
+  <div *ngIf="auctionDetailsModel">
     <p><strong>Numer:</strong> {{auctionDetailsModel.id}}</p>
     <p><strong>Nazwa:</strong> {{auctionDetailsModel.name}}</p>
     <p><strong>Cena

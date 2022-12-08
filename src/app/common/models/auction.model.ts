@@ -19,6 +19,13 @@ export function convertToAuctionModel(auction: Auction): AuctionModel {
   };
 }
 
+export function convertToAuction(auction: AuctionModel): Auction {
+  return {
+    ...auction,
+    dueDate: auction.dueDate?.getTime(),
+  };
+}
+
 export function convertToAuctionModels(auctions: Auction[]): AuctionModel[] {
   return auctions.map(auction => {
     let dueDate = auction.dueDate ? new Date() : undefined;
