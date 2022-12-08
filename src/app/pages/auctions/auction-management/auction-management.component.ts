@@ -9,6 +9,7 @@ import {
   convertToAuctionModel,
   convertToAuctionModels
 } from "../../../common/models/auction.model";
+import {auctionMocks} from "../../../common/mocks/auctions/auctionsMock";
 
 @Component({
   selector: 'app-auction-management',
@@ -24,10 +25,11 @@ export class AuctionManagementComponent implements OnInit {
   editModeFlag = false;
   isLoading = true; //flag for auctions loading
 
-  showLoadingDialog = false; //dialog for closing auction
+  showClosingAuctionDialog = false; //dialog for closing auction
   showResultsDialog = false //dialog for results
   loadingResults = false; //flag for loading results
   showDetailsDialog = false; //dialog for details
+  loadingClosingAuction = false //flag for closing auction
 
   role = localStorage.getItem("ROLE")
 
@@ -53,6 +55,7 @@ export class AuctionManagementComponent implements OnInit {
           this.isLoading = false;
         },
         error: () => {
+          this.auctionList = convertToAuctionModels(auctionMocks);
           this.messageService.add({severity: 'error', summary: 'Server Error', detail: 'Auctions loading error'});
           this.isLoading = false;
         }
@@ -85,22 +88,8 @@ export class AuctionManagementComponent implements OnInit {
       return;
     }
 
-    this.showLoadingDialog = true;
-
-    //closedAuction.isOpen = false;
-    this.subscription.add(this.auctionService.closeAuction(auction).subscribe({
-      next: value => {
-        this.showLoadingDialog = false;
-        this.messageService.add({severity: 'success', summary: 'Sukces!', detail: 'Pomyślnie zamknięto przetarg.'});
-        const i = this.auctionList.findIndex(a => a.id === value.id);
-        this.auctionList[i] = convertToAuctionModel(value);
-      },
-      error: err => {
-        this.showLoadingDialog = false;
-        this.messageService.add(
-          {severity: 'error', summary: 'Błąd Serwera', detail: 'Błąd podczas zamykania przetargu.'});
-      }
-    }));
+    this.selectedAuction = auction;
+    this.showClosingAuctionDialog = true;
   }
 
   viewDetails(auction: Auction) {
@@ -144,4 +133,23 @@ export class AuctionManagementComponent implements OnInit {
     this.loadingResults = false;
   }
 
+  onAuctionCloseSubmit() {
+    //closedAuction.isOpen = false;
+    this.loadingClosingAuction = true;
+    this.subscription.add(this.auctionService.closeAuction(this.selectedAuction).subscribe({
+      next: value => {
+        this.showClosingAuctionDialog = false;
+        this.loadingClosingAuction = false;
+        this.messageService.add({severity: 'success', summary: 'Sukces!', detail: 'Pomyślnie zamknięto przetarg.'});
+        const i = this.auctionList.findIndex(a => a.id === value.id);
+        this.auctionList[i] = convertToAuctionModel(value);
+      },
+      error: err => {
+        this.showClosingAuctionDialog = false;
+        this.loadingClosingAuction = false;
+        this.messageService.add(
+          {severity: 'error', summary: 'Błąd Serwera', detail: 'Błąd podczas zamykania przetargu.'});
+      }
+    }));
+  }
 }

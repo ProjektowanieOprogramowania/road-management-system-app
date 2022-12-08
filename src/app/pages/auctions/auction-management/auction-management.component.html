@@ -1,7 +1,17 @@
 <p-toast></p-toast>
 
-<p-dialog [(visible)]="showLoadingDialog" [modal]="true" [closable]="false" header="Zamykanie przetargu">
-  <p-progressSpinner [style]="{width: '50px', height: '50px',  display: 'block',margin: 'auto'}"></p-progressSpinner>
+<p-dialog [(visible)]="showClosingAuctionDialog" [modal]="true" [closable]="false" header="Zamykanie przetargu">
+  <ng-container *ngIf="selectedAuction !== undefined">
+    <p>Czy chcesz zamknąć ten przetarg ?</p>
+    <p><strong>Numer: </strong>{{selectedAuction.number}}</p>
+    <p><strong>Nazwa: </strong>{{selectedAuction.name}}</p>
+    <div class="flex w-full gap-3 justify-content-center mt-5">
+      <button pButton type="button" label="Tak" class="p-button-danger" [loading]="loadingClosingAuction"
+              (click)="onAuctionCloseSubmit()"></button>
+      <button pButton type="button" label="Nie" class="p-button-outlined" (click)="showClosingAuctionDialog = false"
+              [loading]="loadingClosingAuction"></button>
+    </div>
+  </ng-container>
 </p-dialog>
 
 <p-dialog *ngIf="winningOffer" [(visible)]="showResultsDialog" [modal]="true" [closable]="true"
@@ -87,13 +97,14 @@
               <div class="flex gap-3 justify-content-end">
                 <button pButton type="button" (click)="viewDetails(auction)" label="Szczegóły"></button>
                 <button pButton type="button" (click)="viewOffers(auction)" class="p-button-secondary"
-                        [style]="{width: '100px'}"
+                        [ngStyle]="(role !== 'worker') ? {'width': '140px'} : {'width':'120px'}"
                         label="Oferty" *ngIf="auction.isOpen && role === 'worker'"></button>
                 <button pButton type="button" (click)="goToMakeOffer(auction)" class="p-button-secondary"
-                        [style]="{width: '100px'}"
+                        [ngStyle]="(role !== 'worker') ? {'width': '140px'} : {'width':'120px'}"
                         label="Złóż ofertę" *ngIf="auction.isOpen && role !== 'worker'"></button>
                 <button pButton type="button" (click)="viewResults(auction)" label="Wyniki"
-                        [style]="{width: '100px'}"
+                        [loading]="loadingResults"
+                        [ngStyle]="(role !== 'worker') ? {'width': '140px'} : {'width':'120px'}"
                         *ngIf="!auction.isOpen"
                         class="p-button-secondary"></button>
 
