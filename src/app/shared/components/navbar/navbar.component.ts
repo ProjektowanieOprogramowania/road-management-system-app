@@ -45,22 +45,24 @@ export class NavbarComponent implements OnInit {
       },
       {
         label: 'Finanse',
-        visible: this.userRole === Role.User,
         items: [
           {
             label: 'Opłać przejazd',
             routerLink: ['/charges/notPaidPassingCharges'],
-            icon: 'pi pi-fw pi-dollar'
+            icon: 'pi pi-fw pi-dollar',
+            visible: this.userRole === Role.User
           },
           {
             label: 'Wykup abonament',
             routerLink: ['/subscriptions/subscribe'],
-            icon: 'pi pi-fw pi-credit-card'
+            icon: 'pi pi-fw pi-credit-card',
+            visible: this.userRole === Role.User
           },
           {
             label: 'Posiadane abonamenty',
             routerLink: ['/subscriptions/payed'],
-            icon: 'pi pi-fw pi-credit-card'
+            icon: 'pi pi-fw pi-credit-card',
+            visible: this.userRole === Role.User
           },
           {
             label: 'Historia opłat',
@@ -71,7 +73,6 @@ export class NavbarComponent implements OnInit {
       },
       {
         label: 'Kary',
-        visible: this.userRole === Role.User,
         items: [
           {
             label: 'Historia kar',
